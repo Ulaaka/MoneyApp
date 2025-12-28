@@ -117,8 +117,8 @@ def flavor_decision(name, idx):
 # fake_pdf
 # sample-tables
 # KH_P_statement
-flavor_choice = flavor_decision('KH_P_statement.pdf', 0)
-tables = run_camelot('KH_P_statement.pdf', flavor_choice)
+flavor_choice = flavor_decision('Statement_12_2025.pdf', 0)
+tables = run_camelot('Statement_12_2025.pdf', flavor_choice)
 
 for idx, table in enumerate(tables):
     dataframes = clean_up(table, idx)
