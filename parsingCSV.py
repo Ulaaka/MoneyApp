@@ -73,3 +73,4 @@ if mat2:
     date_column = new_df[new_df.columns[0]]
     change_type(date_list, date_column, new_df)
     print(new_df.columns.values)
+    print(new_df)

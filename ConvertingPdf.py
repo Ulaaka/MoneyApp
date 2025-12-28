@@ -80,7 +80,9 @@ def clean_up(table, idx):
 def run_camelot(name, flavor_camelot):
     if (flavor_camelot == "stream"):
 
-        tables = camelot.read_pdf(name, flavor=flavor_camelot, row_tol=18, column_tol=7, edge_tol=25, strip_text='\n \t', split_text=False ,pages='all')
+        # tables = camelot.read_pdf(name, flavor=flavor_camelot, row_tol=18, column_tol=7, edge_tol=25, strip_text='\n \t', split_text=False ,pages='all')
+        tables = camelot.read_pdf(name, flavor=flavor_camelot ,pages='all')
+
     else: 
         tables = camelot.read_pdf(name, flavor=flavor_camelot, pages='all')
     return tables
@@ -107,8 +109,8 @@ def flavor_decision(name, idx):
 # fake_pdf
 # sample-tables
 # KH_P_statement
-flavor_choice = flavor_decision('KH_P_statement.pdf', 0)
-tables = run_camelot('KH_P_statement.pdf', flavor_choice)
+flavor_choice = flavor_decision('Statement_12_2025.pdf', 0)
+tables = run_camelot('Statement_12_2025.pdf', flavor_choice)
 
 for idx, table in enumerate(tables):
     clean_up(table, idx)
