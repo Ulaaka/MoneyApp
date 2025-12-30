@@ -1,0 +1,20 @@
+{
+    "sqltools.connections": [
+        {
+            "mysqlOptions": {
+                "authProtocol": "default",
+                "enableSsl": "Disabled"
+            },
+            "ssh": "Disabled",
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 3306,
+            "driver": "MySQL",
+            "database": "transaction_db",
+            "username": "finance_user",
+            "name": "Money_App_db",
+            "connectionTimeout": 10,
+            "password": "Ulaaka_1223"
+        }
+    ]
+}
