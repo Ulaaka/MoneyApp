@@ -3,7 +3,7 @@ from fuzzywuzzy import process
 import pandas as pd
 import dateutil.parser
 from datetime import datetime
-from BASE_parser import ParsingBase
+from BASE_Classes import ParsingBase
 
 class ParsingCSV:
 

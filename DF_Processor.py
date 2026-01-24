@@ -1,8 +1,9 @@
 import mysql.connector
 from database_connection import database
-import bcrypt
+from BASE_Classes import password_class
 from datetime import datetime
 from decimal import Decimal
+
 import pandas as pd
 
 
@@ -21,13 +22,6 @@ class ProcessingDF:
         self.acc_currency = account_currency
 
         self.insert_all(df)
-    # https://stackoverflow.com/questions/9594125/salt-and-hash-a-password-in-python
-    def hash_password(self, password):
-        return bcrypt.hashpw(password, bcrypt.gensalt())
-
-    # later used to check the password
-    def check_password(self, plain_text_password, hashed_password):
-        return bcrypt.checkpw(plain_text_password, hashed_password)
 
     def delete_user(self):
         """
@@ -47,12 +41,13 @@ class ProcessingDF:
 
 
     def insert_user(self, row):
+        password_manager = password_class()
         sql = f"SELECT userID FROM users WHERE username = %s"
         self.cursor.execute(sql, (self.username,))
         result = self.cursor.fetchone()
         
         if not result: 
-            hashed_password = self.hash_password(self.password)
+            hashed_password = password_manager.hash_password(self.password)
 
             new_sql = f"INSERT INTO users ( username, hashed_password) VALUES (%s, %s)"
             self.cursor.execute(new_sql, (self.username, hashed_password))

@@ -3,7 +3,7 @@ import pandas as pd
 import csv 
 import pdfplumber
 from datetime import datetime
-from BASE_parser import ParsingBase
+from BASE_Classes import ParsingBase
 
 class ParsingPDF:
     def __init__(self, pdf_name):
@@ -11,11 +11,6 @@ class ParsingPDF:
         self.flavor_choice = self.flavor_decision(pdf_name, 0)
         self.tables = self.run_camelot(pdf_name, self.flavor_choice)
         self.parser = ParsingBase()
-
-        # Statement_12_2025
-        # fake_pdf
-        # sample-tables
-        # KH_P_statement
 
         self.dataframes_list = []
         for idx, table in enumerate(self.tables):
