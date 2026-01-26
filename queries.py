@@ -16,45 +16,55 @@ class query_processor:
         output = self.cursor.fetchone()
         return output[0]
         
+
     # transfer toggle = if true find the total income
-    def total_transfer(self, username, transfer_toggle, account_name=None, date_lower=None, date_upper=None):
-        parameter = [username]
+    # at least one of the transfer_toggle and max_toggle should be included
+    def total_transfer_or_extreme_value(self, username, transfer_toggle=None, account_name=None, date_lower=None, date_upper=None, max_toggle=None):
+        try:
+            parameter = [username]
 
-        query = """
-            SELECT ABS(SUM(T.amount)) as total_expense
-            FROM users U
-            JOIN accounts A ON A.userID = U.userID
-            JOIN transactions T ON T.accountID = A.accountID
-            WHERE U.username = %s
-        """
+            query = """
+                SELECT ABS(SUM(T.amount)) as total_expense
+                FROM users U
+                JOIN accounts A ON A.userID = U.userID
+                JOIN transactions T ON T.accountID = A.accountID
+                WHERE U.username = %s
+            """
+            
+            if (max_toggle is not None):
+                toggle = "MAX" if max_toggle else "MIN"
+                base_query = f"SELECT ABS({toggle}(T.amount))" 
+                body_query = """
+                    FROM users U
+                    JOIN accounts A ON A.userID = U.userID
+                    JOIN transactions T ON T.accountID = A.accountID
+                    WHERE U.username = %s
+                """
+                query = base_query + body_query
 
-        transfer_additional = " and T.amount > 0" if transfer_toggle else " and T.amount < 0"
-        query+=transfer_additional
-        
-        if (account_name is not None):
-            query+= " and A.account_name = %s"
-            parameter.append(account_name)
+            if (transfer_toggle is not None):
+                toggle = ">" if transfer_toggle else "<"
+                transfer_additional = f" and T.amount {toggle} 0"
+                query+=transfer_additional
+            
+            if (account_name is not None):
+                query+= " and A.account_name = %s"
+                parameter.append(account_name)
 
-        date_additional = "and T.transaction_date BETWEEN %s and %s"
+            if (date_upper and not date_lower):
+                date_lower = self.find_min_max("transaction_date", False)
 
-        if (date_lower and date_upper):
-            query+=date_additional
-            parameter.extend([date_lower, date_upper])
+            elif (date_lower and not date_upper):
+                date_upper = self.find_min_max("transaction_date", True)
 
-        elif (date_upper):
-            date_lower = self.find_min_max("transaction_date", False)
-            query+=date_additional
-            parameter.extend([date_lower, date_upper])
+            if (date_lower and date_upper):
+                query+="and T.transaction_date BETWEEN %s and %s"
+                parameter.extend([date_lower, date_upper])
 
-        elif (date_lower):
-            date_upper = self.find_min_max("transaction_date", True)
-            query+=date_additional
-            parameter.extend([date_lower, date_upper])
+            self.cursor.execute(query, tuple(parameter))
 
-        self.cursor.execute(query, tuple(parameter))
-
-        output = self.cursor.fetchone()
-        print(output[0])
-        return output[0]
-    
-    
+            output = self.cursor.fetchone()
+            print(output[0])
+            return output[0]
+        except:
+            print("important arguments (max_toggle or transfer_toggle missing)")
