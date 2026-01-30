@@ -9,7 +9,7 @@ parsing = ParsingCSV("Transaction_data_original.csv")
 #parsing = ParsingPDF("Statement_12_2025_2.pdf")
 
 #parsing = HSBC_PDF_CONVERSION("2025-06-20_Statement.pdf")
-processor = ProcessingDF(parsing.df, "test4", "Ulaaka_1223", "urnaa@gmail.com", "savings", "Bank", "GBP")
+processor = ProcessingDF(parsing.df, "test5", "Ulaaka_1223", "urnaa@gmail.com", "savings", "Bank", "GBP")
 #converted = ParsingPDF("Statement_12_2025.pdf")
 
 #query = query_processor()
