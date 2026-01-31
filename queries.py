@@ -80,7 +80,7 @@ class query_processor:
             return f"{date.year}-01-01", f"{date.year}-12-31"
         
         if (range == "year_month"):
-            first_date = f"{date.year}-0{date.month}-01"
+            first_date = f"{date.year}-0{date.month}-01" if (date.month in range(1, 10)) else f"{date.year}-{date.month}-01"
             last_date = str(self.return_last_month(first_date))
             return first_date, last_date
 
