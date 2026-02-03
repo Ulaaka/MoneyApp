@@ -27,7 +27,6 @@ class ParsingCSV:
 
             parser.unify_amount_columns(new_df)
 
-            # new_df = new_df.loc[:,~df.columns.duplicated()].copy()
             self.df = new_df
-            print(self.df )
+            # print(self.df )
     

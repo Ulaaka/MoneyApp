@@ -170,10 +170,33 @@ class query_processor:
     def get_userID(self, username):
         sql = f"SELECT userID FROM users WHERE username = %s"
         self.cursor.execute(sql, (username,))
-        return self.cursor.fetchone()
+        return self.cursor.fetchone()[0]
 
     def get_accountID(self, account_name, userID):
         sql = f"SELECT accountID FROM accounts WHERE account_name = %s and userID = %s"
         self.cursor.execute(sql, (account_name, userID))
-        return self.cursor.fetchone()
+        return self.cursor.fetchone()[0]
     
+    def get_hashed_name(self, accountID, filename):
+        new_sql = f"SELECT hashed_name FROM files WHERE accountID = '{accountID}' and file_name = '{filename}'"
+        self.cursor.execute(new_sql)
+        return self.cursor.fetchone()[0]
+    
+    def get_file_ID(self, accountID, filename):
+        sql = "SELECT file_ID FROM files WHERE accountID = %s AND file_name = %s"
+            
+        self.cursor.execute(sql, (accountID, filename))
+        result = self.cursor.fetchone()
+        return result[0]
+    
+    # needs to polish, would be a trouble if the file names are the same
+    def delete_file(self, username, account_name, filename):
+        userID = self.get_userID(username)
+        accountID = self.get_accountID(account_name, userID)
+        file_ID = self.get_file_ID(accountID, filename)
+
+        sql = f"DELETE FROM transactions WHERE file_ID = '{file_ID}'"
+        self.cursor.execute(sql)
+        self.db.commit()
+
+

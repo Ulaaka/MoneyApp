@@ -188,25 +188,26 @@ class cryptography:
         destination = os.path.join(save_folder, new_filename)
         with open(destination, 'wb') as file:
             file.write(encrypted)
+ 
+        userID = self.query.get_userID(username)
+        accountID = self.query.get_accountID(account_name, userID)
 
-        userID = self.query.get_userID(username)[0]
-        accountID = self.query.get_accountID(account_name, userID)[0]
-
-        new_query = "INSERT INTO files (userID, accountID, file_name, hashed_name) VALUES (%s, %s, %s, %s)"
-        self.cursor.execute(new_query, (userID, accountID,  filename, new_filename))
+        new_query = "INSERT INTO files (accountID, file_name, hashed_name) VALUES (%s, %s, %s)"
+        self.cursor.execute(new_query, (accountID,  filename, new_filename))
+        file_ID = self.cursor.lastrowid
         self.db.commit()
+        return file_ID
+
         # file needs to be deleted from the original folder
 
     def decrypt(self, enc_storage_path, filename, password, username, account_name):
 
-        userID = self.query.get_userID(username)[0]
+        userID = self.query.get_userID(username)
         accountID = self.query.get_accountID(account_name, userID)
-
-        new_sql = f"SELECT hashed_name FROM files WHERE userID = '{userID}' and accountID = '{accountID}' and file_name = '{filename}'"
-        self.cursor.execute(new_sql)
-        hashed_filename = self.cursor.fetchone()
+        hashed_filename = self.query.get_hashed_name(accountID, filename)
 
         file_path = os.path.join(enc_storage_path, hashed_filename)
+
 
         with open(file_path, "rb") as file:
             data = file.read()

@@ -27,7 +27,7 @@ class ParsingPDF:
                 new_dataframe = self.parser.unify_amount_columns(new_dataframe)
 
 
-                print(new_dataframe)
+                #print(new_dataframe)
 
                 money_columns = [new_dataframe.columns[-1], new_dataframe.columns[-2]]
                 for i in money_columns:
