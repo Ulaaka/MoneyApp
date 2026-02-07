@@ -156,7 +156,7 @@ class HSBC_PDF_CONVERSION:
                     balance = dict['balance']
                 else:
                     balance = balance - dict['amount']
-            
+
             values.append({
                 'Date': dict['date'],
                 'Type': dict['type'],

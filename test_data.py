@@ -56,6 +56,7 @@ for filename in os.listdir(folder_path):
                 parsing = ParsingPDF(file_path)
             except:
                 parsing = HSBC_PDF_CONVERSION(file_path)
+                
         print("parsed: ", filename)
         file_ID = crypto.encrypt(save_folder, folder_path, filename, password, accountID)
         processor = ProcessingDF(parsing.df, username, password, email, account_name, account_type, file_ID,  account_currency)

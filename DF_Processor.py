@@ -7,7 +7,6 @@ import pandas as pd
 
 
 class ProcessingDF:
-
     def __init__(self, df, username, password, email,  account_name, account_type, file_ID, account_currency):
 
         connection = database()

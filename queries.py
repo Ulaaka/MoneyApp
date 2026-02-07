@@ -247,4 +247,11 @@ class query_processor:
         self.cursor.execute(sql)
         self.db.commit()
 
+    def find_close_transactions(self, description):
+        regex = re.compile(r'\b[a-zA-Z]{2,}(?:\.[a-zA-Z]{2,})*\b')
+        output = ' '.join.regex.findall(description)
+
+        # needs to search for similar description to apply the same category in the database
+        
+
 
