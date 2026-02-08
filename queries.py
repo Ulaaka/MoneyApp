@@ -271,7 +271,11 @@ class query_processor:
 
         query = "SELECT transactionID FROM transactions WHERE MATCH(description) AGAINST(%s IN BOOLEAN MODE)"
         self.cursor.execute(query, parameters)
-        return  self.cursor.fetchall()
+
+        output = self.cursor.fetchall()
+        for idx,  i in enumerate(output):
+            output[idx] = i[0]
+        return output
 
     def update_category(self, category, transactionID):
         parameter = [category]
@@ -309,9 +313,5 @@ class query_processor:
         description = self.cursor.fetchone()[0]
 
         close_transaction_ids = self.find_close_transactions(description)
-
-        for idx,  i in enumerate(close_transaction_ids):
-            close_transaction_ids[idx] = i[0]
-
         self.update_category(category, close_transaction_ids)
 
