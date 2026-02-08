@@ -207,7 +207,6 @@ class query_processor:
     
     def insert_user(self, username, hashed_password, email):
         userID = self.get_userID(username)
-        
         if userID is None:
             try:
                 userID = self.insert_into_users(username, hashed_password, email)
@@ -216,8 +215,7 @@ class query_processor:
         return userID
 
     def insert_account(self, userID, acc_name, acc_type, acc_currency):
-        result = self.get_accountID(acc_name, userID)
-        accountID = result
+        accountID = self.get_accountID(acc_name, userID)
         if accountID is None:
             try:
                 accountID = self.insert_into_accounts(userID, acc_name, acc_type, acc_currency)
@@ -226,7 +224,7 @@ class query_processor:
         return accountID
     
     def insert_category(self, userID, category_list, category_name):
-        categoryID = self.get_category(userID, category_list)
+        categoryID = self.get_category(userID, category_list)[0]
         if categoryID is not None:
             try:
                 query = f"""
@@ -245,11 +243,10 @@ class query_processor:
     def get_category(self, userID, category_list):
         # https://stackoverflow.com/a/37662298
         # https://dev.mysql.com/doc/refman/8.4/en/json-search-functions.html
-
-        sql = f"SELECT categoryID FROM categories WHERE userID = %s AND JSON_CONTAINS(category_list, %s)"
+        sql = f"SELECT categoryID, category_name FROM categories WHERE userID = %s AND JSON_CONTAINS(category_list, %s)"
         self.cursor.execute(sql, (userID, json.dumps(category_list)))
         output = self.cursor.fetchone()
-        return output[0] if output else None
+        return output if output else None
 
     def get_userID(self, username):
         sql = f"SELECT userID FROM users WHERE username = %s"
@@ -284,14 +281,10 @@ class query_processor:
         sql = f"DELETE FROM transactions WHERE file_ID = '{file_ID}'"
         self.cursor.execute(sql)
         self.db.commit()
-        
 
-    def find_close_transactions(self, description):
-        # https://stackoverflow.com/questions/6259647/mysql-match-against-order-by-relevance-and-column
-
+    def return_word_list(self, description):
         places = (GeoText(description.title()).cities + GeoText(description.title()).countries)
         places_set = {place.lower() for place in places}
-
 
         regex = re.compile(r'\b[a-zA-Z]{2,}(?:\.[a-zA-Z]{2,})*\b')
         str_list = regex.findall(description)
@@ -302,7 +295,12 @@ class query_processor:
                 # since the case does not matter
                 plus_list.append(f'+{word}')
                 word_list.append(word)
-        
+        return plus_list, word_list
+
+    def find_close_transactions(self, description):
+        # https://stackoverflow.com/questions/6259647/mysql-match-against-order-by-relevance-and-column
+
+        plus_list, word_list = self.return_word_list(description)
         parameters = [' '.join(plus_list)]
 
         query = "SELECT transactionID, description FROM transactions WHERE MATCH(description) AGAINST(%s IN NATURAL LANGUAGE MODE)"
