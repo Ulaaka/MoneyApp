@@ -34,14 +34,7 @@ class ParsingPDF:
 
                 self.df.append(new_dataframe)
                 
-
-    def find_header(self, df):
-        print("----------------------------------------")
-        for i in range(min(15, len(df))):
-            row = df.iloc[i]
-
-            header_Values = row.tolist()
-
+    def select_header(self, index, header_Values, size_columns):            
             string = True
             unique = True
             length = True
@@ -57,6 +50,42 @@ class ParsingPDF:
 
             if len(header_Values) > len(set(header_Values)):
                 unique = False
+            if (length_count != size_columns):
+                length = False
+
+            if (string == True and unique == True and length == True):
+                print(index)
+                return index
+            else: 
+                return 0
+
+    def find_header(self, df):
+        print("----------------------------------------")
+        new_df = df.loc[0:min(15, len(df))]
+        new_df['index'] = new_df.index
+        new_df.apply(lambda row: self.select_header(row['index'], row.tolist(), len(df.columns)), axis=1)
+
+    """        for i in range(min(15, len(df))):
+            row = df.iloc[i]
+
+            header_Values = row.tolist()
+            string = True
+            unique = True
+            length = True
+
+            length_count = 0
+            for item in header_Values:
+                if(item != ''):
+                    length_count+=1
+
+            for j in header_Values:
+                if type(j) != str:
+                    string = False
+
+            if len(header_Values) > len(set(header_Values)):
+                unique = False
+            print(len(df.columns))
+
             if (length_count != len(df.columns)):
                 length = False
 
@@ -64,7 +93,7 @@ class ParsingPDF:
                 return i
         return 0
     
-
+    """
     def pre_clean_up(self, value):
         if value is None or not value or not isinstance(value, str):
             return value
@@ -118,7 +147,7 @@ class ParsingPDF:
             test_value = df.loc[0, df.columns[0]]      
             self.parser.change_type(test_value, df[df.columns[0]], df)
             dataframe_list.append(df)
-            return dataframe_list
+            # return dataframe_list
 
         return dataframe_list
 
@@ -132,19 +161,12 @@ class ParsingPDF:
     def flavor_decision(self, name, idx):
         with pdfplumber.open(name) as pdf:
             page = pdf.pages[idx]
-            # 5, 100, 200
             header_rects = [
             r for r in page.rects 
             if r['height'] > 5 
             and r['height'] < 100 
             and r['width'] < 200
         ]
-        # debugging
-            im = page.to_image(resolution=150)
-            im.draw_rects(header_rects, stroke="red", stroke_width=2)
-            im.save('debug_rectangles.png')
-            
         if len(header_rects) > 15:
             return "lattice"
-        #stream
         return "stream"
