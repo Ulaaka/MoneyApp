@@ -120,7 +120,6 @@ class query_processor:
             JOIN transactions T ON T.accountID = A.accountID
         """
         
-
         where_query = f" WHERE U.username = '{username}'"
 
         if (account_name):
@@ -193,9 +192,10 @@ class query_processor:
         self.db.commit()
         return accountID
     
-    def insert_into_transactions(self, accountID, file_ID, date, type, description, category, amount, balance):
-        sql = f"INSERT INTO transactions (accountID, file_ID, transaction_date, transaction_type, description, category, amount, balance) VALUES (%s,%s,%s,%s,%s,%s,%s,%s)"
-        self.cursor.execute(sql, (accountID, file_ID, date, type, description, category, amount, balance))
+    def insert_into_transactions(self, transaction_list):
+        
+        sql = """INSERT IGNORE INTO transactions (accountID, file_ID, transaction_date, transaction_type, description, category, amount, balance) VALUES (%s,%s,%s,%s,%s,%s,%s,%s)"""
+        self.cursor.executemany(sql, transaction_list)
         self.db.commit()
 
     def insert_into_categories(self, userID, category_list, category_name):
