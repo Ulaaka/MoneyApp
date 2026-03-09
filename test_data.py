@@ -6,7 +6,7 @@ from queries import query_processor
 from pathlib import Path
 import os
 from BASE_Classes import cryptography, password_class
-
+from system_functions import system_functions
 
 
 #parsing = ParsingCSV("Monzo_csv.csv")
@@ -70,11 +70,12 @@ query = query_processor()
 #query.change_category(1, "shopping", 228)
 #result = query.get_categories(1)
 # result = query.show_description_list_by_category_name(1, "grocery")
-description  = "Lidl Cosmetic Surgery Mongolia"
+"""description  = "Lidl Liverpool GB"
 category = query.return_updated_category(description)
-transaction = [(1, 7, "2026-03-09", "Deposit", description, category, "30", "2035")]
+transaction = [(1, 7, "2026-03-11", "Deposit", description, category, "50", "1000")]
 query.insert_into_transactions(transaction)
-
+"""
 # result = query.add_description_into_list_category(1, "lidl Cosmetic Surgery Mongolia", "cosmetic")
 
-
+#result = query.remove_description_from_list_category(1, 7, "cosmetic")
+query.update_transaction_after_deletion_description(1, "cosmetic")

@@ -13,7 +13,7 @@ class ParsingCSV:
 
         parser = ParsingBase()
         columns_list = list(pd.read_csv(pdf_name, nrows=0).columns.tolist())
- 
+
         mat2, selected_columns = parser.choose_ratio(columns_list)
 
         if mat2:

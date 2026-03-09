@@ -7,7 +7,7 @@ import pandas as pd
 from fuzzywuzzy import fuzz
 import numpy as np
 from cryptography.fernet import Fernet
-import os   
+import os
 from database_connection import database
 import base64
 from Crypto.Hash import SHA256
@@ -37,7 +37,7 @@ class ParsingBase:
             return 'Refund'
         else:
             return transaction_type
-        
+
     # check the first value of the date list
     def check_date_type(self, test_date):
         try:
@@ -128,14 +128,14 @@ class ParsingBase:
         return mat2, chosen_columns
 
 class password_class:
-    
+
     def hash_password(self, password):
         return bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
 
     # later used to check the password
     def check_password(self, plain_text_password, hashed_password):
         return bcrypt.checkpw(plain_text_password, hashed_password)
-    
+
 
 # https://stackoverflow.com/questions/66218337/encrypt-and-protect-file-with-python
 #https://stackoverflow.com/questions/42568262/how-to-encrypt-text-with-a-password-in-python
@@ -166,7 +166,7 @@ class cryptography:
         with open(destination, 'wb') as file:
             file.write(encrypted)
     """
-        
+
         new_query = "INSERT INTO files (accountID, file_name, hashed_name) VALUES (%s, %s, %s)"
         self.cursor.execute(new_query, (accountID,  filename, new_filename))
         file_ID = self.cursor.lastrowid

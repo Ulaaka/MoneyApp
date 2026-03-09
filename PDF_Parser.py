@@ -95,7 +95,7 @@ class ParsingPDF:
             if (string == True and unique == True and length == True):
                 return i
         return 0
-    
+
     def pre_clean_up(self, value):
         if value is None or not value or not isinstance(value, str):
             return value

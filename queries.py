@@ -52,7 +52,7 @@ class query_processor:
             if (transfer_toggle is not None):
                 toggle = ">" if transfer_toggle else "<"
                 query+=f" and T.amount {toggle} 0"
-            
+
             if (account_name is not None):
                 query+= " and A.account_name = %s"
                 parameter.append(account_name)
@@ -79,13 +79,13 @@ class query_processor:
         self.cursor.execute(last_day_query)
 
         return self.cursor.fetchone()[0]
-    
+
     # ["year", "year_month", "date"]
     def produce_dates(self, date, range):
         date = datetime.fromisoformat(date)
         if (range == "year"):
             return f"{date.year}-01-01", f"{date.year}-12-31"
-        
+
         if (range == "year_month"):
             first_date = f"{date.year}-0{date.month}-01" if (date.month in range(1, 10)) else f"{date.year}-{date.month}-01"
             last_date = str(self.return_last_month(first_date))
@@ -105,14 +105,14 @@ class query_processor:
         elif (range == "year_month"):
             return_values.append(self.total_transfer_or_extreme_value(username, transfer_toggle=transfer_toggle, account_name=account_name, date_lower=first_dates[0], date_upper=first_dates[1]))
             return_values.append(self.total_transfer_or_extreme_value(username, transfer_toggle=transfer_toggle, account_name=account_name, date_lower=second_dates[0], date_upper=second_dates[1]))
-        
+
         elif (range == "date"):
 
             return_values.append(self.total_transfer_or_extreme_value(username, transfer_toggle=transfer_toggle, account_name=account_name, date_lower=date_first, date_upper=date_first))
             return_values.append(self.total_transfer_or_extreme_value(username, transfer_toggle=transfer_toggle, account_name=account_name, date_lower=date_second, date_upper=date_second))
 
         return return_values
-    
+
     def common_transactions(self, username, limit, account_name=None, transfer_toggle=None, date_lower=None, date_upper=None, filter_amount=None):
         head_query = """
             SELECT T.description as statement, SUM(ABS(T.amount)) as total_sent
@@ -120,7 +120,7 @@ class query_processor:
             JOIN accounts A ON A.userID = U.userID
             JOIN transactions T ON T.accountID = A.accountID
         """
-        
+
         where_query = f" WHERE U.username = '{username}'"
 
         if (account_name):
@@ -174,7 +174,7 @@ class query_processor:
         self.cursor.execute(query)
         output = self.cursor.fetchall()
         print(output)
-        return output    
+        return output
 
     # account queries
     # ============================
@@ -185,14 +185,14 @@ class query_processor:
         userID = self.cursor.lastrowid
         self.db.commit()
         return userID
-    
+
     def insert_into_accounts(self, userID, acc_name, acc_type, acc_currency):
         sql = f"INSERT INTO accounts (userID, account_name, account_type, account_currency) VALUES (%s, %s, %s, %s)"
         self.cursor.execute(sql, ( userID, acc_name, acc_type, acc_currency))
         accountID = self.cursor.lastrowid
         self.db.commit()
         return accountID
-    
+
     def insert_into_transactions(self, transaction_list):
         sql = """INSERT IGNORE INTO transactions (accountID, file_ID, transaction_date, transaction_type, description, category, amount, balance) VALUES (%s,%s,%s,%s,%s,%s,%s,%s)"""
         self.cursor.executemany(sql, transaction_list)
@@ -204,7 +204,7 @@ class query_processor:
         categoryID = self.cursor.lastrowid
         self.db.commit()
         return categoryID
-    
+
     def insert_user(self, username, hashed_password, email):
         userID = self.get_userID(username)
         if userID is None:
@@ -222,7 +222,7 @@ class query_processor:
             except:
                 print("could not execute insert_into_accounts ")
         return accountID
-    
+
     def insert_category(self, userID, category_sentence, category_list, category_name):
         result = self.get_category(userID, category_list)
         if result is not None:
@@ -254,14 +254,12 @@ class query_processor:
 
         priority_list = [(len([item for item in category_list if item in i]), len(i)) for i in tuple_to_dictionary]
 
-        print(priority_list)
         max_category = max(priority_list, key=lambda x: (x[0], -x[1]))
-        print(max_category)
 
         position = priority_list.index(max_category)
 
         key = list(tuple_to_dictionary)[position]
-        
+
         output = tuple_to_dictionary[key]
 
         """        # needs add selecting the one with the highest priority
@@ -283,19 +281,19 @@ class query_processor:
         self.cursor.execute(sql, (account_name, userID))
         output = self.cursor.fetchone()
         return output[0] if output else None
-    
+
     def get_hashed_name(self, accountID, filename):
         new_sql = f"SELECT hashed_name FROM files WHERE accountID = '{accountID}' and file_name = '{filename}'"
         self.cursor.execute(new_sql)
         output = self.cursor.fetchone()
         return output[0] if output else None
-    
+
     def get_file_ID(self, accountID, filename):
         sql = "SELECT file_ID FROM files WHERE accountID = %s AND file_name = %s"
         self.cursor.execute(sql, (accountID, filename))
         output = self.cursor.fetchone()
         return output[0] if output else None
-    
+
     # needs to polish, would be a trouble if the file names are the same
     def delete_file(self, username, account_name, filename):
         userID = self.get_userID(username)
@@ -388,11 +386,11 @@ class query_processor:
             GROUP BY category_name
             ORDER BY total_descriptions DESC
         """
-    
+
         self.cursor.execute(query, (userID, ))
         result = self.cursor.fetchall()
         return result if result else None
-    
+
     def return_updated_category(self, description):
         word_list = self.return_word_list(description)[1]
         output = self.get_category(1, word_list)
@@ -419,30 +417,32 @@ class query_processor:
         self.update_category(category_name, close_transaction_ids[0])
         return categoryID if categoryID else None
 
-    # after the description list is shown, the user can remove 
+    # after the description list is shown, the user can remove
     def remove_description_from_list_category(self, userID, categoryID, category_name):
         query_delete = """
-            DELETE FROM categories 
+            DELETE FROM categories
             WHERE userID = %s AND categoryID = %s"""
 
         self.cursor.execute(query_delete, (userID, categoryID))
+        self.db.commit()
         # removed category name
         return category_name
-    
+
     # use the category name of the removed description
-    def update_transaction_after_deletion_description(self, userID, category_name):
+    def update_transaction_after_deletion_description(self, accountID, category_name):
         query = """
-            SELECT category_sentence, category_name
-            FROM categories
-            WHERE userID = %s AND category_name = %s
-            ORDER BY categoryID ASC
+            SELECT transactionID, description
+            FROM transactions
+            WHERE accountID = %s AND category = %s
         """
-        self.cursor.execute(query, (userID, category_name))
+        self.cursor.execute(query, (accountID, category_name))
         result = self.cursor.fetchall()
          #return result if result else None
-        # close_transaction_ids = self.find_close_transactions(description)
+        if result:
+            for (i, j)in result:
+                new_category = self.return_updated_category(j)
+                self.update_category(new_category, i)
 
-        
 
 
 
