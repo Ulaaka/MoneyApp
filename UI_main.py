@@ -309,8 +309,8 @@ class reset_from_page(QWidget):
         else:
             QMessageBox.information(
                 self,
-                'Code does not match',
-                'Please try again"'
+                'mismatch',
+                'Codes dont not match"'
             )
             return
 
@@ -410,7 +410,6 @@ class reset_password(QWidget):
         self.setLayout(layout)
 
     def compare_password(self):
-        # needs to add password check, warning to the user
         password_manager = password_class()
         safety = password_manager.check_password_safety(self.password_1.text())
         same = self.password_1.text() == self.password_2.text()
@@ -545,23 +544,27 @@ class sign_up_page(QWidget):
             QMessageBox.warning(self, 'Error', 'Please enter all  the credentials, thank you')
             return
         
-        if not result:
-            if not password_manager.check_password_safety(password_local):
-                QMessageBox.warning(self, 'Error', 'Password Requirement not satisfied')
-                return
-            else:
-                try:
-                    hashed_password = password_manager.hash_password(password_local)
-                    new_sql = f"INSERT INTO users (username, hashed_password, email_address) VALUES (%s, %s, %s)"
-                    self.cursor.execute(new_sql, (username_local, hashed_password, email_local))
-                    self.db.commit()
-                    self.controller.show_login()
-                    print("Credentials added successfully")
-                except:
-                    print("could not commit")
-        else:
+        if result:
             QMessageBox.warning(self, 'Error', 'Username already exists, please try another username')
             return
+        
+        if not password_manager.check_password_safety(password_local):
+            QMessageBox.warning(self, 'Not Satisfied', 'Password Requirement not satisfied')
+            return
+        
+        if not password_manager.check_email_validity(email_local):
+            QMessageBox.warning(self, 'Invalid', 'Invalid email')
+            return
+        
+        try:
+            hashed_password = password_manager.hash_password(password_local)
+            new_sql = f"INSERT INTO users (username, hashed_password, email_address) VALUES (%s, %s, %s)"
+            self.cursor.execute(new_sql, (username_local, hashed_password, email_local))
+            self.db.commit()
+            self.controller.show_login()
+            print("Credentials added successfully")
+        except:
+            print("could not commit")
 
 
 class MainApp(QMainWindow):
