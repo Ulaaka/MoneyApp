@@ -210,7 +210,8 @@ class login_page(QWidget):
         self.cursor.execute(email_query, (username_local, ))
         email_user = self.cursor.fetchone()[0]
 
-        random_digits = self.system.send_reset_digits(6, email_user)
+        self.random_digits = self.system.send_reset_digits(6, email_user)
+        print(self.random_digits)
 
         self.controller.show_reset_form()
         """        QMessageBox.information(
@@ -218,14 +219,20 @@ class login_page(QWidget):
             'Password Reset', 
             f'A password reset link has been sent to the email associated with username: {username_local}'
         )"""
+    def get_random_digits(self):
+        return self.random_digits
+    
+    def get_username(self):
+        return self.username.text()
 
 class reset_from_page(QWidget):
-    def __init__(self, controller):
+    def __init__(self, controller, login_page):
         super().__init__()
         self.controller = controller
         connection = database()
         self.db = connection.db
         self.cursor = connection.cursor
+        self.login_page = login_page
         self.user_interface()
 
     def user_interface(self):
@@ -292,15 +299,109 @@ class reset_from_page(QWidget):
     def to_prev_box(self, idx, input):
         if input.key() == Qt.Key_Backspace:
             if not self.squares[idx].text() and idx > 0:
+                self.squares[idx - 1].clear()
                 self.squares[idx - 1].setFocus()
 
-                self.squares[idx - 1].clear()
         QLineEdit.keyPressEvent(self.squares[idx], input)
 
     def handle_reset_password(self):
         entered = "".join(i.text() for i in self.squares)
-        print(entered)
+        if (self.login_page.get_random_digits() == entered):
+            self.controller.show_reset_password()
+        else:
+            QMessageBox.information(
+                self, 
+                'Code does not match', 
+                'Please try again"'
+            )
+            return
 
+class reset_password(QWidget):
+
+    def __init__(self, controller, login_page):
+        super().__init__()
+        self.controller = controller
+        connection = database()
+        self.db = connection.db
+        self.cursor = connection.cursor
+        self.login_page = login_page
+
+        self.user_interface()
+
+    def user_interface(self):
+        # set the size and name
+        self.setWindowTitle('Enter New Password')
+        self.setFixedSize(400, 500)
+        
+        # set the color of the background 
+        self.setAutoFillBackground(True)
+        palette = self.palette()
+        palette.setColor(QPalette.Window, QColor("dark"))
+        self.setPalette(palette)
+        
+        # layout
+        layout = QVBoxLayout()
+        layout.setContentsMargins(50, 70, 50, 70)
+        layout.setSpacing(25)
+    
+        # Title
+        title = QLabel('Password Reset')
+        title.setAlignment(Qt.AlignCenter)
+        title.setFont(QFont('Arial', 20, QFont.Bold))
+        title_color = title.palette()
+        title_color.setColor(QPalette.WindowText, QColor("#1877F2"))
+        title.setPalette(title_color)
+
+        # New Password input
+        self.password_1 = PasswordEdit()
+        self.password_1.setPlaceholderText('New Password')
+        self.password_1.setStyleSheet(input_style)
+        self.password_1.setFont(QFont('Arial', 15))
+
+        # Retype New Password
+        self.password_2 = PasswordEdit()
+        self.password_2.setPlaceholderText('New Password')
+        self.password_2.setStyleSheet(input_style)
+        self.password_2.setFont(QFont('Arial', 15))
+
+        # Login button
+        submit_btn = QPushButton('Submit')
+        submit_btn.setStyleSheet(handle_button_style("#1877F2", "#18d5F2"))
+        submit_btn.setFont(QFont('Arial', 15, QFont.Bold))
+        submit_btn.setFixedHeight(50)
+        submit_btn.setCursor(Qt.PointingHandCursor)
+        submit_btn.clicked.connect(self.compare_password)
+
+        # Add widgets to layout
+        layout.addWidget(title)
+        layout.addWidget(self.password_1)
+        layout.addWidget(self.password_2)
+        layout.addWidget(submit_btn)
+        layout.addStretch()
+        
+        self.setLayout(layout)
+
+    def compare_password(self):
+        if self.password_1.text() == self.password_2.text():
+           print("New Password Matches")
+
+           password_manager = password_class()
+
+           hashed_password = password_manager.hash_password(self.password_1.text())
+           username = self.login_page.get_username()
+           
+           query = "UPDATE users SET hashed_password = %s WHERE username = %s"
+           self.cursor.execute(query, (hashed_password, username))
+           self.db.commit()
+
+           self.controller.show_login()
+        else:
+            QMessageBox.information(
+                self, 
+                'Password do not match', 
+                'Check your password again"'
+            )
+            return
 
 class sign_up_page(QWidget):
 
@@ -426,7 +527,8 @@ class MainApp(QMainWindow):
         self.sign_up_page = sign_up_page(self)
 
         #  # adding reset form page
-        self.reset_form = reset_from_page(self)
+        self.reset_form = reset_from_page(self, self.login_page)
+        self.reset_password = reset_password(self, self.login_page)
         self.dashboard_page = QWidget()
 
         self.setup_dashboard()
@@ -435,6 +537,8 @@ class MainApp(QMainWindow):
         self.stacked_widget.addWidget(self.dashboard_page)
         self.stacked_widget.addWidget(self.sign_up_page)
         self.stacked_widget.addWidget(self.reset_form)
+        self.stacked_widget.addWidget(self.reset_password)
+    
 
     def setup_dashboard(self):
         layout = QVBoxLayout()
@@ -460,6 +564,10 @@ class MainApp(QMainWindow):
     
     def show_reset_form(self):
         self.stacked_widget.setCurrentIndex(3)
+        self.setMaximumSize(400, 500)
+
+    def show_reset_password(self):
+        self.stacked_widget.setCurrentIndex(4)
         self.setMaximumSize(400, 500)
 
 if __name__ == '__main__':
