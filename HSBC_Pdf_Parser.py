@@ -51,7 +51,7 @@ class HSBC_PDF_CONVERSION:
             transaction_lines.append(i.replace(",", ""))
 
         return transaction_lines
-    
+
 
     def new_transaction_func(self, i):
         regex_date = r"\b\d{1,2}\s+[A-Za-z]{3,9}\s+\d{2}\b"
@@ -60,8 +60,7 @@ class HSBC_PDF_CONVERSION:
 
     def has_balance_func(self, i):
         regex_float = r'\d+\.\d+'
-        return re.findall(regex_float, i) 
-
+        return re.findall(regex_float, i)
 
     def correct_transactions(self, detect):
         carry_balance = "None"
@@ -96,14 +95,14 @@ class HSBC_PDF_CONVERSION:
                 if idx > 0:
                     condition_1 = self.new_transaction_func(detect[idx - 1])
                     condition_2 = self.has_balance_func(detect[idx - 1])
-                    
+
                     if not condition_1 and not condition_2:
                         string_carry = string_carry + " " + i
                     else:
                         string_carry = carry_date + " " + i
                 else:
                     string_carry = i
-                    
+
         return entire_lines
 
     def transaction_type(self, transaction):
@@ -116,11 +115,11 @@ class HSBC_PDF_CONVERSION:
         parts = line.rsplit(maxsplit=2)
         if len(parts) < 3:
             return None
-            
+
         trans_type = self.transaction_type(line)
-        
+
         after_date = parts[0][10:]
-   
+
         return {
             'date' : parts[0][:9],
             'type' : trans_type,
