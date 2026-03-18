@@ -28,4 +28,3 @@ class ParsingCSV:
             new_df = parser.unify_amount_columns(new_df)
 
             self.df = new_df
-            # print(self.df)
