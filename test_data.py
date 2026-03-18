@@ -40,7 +40,7 @@ email = "urnaa@gmail.com"
 account_type = "Bank"
 account_currency = "GBP"
 query = query_processor()
-for filename in os.listdir(folder_path):
+for filename in os.listdir(exp_folder):
     if (filename.endswith(".csv") or filename.endswith(".pdf")): 
 
         crypto = cryptography()
@@ -49,21 +49,22 @@ for filename in os.listdir(folder_path):
         userID = query.insert_user(username, password, email)
         accountID = query.insert_account(userID, account_name, account_type, account_currency)
 
-        file_path = os.path.join(folder_path, filename)
+        file_path = os.path.join(exp_folder, filename)
 
+        # create the folder for the user's account
         sub_save_folder = os.path.join(save_folder,f"account_{accountID}")
         if not os.path.exists(sub_save_folder):
             os.makedirs(sub_save_folder)
 
-
         found = False
-        # needs to be fixed
         for encrypted_file in os.listdir(sub_save_folder):
             decrypted = crypto.decrypt(sub_save_folder, password, username, account_name, hashed_filename=encrypted_file)
-            
+            # check the size of the file, avoiding reading the whole files
             if os.path.getsize(file_path) == len(decrypted):
+                # if the same size, then read them
                 with open(file_path, 'rb') as file:
                     if file.read() == decrypted:
+                        # find the submitted existing file_name in the folder
                         existing_name = query.get_file_name_from_hashed(accountID, encrypted_file)
                         found = True
                         print(f"The same file already exists: {existing_name}")
@@ -79,7 +80,7 @@ for filename in os.listdir(folder_path):
                     parsing = HSBC_PDF_CONVERSION(file_path)
 
             print("parsed: ", filename)
-            file_ID = crypto.encrypt(sub_save_folder, folder_path, filename, password, accountID)
+            file_ID = crypto.encrypt(sub_save_folder, exp_folder, filename, password, accountID)
             processor = ProcessingDF(parsing.df, username, password, email, account_name, account_type, file_ID,  account_currency)
     else:
         raise Exception("Incompatible file/s has been submitted.")
