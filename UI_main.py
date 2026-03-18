@@ -24,26 +24,26 @@ color_dic = {
     }
 },
 "sign_up_page":{
-    "title_color":"#1877F2", 
-    "background_color":"#000000", 
+    "title_color":"#1877F2",
+    "background_color":"#000000",
     "submit_button_color":{
-        "normal":"#1877F2", 
+        "normal":"#1877F2",
         "focus":"#18d5F2"
     }
 },
 "validation_page":{
-    "title_color":"#1877F2", 
-    "background_color":"#000000", 
+    "title_color":"#1877F2",
+    "background_color":"#000000",
     "submit_button_color":{
-        "normal":"#1877F2", 
+        "normal":"#1877F2",
         "focus":"#18d5F2"
     }
-}, 
+},
 'reset_password':{
-    "title_color":"#1877F2", 
-    "background_color":"#000000", 
+    "title_color":"#1877F2",
+    "background_color":"#000000",
     "submit_button_color":{
-        "normal":"#1877F2", 
+        "normal":"#1877F2",
         "focus":"#18d5F2"
     }
 }}
@@ -53,7 +53,7 @@ system = system_functions()
 # setting django up
 sys.path.insert(0, '/Users/nyamdorjbat-erdene/Final_year')
 
-os.environ['DJANGO_SETTINGS_MODULE'] = 'settings' 
+os.environ['DJANGO_SETTINGS_MODULE'] = 'settings'
 os.environ['SSL_CERT_FILE'] = certifi.where()
 os.environ['REQUESTS_CA_BUNDLE'] = certifi.where()
 
@@ -75,7 +75,7 @@ input_style = '''
         border: 1px solid white;
     }
     '''
-
+# need some improvement
 random_digit_box_style = '''
     QLineEdit {
         border: 2px solid #ccc;
@@ -272,7 +272,7 @@ class sign_up_page(QWidget):
         # set the size and name
         self.setWindowTitle('Sign Up')
         self.setFixedSize(400, 500)
-        # set the color of the background 
+        # set the color of the background
         self.setAutoFillBackground(True)
         palette = self.palette()
         palette.setColor(QPalette.Window, QColor(color_dic["sign_up_page"]["background_color"]))
@@ -586,8 +586,8 @@ class reset_password(QWidget):
 
         if not same:
             QMessageBox.information(
-                self, 
-                'Password do not match', 
+                self,
+                'Password do not match',
                 'Check your password again"'
             )
             return
@@ -660,6 +660,7 @@ class MainApp(QMainWindow):
     def show_validation_page(self):
         self.stacked_widget.setCurrentIndex(3)
         self.setMaximumSize(400, 500)
+        # start the when the page appears
         self.validation_page.startTimer()
 
     def show_reset_password(self):
