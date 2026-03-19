@@ -8,7 +8,6 @@ from HSBC_Pdf_Parser import HSBC_PDF_CONVERSION
 from PDF_Parser import ParsingPDF
 from queries import query_processor
 
-
 class file_handling():
     def __init__(self, accountID, key):
         self.accountID = accountID
@@ -74,6 +73,4 @@ class file_handling():
                     ProcessingDF(parsing.df, file_ID, self.accountID)
             else:
                 raise Exception("Incompatible file/s has been submitted.")
-
-
 
