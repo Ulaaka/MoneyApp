@@ -1,12 +1,11 @@
 
 from decouple import config
 import os, tempfile
-from BASE_Classes import cryptography, password_class
+from BASE_Classes import cryptography
 from CSV_Parser import ParsingCSV
 from DF_Processor import ProcessingDF
 from HSBC_Pdf_Parser import HSBC_PDF_CONVERSION
 from PDF_Parser import ParsingPDF
-from BASE_Classes import cryptography
 from queries import query_processor
 
 
@@ -14,7 +13,6 @@ class file_handling():
     def __init__(self, accountID, key):
         self.accountID = accountID
         self.key = key
-        self.crypto = cryptography()
         self.crypto = cryptography()
         self.query = query_processor()
 
@@ -48,7 +46,6 @@ class file_handling():
                         print(f"The file {filename} already exists as: {existing_name}")
                         break
         return found
-
 
     def process_files_in_folder(self):
         for filename in os.listdir(config('FOLDER_PATH')):
