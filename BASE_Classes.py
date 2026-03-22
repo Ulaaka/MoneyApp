@@ -71,7 +71,7 @@ class ParsingBase:
                 column = column.replace([i], dateutil.parser.parse(i).strftime("%d/%m/%Y"))
         dataframe[dataframe.columns[0]] = column
 
-    # 
+    # Standardizes the amount columns (removing non-conforming values)
     def unify_amount_columns(self, df):
         new_df = df.copy()
         length = len(df.columns)
@@ -88,6 +88,7 @@ class ParsingBase:
             new_df[new_df.columns[-2]] = pd.to_numeric(new_df[new_df.columns[-2]], errors='coerce').fillna(0)
         return new_df
 
+    # Checks if the target columns are selected, if not, plugs in default values depending on the type
     def order_dataframe(self, df, columns):
         missing = sorted(list(set(range(7)) - set(columns)))
         if (not missing):
@@ -104,6 +105,8 @@ class ParsingBase:
                 new_df.insert(pos, "Balance", 0)
         return new_df
 
+    # Finds the target columns names by computing the partial ratios (the overlapping ratio of the word with the target)
+    # Selects the the columns names with the highest ratio
     def choose_ratio(self, columns):
         mat1 = [None]*len(self.expecting)
         used = set()
@@ -148,28 +151,32 @@ class ParsingBase:
 class password_class:
 
     """
-    Contains functions used for parsing different types of user transaction files(pdf, csv)
+    Contains functions for managing the password
     """
 
     def __init__(self):
         connection = database()
         self.db = connection.db
         self.cursor = connection.cursor
-        
+
     # https://stackoverflow.com/questions/74932694/checking-password-validation-in-python
+    # Checks the composition of the password
+    # The password must be at least 8 characters and should include a combination of numbers, letters and special characters (!$@%).
     def check_password_safety(self, password):
         if len(password) >= 8 and re.search(r"\d", password) and re.search(r"[A-Za-z]", password) and re.search(r"[!$@%]", password):
             return True
         else:
             return False
 
+    # Hashes the input password
     def hash_password(self, password):
         return bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
 
-    # later used to check the password
+    # Checks the stored hashed password with the user input when checking credentials
     def check_password(self, plain_text_password, hashed_password):
         return bcrypt.checkpw(plain_text_password, hashed_password)
 
+    # Changes the user password in the database (hashed)
     def change_password(self, userID, new_password):
         hashed = self.hash_password(new_password)
         query = f"""
@@ -183,6 +190,7 @@ class password_class:
         return hashed
 
     # https://www.geeksforgeeks.org/python/check-if-email-address-valid-or-not-in-python/
+    # Checks the validity of the input email by checking the composition requirements
     def check_email_validity(self, email):
         regex = r"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,7}"
 
@@ -190,20 +198,28 @@ class password_class:
             return True
         return False
 
-# https://stackoverflow.com/questions/66218337/encrypt-and-protect-file-with-python
+#https://stackoverflow.com/questions/66218337/encrypt-and-protect-file-with-python
 #https://stackoverflow.com/questions/42568262/how-to-encrypt-text-with-a-password-in-python
 class cryptography:
+
+    """
+    Contains functions for securing user files and accessing later
+    """
+
     def __init__(self):
         connection = database()
         self.db = connection.db
         self.cursor = connection.cursor
         self.query = query_processor()
 
+    # Produces the key used in encryption and decryption of the user files given  password
     def generate_key(self, password):
 
         hashed = SHA256.new(password.encode()).digest()
         return base64.urlsafe_b64encode(hashed)
 
+    # Encrypts the user file (filename) from folder_path to the save_folder
+    # Returns the unique file id
     def encrypt(self, save_folder, folder_path, filename, key, accountID):
 
         file_path = os.path.join(folder_path, filename)
@@ -225,7 +241,7 @@ class cryptography:
         self.db.commit()
         return file_ID
 
-        # file needs to be deleted from the original folder
+    # Decrypts the user file given filename or hashed_filename
     def decrypt(self, enc_storage_path, key, accountID, filename=None, hashed_filename=None):
 
         if filename:
@@ -245,7 +261,5 @@ class cryptography:
         decrypted = fernet.decrypt(data)
 
         return decrypted
-
-    # needs to decrypt files under an account
 
 
