@@ -229,6 +229,7 @@ class cryptography:
         fernet = Fernet(key)
         encrypted = fernet.encrypt(data)
 
+        # Unique encrypted file name, combined with the current time
         new_filename = filename[:-4] + str(datetime.now())
 
         destination = os.path.join(save_folder, new_filename)
