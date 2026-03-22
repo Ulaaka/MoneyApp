@@ -14,15 +14,31 @@ from Crypto.Hash import SHA256
 import re
 
 class ParsingBase:
+
+    """
+    Contains shared functions used for parsing different types of user transaction files(pdf, csv)
+    """
+
     def __init__(self):
+        # The list defining the target columns of the input files that should be extracted
+        # The nested list contains different forms of the target word
         self.expecting = [["Date"], ["Type" , "Category"], [ "Details", "Description", "Reference", "Narrative"], ["Money Out", "Paid Out", "Debit" "Debit Amount", "Withdrawal"], ["Money In", "Paid In", "Credit", "Credit Amount", "Received", "Deposit"], ["Balance"]]
+
+        # Different abbreviations of the transaction type 'card payment'
         self.card = {'DEB', ')))', 'VIS', 'Card payment', 'Debit Card Transaction', 'DD'}
+
+        # Different abbreviations of the transaction type 'atm'
         self.atm = {'CPT', 'PIM', 'ATM', 'Cash withdrawal'}
+
+        # Different abbreviations of the transaction type 'fast payment'
         self.fast_payment = {'FPO', 'BP', 'Mobile/Online Transaction',  'FPI', 'Faster payment'}
+
+        # Different abbreviations of the transaction type 'fast payment'
         self.salary = {'BGC', 'GIRO'}
         self.general_in ={'Automated Credit'}
         self.refund = {'CR'}
 
+    # Classifies the type of the transaction
     def classify_transaction_type(self, transaction_type):
         if (transaction_type in self.card):
             return 'Deposit'
@@ -39,7 +55,7 @@ class ParsingBase:
         else:
             return transaction_type
 
-    # check the first value of the date list
+    # Checks the datetime version of the date values
     def check_date_type(self, test_date):
         try:
             datetime.strptime(test_date, "%d/%m/%Y")
@@ -48,13 +64,14 @@ class ParsingBase:
             return False
 
     # https://stackoverflow.com/questions/52206973/convert-different-date-formats-to-a-given-unique-date-format-in-python
+    # Conforms date column into a standard form (%d/%m/%Y)
     def change_type(self, test_date, column, dataframe):
         if not self.check_date_type(test_date):
             for i in column:
                 column = column.replace([i], dateutil.parser.parse(i).strftime("%d/%m/%Y"))
         dataframe[dataframe.columns[0]] = column
 
-    # need to do more debugging 
+    # 
     def unify_amount_columns(self, df):
         new_df = df.copy()
         length = len(df.columns)
@@ -129,6 +146,11 @@ class ParsingBase:
         return mat2, chosen_columns
 
 class password_class:
+
+    """
+    Contains functions used for parsing different types of user transaction files(pdf, csv)
+    """
+
     def __init__(self):
         connection = database()
         self.db = connection.db
@@ -224,11 +246,6 @@ class cryptography:
 
         return decrypted
 
-        
-
-        
-    
     # needs to decrypt files under an account
-    
 
 
