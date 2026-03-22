@@ -6,9 +6,12 @@ import numpy as np
 
 class ParsingCSV:
 
+    """
+    Parses the file with csv format
+    """
+
     def __init__(self, pdf_name):
 
-        # df = pd.read_csv("TransactionData.csv")
         # https://www.geeksforgeeks.org/python/how-to-do-fuzzy-matching-on-pandas-dataframe-column-using-python/
 
         parser = ParsingBase()

@@ -6,6 +6,11 @@ from queries import query_processor
 
 
 class ProcessingDF:
+
+    """
+    Processed the dataframe returned from parsing
+    """
+
     def __init__(self, df, file_ID, accountID):
 
         connection = database()
@@ -21,6 +26,7 @@ class ProcessingDF:
         else:
             self.insert_transaction(self.accountID, df)
 
+    # Inserts type classified transaction into the database
     def insert_transaction(self, accountID, dtb):
         parser = ParsingBase()
         query = query_processor()
@@ -33,9 +39,10 @@ class ProcessingDF:
             category = query.return_updated_category(row[2])
             row[1] = parser.classify_transaction_type(row[1])
             transaction_list.append((accountID, self.file_ID, self.change_to_date(row[0]), row[1], row[2], category, Decimal(row[3]),  Decimal(row[4])))
-        
+
         self.query.insert_into_transactions(transaction_list)
 
+    # Converts string formatted date into a valid date
     def change_to_date(self, date_string):
         date = datetime.strptime(date_string, "%d/%m/%Y")
         return date

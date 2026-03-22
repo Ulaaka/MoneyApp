@@ -5,6 +5,10 @@ class database:
 
     def __init__(self):
 
+        """
+        Connects to the database
+        """
+
         self.db = mysql.connector.connect(
             host = config('DATABASE_HOST'),
             user = config('DATABASE_USER'),

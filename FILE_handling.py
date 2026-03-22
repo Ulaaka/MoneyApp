@@ -9,25 +9,33 @@ from PDF_Parser import ParsingPDF
 from queries import query_processor
 
 class file_handling():
+
+    """
+    Contains functions for handling files
+    """
+
     def __init__(self, accountID, key):
         self.accountID = accountID
         self.key = key
         self.crypto = cryptography()
         self.query = query_processor()
 
+    # Returns temporary decrypted text file of the file in a pdf format
     def show_decrypted_pdf(self, decrypted_text):
         with tempfile.NamedTemporaryFile(delete=False, suffix=".pdf") as tmp:
             tmp.write(decrypted_text)
             tmp.flush()
         return tmp.name
 
+    # Deletes the temporary pdf file
     def delete_temp_file(self, temp_name):
         os.unlink(temp_name)
 
+    # Opens the temporary pdf file
     def open_temp_file(self, temp_name):
         os.system(f"open {temp_name}")
 
-    # needs to be fixed
+    # Checks if the file with the same content exists by checking the save folder for encrypted files
     def check_file_exists(self, sub_save_folder, file_path, filename):
 
         found = False
@@ -46,6 +54,7 @@ class file_handling():
                         break
         return found
 
+    # The functions for handling the parsing of the user input files
     def process_files_in_folder(self):
         for filename in os.listdir(config('FOLDER_PATH')):
             if (filename.endswith(".csv") or filename.endswith(".pdf")): 
