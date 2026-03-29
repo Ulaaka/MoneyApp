@@ -93,5 +93,3 @@ class file_handling():
         self.cursor.execute(query, (accountID,))
         result = self.cursor.fetchall()
         return result if result else None
-
-    def 
