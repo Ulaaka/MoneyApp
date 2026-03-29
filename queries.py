@@ -503,9 +503,9 @@ class query_processor:
         self.update_category(new_category, transactionID)
 
     # Show list of accounts give user ID
-    def show_accounts(self, userID):
+    def return_accounts_given_userID(self, userID):
         query = """
-            SELECT accountID
+            SELECT accountID, account_name
             FROM accounts
             WHERE userID = %s
         """
