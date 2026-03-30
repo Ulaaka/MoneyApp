@@ -1,119 +1,114 @@
-/*= Style for mainwindow START
-  ==================================================== */
-	#MainWindow {
-		background-color: #fff;
-	}
-/*= END
-  ==================================================== */
+/* MainWindow style */
+#MainWindow {
+    background-color: #fff;
+}
 
-/*= Style for button to change menu style START
-  ==================================================== */
-	#change_btn {
-		padding: 5px;
-		border: none;
-		width: 30px;
-		height: 30px;
-	}
-/*= END
-  ==================================================== */
+/* Outer widget style */
+#widget {
+    background-color: #f9fafd;
+}
 
-/*= Style for header widget START
-  ==================================================== */
-	#widget {
-		background-color: #f9fafd;
-	}
-/*= END
-  ==================================================== */
+/* Icon only menu style */
+#icon_only_widget {
+    background-color: #313a46;
+    width: 50px;
+}
 
-/*= Style for menu with icon only START
-  ==================================================== */
-  	/* style for widget */
-	#icon_only_widget {
-		background-color: #313a46;
-		width:50px;
-	}
+#icon_only_widget QPushButton {
+    height: 50px;
+    border: none;
+}
 
-    /* style for QPushButton and QLabel */
-	#icon_only_widget QPushButton, QLabel {
-		height:50px;
-		border:none;
-		/* border-bottom: 1px solid #b0b0b0; */
-	}
+#icon_only_widget QPushButton:hover {
+    background-color: rgba(86, 101, 115, 0.5);
+}
 
-	#icon_only_widget QPushButton:hover {
-		background-color: rgba( 86, 101, 115, 0.5);
-	}
+/* Full menu style */
+#full_menu_widget {
+    background-color: #313a46;
+}
 
-	/* style for logo image */
-	#logo_label_1 {
-		padding: 5px
-	}
-/*= END
-  ==================================================== */
+#full_menu_widget QPushButton {
+    border: none;
+    border-radius: 3px;
+    text-align: left;
+    padding: 8px 0 8px 15px;
+    color: #788596;
+}
 
-/*= Style for menu with icon and text START
-  ==================================================== */
-	/* style for widget */
-	#full_menu_widget {
-		background-color: #313a46;
-	}
+#full_menu_widget QPushButton:hover {
+    background-color: rgba(86, 101, 115, 0.5);
+}
 
-	/* style for QPushButton */
-	#full_menu_widget QPushButton {
-		border:none;
-		border-radius: 3px;
-		text-align: left;
-		padding: 8px 0 8px 15px;
-		color: #788596;
-	}
+#full_menu_widget QPushButton:checked {
+    color: #fff;
+}
 
-	#full_menu_widget QPushButton:hover {
-		background-color: rgba( 86, 101, 115, 0.5);
-	}
+/* Main page style */
+#main_widget {
+    background-color: #fff;
+}
 
-	#full_menu_widget QPushButton:checked {
-		color: #fff;
-	}
+/* Header widget style */
+#widget_2 {
+    background-color: #f9fafd;
+    border-bottom: 1px solid #e0e0e0;
+}
 
-	/* style for logo image */
-	#logo_label_2 {
-		padding: 5px;
-		color: #fff;
-	}
+/* Search input style */
+#lineEdit {
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    padding: 5px 10px;
+    background-color: #fff;
+}
 
-	/* style for APP title */
-	#logo_label_3 {
-		padding-right: 10px;
-		color: #fff;
-	}
-/*= END
-  ==================================================== */
+#lineEdit:focus {
+    border: 1px solid #70B9FE;
+    background-color: #f0f8ff;
+}
 
-/*= Style for search button START
-  ==================================================== */
-	#search_btn {
-		border: none;
-	}
-/*= END
-  ==================================================== */
+/* Search button style */
+#search_button {
+    border: none;
+    background-color: transparent;
+}
 
-/*= Style for search input START
-  ==================================================== */
-	#search_input {
-		border: none;
-		padding: 5px 10px;
-	}
+#search_button:hover {
+    background-color: rgba(86, 101, 115, 0.1);
+    border-radius: 4px;
+}
 
-	#search_input:focus {
-		background-color: #70B9FE;
-	}
-/*= END
-  ==================================================== */
+/*  Account button style */
+#account_button {
+    border: none;
+    background-color: transparent;
+}
 
-/*= Style for user information button START
-  ==================================================== */
-	#user_btn {
-		border: none;
-	}
-/*= END
-  ==================================================== */
+#account_button:hover {
+    background-color: rgba(86, 101, 115, 0.1);
+    border-radius: 20px;
+}
+
+/*  Sidebar button style */
+#pushButton_3, #pushButton_4 {
+    border: none;
+    background-color: transparent;
+}
+
+#pushButton_3:hover, #pushButton_4:hover {
+    background-color: rgba(86, 101, 115, 0.5);
+}
+
+
+#exit_button_1, #exit_button_2 {
+    border: none;
+    color: #788596;
+    text-align: left;
+    padding: 8px 0 8px 15px;
+}
+
+#exit_button_1:hover, #exit_button_2:hover {
+    background-color: rgba(220, 53, 69, 0.2);
+    color: #dc3545;
+}
