@@ -12,11 +12,6 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 
 
 class Ui_MainWindow(object):
-
-    """
-    Class containing the setup of the user interface, after conversion of the UI file from QT designer
-    """
-
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1073, 606)
@@ -149,7 +144,7 @@ class Ui_MainWindow(object):
         self.pushButton_4.setMinimumSize(QtCore.QSize(100, 50))
         self.pushButton_4.setMaximumSize(QtCore.QSize(100, 50))
         self.pushButton_4.setIcon(icon)
-        self.pushButton_4.setIconSize(QtCore.QSize(30, 30))
+        self.pushButton_4.setIconSize(QtCore.QSize(20, 20))
         self.pushButton_4.setCheckable(True)
         self.pushButton_4.setAutoExclusive(False)
         self.pushButton_4.setObjectName("pushButton_4")
@@ -158,6 +153,7 @@ class Ui_MainWindow(object):
         self.home_button_2.setMinimumSize(QtCore.QSize(100, 50))
         self.home_button_2.setMaximumSize(QtCore.QSize(100, 48))
         self.home_button_2.setIcon(icon1)
+        self.home_button_2.setIconSize(QtCore.QSize(20, 20))
         self.home_button_2.setCheckable(True)
         self.home_button_2.setAutoExclusive(True)
         self.home_button_2.setObjectName("home_button_2")
@@ -166,6 +162,7 @@ class Ui_MainWindow(object):
         self.upload_button_2.setMinimumSize(QtCore.QSize(100, 50))
         self.upload_button_2.setMaximumSize(QtCore.QSize(100, 50))
         self.upload_button_2.setIcon(icon2)
+        self.upload_button_2.setIconSize(QtCore.QSize(20, 20))
         self.upload_button_2.setCheckable(True)
         self.upload_button_2.setAutoExclusive(True)
         self.upload_button_2.setObjectName("upload_button_2")
@@ -258,17 +255,17 @@ class Ui_MainWindow(object):
         self.horizontalLayout_3.addLayout(self.horizontalLayout_2)
         spacerItem3 = QtWidgets.QSpacerItem(108, 34, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
         self.horizontalLayout_3.addItem(spacerItem3)
-        self.pushButton_14 = QtWidgets.QPushButton(self.widget_2)
-        self.pushButton_14.setMinimumSize(QtCore.QSize(40, 40))
-        self.pushButton_14.setMaximumSize(QtCore.QSize(40, 40))
-        self.pushButton_14.setText("")
+        self.account_button = QtWidgets.QPushButton(self.widget_2)
+        self.account_button.setMinimumSize(QtCore.QSize(40, 40))
+        self.account_button.setMaximumSize(QtCore.QSize(40, 40))
+        self.account_button.setText("")
         icon8 = QtGui.QIcon()
         icon8.addPixmap(QtGui.QPixmap(":/icons/icons_financial_app/account_icon.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         icon8.addPixmap(QtGui.QPixmap(":/icons/icons_financial_app/account_icon.svg"), QtGui.QIcon.Normal, QtGui.QIcon.On)
-        self.pushButton_14.setIcon(icon8)
-        self.pushButton_14.setIconSize(QtCore.QSize(40, 40))
-        self.pushButton_14.setObjectName("pushButton_14")
-        self.horizontalLayout_3.addWidget(self.pushButton_14)
+        self.account_button.setIcon(icon8)
+        self.account_button.setIconSize(QtCore.QSize(40, 40))
+        self.account_button.setObjectName("account_button")
+        self.horizontalLayout_3.addWidget(self.account_button)
         self.stackedWidget.addWidget(self.page)
         self.page_6 = QtWidgets.QWidget()
         self.page_6.setObjectName("page_6")
@@ -333,10 +330,10 @@ class Ui_MainWindow(object):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
         self.exit_button_1.setText(_translate("MainWindow", "Exit"))
-        self.pushButton_4.setText(_translate("MainWindow", "Sidebar"))
-        self.home_button_2.setText(_translate("MainWindow", " Home"))
+        self.pushButton_4.setText(_translate("MainWindow", "Sidebar "))
+        self.home_button_2.setText(_translate("MainWindow", " Home    "))
         self.upload_button_2.setText(_translate("MainWindow", " Upload"))
-        self.file_button_2.setText(_translate("MainWindow", " Files"))
+        self.file_button_2.setText(_translate("MainWindow", "  Files"))
         self.pushButton_2.setText(_translate("MainWindow", "Stats"))
         self.profile_button_2.setText(_translate("MainWindow", " Profile"))
         self.settings_button_2.setText(_translate("MainWindow", " Settings"))
