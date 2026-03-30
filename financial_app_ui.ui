@@ -61,7 +61,7 @@
           <widget class="QLineEdit" name="lineEdit">
            <property name="minimumSize">
             <size>
-             <width>300</width>
+             <width>400</width>
              <height>40</height>
             </size>
            </property>
@@ -100,6 +100,12 @@
             <iconset resource="../Desktop/resource.qrc">
              <normaloff>:/icons/icons_financial_app/search_icon.png</normaloff>
              <normalon>:/icons/icons_financial_app/search_icon.png</normalon>:/icons/icons_financial_app/search_icon.png</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>20</width>
+             <height>20</height>
+            </size>
            </property>
           </widget>
          </item>

@@ -70,9 +70,7 @@
 
 /* Search button style */
 #search_button {
-    border: none;
-    background-color: transparent;
-}
+    border: none;}
 
 #search_button:hover {
     background-color: rgba(86, 101, 115, 0.1);
