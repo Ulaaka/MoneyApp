@@ -5,13 +5,12 @@
 
 /* Outer widget style */
 #widget {
-    background-color: #f9fafd;
+    background-color:#fff;
 }
 
 /* Icon only menu style */
 #icon_only_widget {
     background-color: #313a46;
-    width: 50px;
 }
 
 #icon_only_widget QPushButton {
@@ -51,7 +50,7 @@
 
 /* Header widget style */
 #widget_2 {
-    background-color: #f9fafd;
+    background-color: #fff;
     border-bottom: 1px solid #e0e0e0;
 }
 
@@ -61,11 +60,13 @@
     border-radius: 4px;
     padding: 5px 10px;
     background-color: #fff;
+    color: #313a46;
 }
 
 #lineEdit:focus {
     border: 1px solid #70B9FE;
     background-color: #f0f8ff;
+    color: #313a46;
 }
 
 /* Search button style */
