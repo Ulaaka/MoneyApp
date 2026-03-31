@@ -1,15 +1,16 @@
+import os, sys, certifi, django
+from functools import partial
+from PyQt5 import QtCore
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import *
-from PyQt5 import QtCore
+from qtwidgets import PasswordEdit
+from decouple import config
 from database_connection import database
 from BASE_Classes import password_class, cryptography
-from qtwidgets import PasswordEdit
 from system_functions import system_functions
-import os, certifi, sys
-from system_functions import system_functions
-from functools import partial
 from MainWindow import MainWindow
+
 
 
 color_dic = {
@@ -50,18 +51,6 @@ color_dic = {
     }
 }}
 
-system = system_functions()
-
-# setting django up
-sys.path.insert(0, '/Users/nyamdorjbat-erdene/Final_year')
-
-os.environ['DJANGO_SETTINGS_MODULE'] = 'settings'
-os.environ['SSL_CERT_FILE'] = certifi.where()
-os.environ['REQUESTS_CA_BUNDLE'] = certifi.where()
-
-import django
-django.setup()
-
 # if underline_button, button_color = "transparent"
 def handle_button_style(if_handle, button_color, hover_color):
         handle_button_additional = """
@@ -73,7 +62,6 @@ def handle_button_style(if_handle, button_color, hover_color):
             text-decoration: underline;
             font-size: 15px;
         """
-        
         if if_handle:
             add_text = handle_button_additional
             add_color = "background-color"
@@ -583,6 +571,8 @@ class MainApp(QMainWindow):
         self.db = connection.db
         self.cursor = connection.cursor
 
+        self.django_setup()
+
         self.setWindowTitle("Finance Reporter")
         self.setFixedSize(400, 500)
 
@@ -597,22 +587,12 @@ class MainApp(QMainWindow):
         self.reset_password = reset_password(self, self.login_page, self.db, self.cursor)
         self.dashboard_page = QWidget()
 
-        self.setup_dashboard()
-
         self.stacked_widget.addWidget(self.login_page)
         self.stacked_widget.addWidget(self.dashboard_page)
         self.stacked_widget.addWidget(self.sign_up_page)
         self.stacked_widget.addWidget(self.validation_page)
         self.stacked_widget.addWidget(self.reset_password)
 
-    def setup_dashboard(self):
-        layout = QVBoxLayout()
-
-        logout_btn = QPushButton("Log Out")
-        logout_btn.clicked.connect (self.show_login)
-
-        layout.addWidget(logout_btn)
-        self.dashboard_page.setLayout(layout)
 
     def show_dashboard(self, key):
         self.main_window = MainWindow(self, key)
@@ -620,26 +600,34 @@ class MainApp(QMainWindow):
         self.close()
 
     def show_login(self):
-        self.stacked_widget.setCurrentIndex(0)
+        self.stacked_widget.setCurrentWidget(self.login_page)
         self.setMaximumSize(400, 500)
 
     def show_sign_up(self):
-        self.stacked_widget.setCurrentIndex(2)
+        self.stacked_widget.setCurrentWidget(self.sign_up_page)
         self.setMaximumSize(400, 500)
 
     def show_validation_page(self):
-        self.stacked_widget.setCurrentIndex(3)
+        self.stacked_widget.setCurrentWidget(self.validation_page)
         self.setMaximumSize(400, 500)
-        # start the when the page appears
         self.validation_page.startTimer()
 
     def show_reset_password(self):
-        self.stacked_widget.setCurrentIndex(4)
+        self.stacked_widget.setCurrentWidget(self.reset_password)
         self.setMaximumSize(400, 500)
+
+    # setting up django for authentication by email
+    def django_setup(self):
+        sys.path.insert(0, config("CURRENT_FOLDER"))
+        os.environ['DJANGO_SETTINGS_MODULE'] = 'settings'
+        os.environ['SSL_CERT_FILE'] = certifi.where()
+        os.environ['REQUESTS_CA_BUNDLE'] = certifi.where()
+        django.setup()
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
 
+    # reading style file
     with open('style.qss', 'r') as styling:
         style = styling.read()
 

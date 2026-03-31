@@ -121,7 +121,7 @@
 
 /* https://stackoverflow.com/questions/45623918/using-qstackedwidget-for-multi-windowed-pyqt-application
  https://doc.qt.io/qt-6/stylesheet-reference.html */
-/* input_style - used on login/signup fields */
+/* input style for login, sing-up, and reset password page*/
 QLineEdit#input_field {
     background-color: dark;
     border: 2px solid grey;
@@ -135,7 +135,7 @@ QLineEdit#input_field:focus {
     border: 1px solid white;
 }
 
-/* random_digit_box_style - used on validation page */
+/* user random digits style for validation page */
 QLineEdit#digit_box {
     border: 2px solid #ccc;
     border-radius: 8px;
