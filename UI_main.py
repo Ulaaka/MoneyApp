@@ -648,9 +648,9 @@ class MainApp(QMainWindow):
         self.dashboard_page.setLayout(layout)
 
     def show_dashboard(self, key):
-        self.main_window = MainWindow(controller=self, key=key)
+        self.main_window = MainWindow(self, key)
         self.main_window.show()
-        self.show_login.close()
+        self.login_page.close()
 
     def show_login(self):
         self.stacked_widget.setCurrentIndex(0)
@@ -670,10 +670,14 @@ class MainApp(QMainWindow):
         self.stacked_widget.setCurrentIndex(4)
         self.setMaximumSize(400, 500)
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     app = QApplication(sys.argv)
 
-    main_window = MainApp()
-    main_window.show()
+    with open('style.qss', 'r') as styling:
+        style = styling.read()
 
-    sys.exit(app.exec_())
+    app.setStyleSheet(style)
+    window = MainApp()
+    window.show()
+
+    sys.exit(app.exec())

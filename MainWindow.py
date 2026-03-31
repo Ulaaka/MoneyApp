@@ -55,15 +55,3 @@ class MainWindow(QMainWindow):
 
     def settings_page_show(self):
         self.ui.stackedWidget.setCurrentWidget(self.ui.settings_page)
-
-if __name__ == "__main__":
-    app = QApplication(sys.argv)
-
-    with open('style.qss', 'r') as styling:
-        style = styling.read()
-
-    app.setStyleSheet(style)
-    window = MainWindow()
-    window.show()
-
-    sys.exit(app.exec())
