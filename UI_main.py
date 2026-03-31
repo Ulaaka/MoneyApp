@@ -62,41 +62,6 @@ os.environ['REQUESTS_CA_BUNDLE'] = certifi.where()
 import django
 django.setup()
 
-# https://stackoverflow.com/questions/45623918/using-qstackedwidget-for-multi-windowed-pyqt-application
-# https://doc.qt.io/qt-6/stylesheet-reference.html
-input_style = '''
-    QLineEdit {
-        background-color: dark;
-        border: 2px solid grey;
-        border-radius: 1px;
-        padding: 12px;
-        color: white;
-        font-size: 14px;
-    }
-    QLineEdit:focus {
-        border: 1px solid white;
-    }
-    '''
-# need some improvement
-random_digit_box_style = '''
-    QLineEdit {
-        border: 2px solid #ccc;
-        border-radius: 8px;
-        background: #f9f9f9;
-        color: #333;
-        font-size: 15px;
-        text-align: center;
-        min-width: 50px;
-        max-width: 50px;
-        min-height: 55px;
-        max-height: 55px;
-    }
-    QLineEdit:focus {
-        border: 2px solid #6C63FF;
-        background: white;
-    }
-'''
-
 # if underline_button, button_color = "transparent"
 def handle_button_style(if_handle, button_color, hover_color):
         handle_button_additional = """
@@ -172,8 +137,9 @@ class login_page(QWidget):
         # Username input
         self.username = QLineEdit()
         self.username.setPlaceholderText('Username')
-        self.username.setStyleSheet(input_style)
+        self.username.setObjectName("input_field")
         self.username.setFont(QFont('Arial', 15))
+
 
         # Password input
         self.password = QLineEdit()
@@ -181,7 +147,7 @@ class login_page(QWidget):
 
         # hiding the password
         self.password.setEchoMode(QLineEdit.Password)
-        self.password.setStyleSheet(input_style)
+        self.password.setObjectName("input_field")
         self.password.setFont(QFont('Arial', 15))
 
         # Login button
@@ -297,13 +263,13 @@ class sign_up_page(QWidget):
         # Username input
         self.username = QLineEdit()
         self.username.setPlaceholderText('Username')
-        self.username.setStyleSheet(input_style)
+        self.username.setObjectName("input_field")
         self.username.setFont(QFont('Arial', 15))
 
         # Password input
         self.password = PasswordEdit()
         self.password.setPlaceholderText('Password')
-        self.password.setStyleSheet(input_style)
+        self.password.setObjectName("input_field")
         self.password.setFont(QFont('Arial', 15))
         self.password.setToolTip(
             "Your password must be at least 8 characters \n"
@@ -316,7 +282,7 @@ class sign_up_page(QWidget):
         # email input
         self.email = QLineEdit()
         self.email.setPlaceholderText('Email')
-        self.email.setStyleSheet(input_style)
+        self.email.setObjectName("input_field")
         self.email.setFont(QFont('Arial', 15))
 
         # Login button
@@ -442,7 +408,7 @@ class validation_page(QWidget):
             square = QLineEdit()
             square.setMaxLength(1)
             square.setAlignment(centering)
-            square.setStyleSheet(random_digit_box_style)
+            square.setObjectName("digit_box")
 
             square.textChanged.connect(partial(self.to_next_box, idx))
             square.keyPressEvent = partial(self.to_prev_box, idx)
@@ -637,6 +603,9 @@ class MainApp(QMainWindow):
         self.stacked_widget.addWidget(self.sign_up_page)
         self.stacked_widget.addWidget(self.validation_page)
         self.stacked_widget.addWidget(self.reset_password)
+    
+    def setup_ui(self):
+
 
     def setup_dashboard(self):
         layout = QVBoxLayout()
@@ -650,7 +619,7 @@ class MainApp(QMainWindow):
     def show_dashboard(self, key):
         self.main_window = MainWindow(self, key)
         self.main_window.show()
-        self.login_page.close()
+        self.close()
 
     def show_login(self):
         self.stacked_widget.setCurrentIndex(0)

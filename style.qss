@@ -118,3 +118,37 @@
     background-color: rgba(220, 53, 69, 0.2);
     color: #dc3545;
 }
+
+/* https://stackoverflow.com/questions/45623918/using-qstackedwidget-for-multi-windowed-pyqt-application
+ https://doc.qt.io/qt-6/stylesheet-reference.html */
+/* input_style - used on login/signup fields */
+QLineEdit#input_field {
+    background-color: dark;
+    border: 2px solid grey;
+    border-radius: 1px;
+    padding: 12px;
+    color: white;
+    font-size: 14px;
+}
+
+QLineEdit#input_field:focus {
+    border: 1px solid white;
+}
+
+/* random_digit_box_style - used on validation page */
+QLineEdit#digit_box {
+    border: 2px solid #ccc;
+    border-radius: 8px;
+    background: #f9f9f9;
+    color: #333;
+    font-size: 15px;
+    text-align: center;
+    min-width: 50px;
+    max-width: 50px;
+    min-height: 55px;
+    max-height: 55px;
+}
+QLineEdit#digit_box:focus {
+    border: 2px solid #6C63FF;
+    background: white;
+}
