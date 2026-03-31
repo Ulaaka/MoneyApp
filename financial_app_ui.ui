@@ -320,7 +320,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QPushButton" name="pushButton">
+           <widget class="QPushButton" name="stats_button_1">
             <property name="minimumSize">
              <size>
               <width>50</width>
@@ -586,7 +586,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QPushButton" name="pushButton_2">
+           <widget class="QPushButton" name="stats_button_2">
             <property name="minimumSize">
              <size>
               <width>100</width>
@@ -807,7 +807,7 @@
               </property>
              </widget>
             </widget>
-            <widget class="QWidget" name="page_5">
+            <widget class="QWidget" name="settings_page">
              <widget class="QLabel" name="label_7">
               <property name="geometry">
                <rect>
@@ -1062,9 +1062,9 @@
    </hints>
   </connection>
   <connection>
-   <sender>pushButton</sender>
+   <sender>stats_button_1</sender>
    <signal>toggled(bool)</signal>
-   <receiver>pushButton_2</receiver>
+   <receiver>stats_button_2</receiver>
    <slot>setChecked(bool)</slot>
    <hints>
     <hint type="sourcelabel">
@@ -1078,9 +1078,9 @@
    </hints>
   </connection>
   <connection>
-   <sender>pushButton_2</sender>
+   <sender>stats_button_2</sender>
    <signal>toggled(bool)</signal>
-   <receiver>pushButton</receiver>
+   <receiver>stats_button_1</receiver>
    <slot>setChecked(bool)</slot>
    <hints>
     <hint type="sourcelabel">

@@ -211,14 +211,14 @@ class Ui_MainWindow(object):
         self.file_button_2.setAutoExclusive(True)
         self.file_button_2.setObjectName("file_button_2")
         self.verticalLayout_2.addWidget(self.file_button_2)
-        self.pushButton_2 = QtWidgets.QPushButton(self.full_menu_widget)
-        self.pushButton_2.setMinimumSize(QtCore.QSize(100, 50))
-        self.pushButton_2.setIcon(icon6)
-        self.pushButton_2.setIconSize(QtCore.QSize(20, 20))
-        self.pushButton_2.setCheckable(True)
-        self.pushButton_2.setAutoExclusive(True)
-        self.pushButton_2.setObjectName("pushButton_2")
-        self.verticalLayout_2.addWidget(self.pushButton_2)
+        self.stats_button_2 = QtWidgets.QPushButton(self.full_menu_widget)
+        self.stats_button_2.setMinimumSize(QtCore.QSize(100, 50))
+        self.stats_button_2.setIcon(icon6)
+        self.stats_button_2.setIconSize(QtCore.QSize(20, 20))
+        self.stats_button_2.setCheckable(True)
+        self.stats_button_2.setAutoExclusive(True)
+        self.stats_button_2.setObjectName("stats_button_2")
+        self.verticalLayout_2.addWidget(self.stats_button_2)
         self.profile_button_2 = QtWidgets.QPushButton(self.full_menu_widget)
         self.profile_button_2.setMinimumSize(QtCore.QSize(100, 50))
         self.profile_button_2.setIcon(icon7)
@@ -289,12 +289,12 @@ class Ui_MainWindow(object):
         self.label_6.setGeometry(QtCore.QRect(357, 170, 91, 51))
         self.label_6.setObjectName("label_6")
         self.stackedWidget.addWidget(self.profile_page)
-        self.page_5 = QtWidgets.QWidget()
-        self.page_5.setObjectName("page_5")
-        self.label_7 = QtWidgets.QLabel(self.page_5)
+        self.settings_page = QtWidgets.QWidget()
+        self.settings_page.setObjectName("settings_page")
+        self.label_7 = QtWidgets.QLabel(self.settings_page)
         self.label_7.setGeometry(QtCore.QRect(360, 160, 121, 51))
         self.label_7.setObjectName("label_7")
-        self.stackedWidget.addWidget(self.page_5)
+        self.stackedWidget.addWidget(self.settings_page)
         self.verticalLayout_3.addWidget(self.stackedWidget)
         self.horizontalLayout.addWidget(self.main_widget)
         self.verticalLayout_5.addWidget(self.widget)
@@ -316,8 +316,8 @@ class Ui_MainWindow(object):
         self.exit_button_2.toggled['bool'].connect(self.exit_button_1.setChecked) # type: ignore
         self.exit_button_2.clicked.connect(MainWindow.close) # type: ignore
         self.exit_button_1.clicked.connect(MainWindow.close) # type: ignore
-        self.pushButton.toggled['bool'].connect(self.pushButton_2.setChecked) # type: ignore
-        self.pushButton_2.toggled['bool'].connect(self.pushButton.setChecked) # type: ignore
+        self.pushButton.toggled['bool'].connect(self.stats_button_2.setChecked) # type: ignore
+        self.stats_button_2.toggled['bool'].connect(self.pushButton.setChecked) # type: ignore
         self.pushButton_4.toggled['bool'].connect(self.pushButton_3.setChecked) # type: ignore
         self.pushButton_3.toggled['bool'].connect(self.pushButton_4.setChecked) # type: ignore
         self.pushButton_3.toggled['bool'].connect(self.icon_only_widget.setHidden) # type: ignore
@@ -333,7 +333,7 @@ class Ui_MainWindow(object):
         self.home_button_2.setText(_translate("MainWindow", "      Home"))
         self.upload_button_2.setText(_translate("MainWindow", "    Upload"))
         self.file_button_2.setText(_translate("MainWindow", "      Files"))
-        self.pushButton_2.setText(_translate("MainWindow", "     Stats"))
+        self.stats_button_2.setText(_translate("MainWindow", "     Stats"))
         self.profile_button_2.setText(_translate("MainWindow", "   Profile"))
         self.settings_button_2.setText(_translate("MainWindow", " Settings"))
         self.exit_button_2.setText(_translate("MainWindow", "Exit"))

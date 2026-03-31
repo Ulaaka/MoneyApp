@@ -5,7 +5,6 @@ from PyQt5.QtCore import pyqtSlot, QFile, QTextStream
 from financial_app import Ui_MainWindow
 
 class MainWindow(QMainWindow):
-
     def __init__(self):
         super(MainWindow, self).__init__()
 
@@ -14,6 +13,36 @@ class MainWindow(QMainWindow):
 
         self.ui.full_menu_widget.hide()
         self.ui.stackedWidget.setCurrentIndex(0)
+
+    def buttons_connected(self):
+        self.ui.home_button_1.clicked.connect(self.home_page_show)
+        self.ui.home_button_2.clicked.connect(self.home_page_show)
+
+        self.ui.upload_button_1.clicked.connect(self.home_page_show)
+        self.ui.upload_button_2.clicked.connect(self.home_page_show)
+
+        self.ui.file_button_1.clicked.connect(self.home_page_show)
+        self.ui.file_button_1.clicked.connect(self.home_page_show)
+
+
+        self.ui.stats_button_1.clicked.connect(self.home_page_show)
+        self.ui.stats_button_2.clicked.connect(self.home_page_show)
+
+        self.ui.profile_button_1.clicked.connect(self.home_page_show)
+        self.ui.profile_button_2.clicked.connect(self.home_page_show)
+
+        self.ui.settings_button_1.clicked.connect(self.home_page_show)
+        self.ui.settings_button_2.clicked.connect(self.home_page_show)
+
+
+
+    def home_page_show(self):
+        self.ui.stackedWidget.setCurrentWidget(self.ui.home_page)
+
+    def upload_page_show(self):
+        self.ui.stackedWidget.setCurrentWidget(self.ui.upload_page)
+
+
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
