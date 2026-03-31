@@ -128,18 +128,18 @@ class Ui_MainWindow(object):
         self.file_button_1.setAutoExclusive(True)
         self.file_button_1.setObjectName("file_button_1")
         self.verticalLayout.addWidget(self.file_button_1)
-        self.pushButton = QtWidgets.QPushButton(self.icon_only_widget)
-        self.pushButton.setMinimumSize(QtCore.QSize(50, 50))
-        self.pushButton.setText("")
+        self.stats_button_1 = QtWidgets.QPushButton(self.icon_only_widget)
+        self.stats_button_1.setMinimumSize(QtCore.QSize(50, 50))
+        self.stats_button_1.setText("")
         icon6 = QtGui.QIcon()
         icon6.addPixmap(QtGui.QPixmap(":/icons/icons_financial_app/chart_icon.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         icon6.addPixmap(QtGui.QPixmap(":/icons/icons_financial_app/chart_icon.png"), QtGui.QIcon.Normal, QtGui.QIcon.On)
-        self.pushButton.setIcon(icon6)
-        self.pushButton.setIconSize(QtCore.QSize(30, 30))
-        self.pushButton.setCheckable(True)
-        self.pushButton.setAutoExclusive(True)
-        self.pushButton.setObjectName("pushButton")
-        self.verticalLayout.addWidget(self.pushButton)
+        self.stats_button_1.setIcon(icon6)
+        self.stats_button_1.setIconSize(QtCore.QSize(30, 30))
+        self.stats_button_1.setCheckable(True)
+        self.stats_button_1.setAutoExclusive(True)
+        self.stats_button_1.setObjectName("stats_button_1")
+        self.verticalLayout.addWidget(self.stats_button_1)
         self.profile_button_1 = QtWidgets.QPushButton(self.icon_only_widget)
         self.profile_button_1.setMinimumSize(QtCore.QSize(50, 50))
         self.profile_button_1.setText("")
@@ -316,8 +316,8 @@ class Ui_MainWindow(object):
         self.exit_button_2.toggled['bool'].connect(self.exit_button_1.setChecked) # type: ignore
         self.exit_button_2.clicked.connect(MainWindow.close) # type: ignore
         self.exit_button_1.clicked.connect(MainWindow.close) # type: ignore
-        self.pushButton.toggled['bool'].connect(self.stats_button_2.setChecked) # type: ignore
-        self.stats_button_2.toggled['bool'].connect(self.pushButton.setChecked) # type: ignore
+        self.stats_button_1.toggled['bool'].connect(self.stats_button_2.setChecked) # type: ignore
+        self.stats_button_2.toggled['bool'].connect(self.stats_button_1.setChecked) # type: ignore
         self.pushButton_4.toggled['bool'].connect(self.pushButton_3.setChecked) # type: ignore
         self.pushButton_3.toggled['bool'].connect(self.pushButton_4.setChecked) # type: ignore
         self.pushButton_3.toggled['bool'].connect(self.icon_only_widget.setHidden) # type: ignore
