@@ -77,8 +77,9 @@ class Account_add_page(QtWidgets.QDialog):
         self.query = query_processor()
 
         self.signals_connect()
-
+        self.ui.account_name_type.setObjectName("input_field")
         currency_search = self.ui.account_currency_combo.lineEdit()
+        currency_search.setObjectName("input_field")
         currency_search.setPlaceholderText("Search currency...")
         completer = QCompleter(self.ui.account_currency_combo.model(), self)
 
