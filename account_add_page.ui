@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>389</width>
+    <height>305</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QLabel" name="label">
+     <property name="text">
+      <string>1. Type the name for the account</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLineEdit" name="account_name_type">
+     <property name="text">
+      <string/>
+     </property>
+     <property name="placeholderText">
+      <string>e.g., Lloyds Bank Account</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLabel" name="label_2">
+     <property name="text">
+      <string>2. Set the type of the account</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QComboBox" name="account_type_combo">
+     <property name="editable">
+      <bool>false</bool>
+     </property>
+     <item>
+      <property name="text">
+       <string>Bank</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Cash</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Credit Card</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Investment</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Other</string>
+      </property>
+     </item>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLabel" name="label_3">
+     <property name="text">
+      <string>3. Set the currency</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QComboBox" name="account_currency_combo">
+     <property name="editable">
+      <bool>true</bool>
+     </property>
+     <property name="insertPolicy">
+      <enum>QComboBox::InsertPolicy::NoInsert</enum>
+     </property>
+     <property name="placeholderText">
+      <string>Search Currency ...</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QPushButton" name="submit_button">
+     <property name="text">
+      <string>Submit</string>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

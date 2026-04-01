@@ -6,35 +6,62 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>534</width>
-    <height>517</height>
+    <width>411</width>
+    <height>325</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <widget class="QWidget" name="verticalLayoutWidget">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>10</y>
-     <width>511</width>
-     <height>501</height>
-    </rect>
+  <layout class="QVBoxLayout" name="verticalLayout_2">
+   <property name="sizeConstraint">
+    <enum>QLayout::SizeConstraint::SetFixedSize</enum>
    </property>
-   <layout class="QVBoxLayout" name="verticalLayout">
-    <item>
-     <widget class="QLineEdit" name="search_bar">
-      <property name="text">
-       <string>Search accounts....</string>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QListView" name="account_list"/>
-    </item>
-   </layout>
-  </widget>
+   <item>
+    <widget class="QLineEdit" name="lineEdit">
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QWidget" name="empty_container" native="true">
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <item>
+       <widget class="QLabel" name="empty_message">
+        <property name="text">
+         <string>No Account Found</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="add_accounts_empty">
+        <property name="text">
+         <string>Add Account</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QListWidget" name="accounts_list">
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>300</height>
+      </size>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QPushButton" name="add_accounts_list">
+     <property name="text">
+      <string>Add Account</string>
+     </property>
+    </widget>
+   </item>
+  </layout>
  </widget>
  <resources/>
  <connections/>

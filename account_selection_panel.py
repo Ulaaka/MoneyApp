@@ -11,22 +11,35 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 
-class Ui_Form(object):
+class account_selection_form(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
-        Form.resize(534, 517)
-        self.verticalLayoutWidget = QtWidgets.QWidget(Form)
-        self.verticalLayoutWidget.setGeometry(QtCore.QRect(10, 10, 511, 501))
-        self.verticalLayoutWidget.setObjectName("verticalLayoutWidget")
-        self.verticalLayout = QtWidgets.QVBoxLayout(self.verticalLayoutWidget)
-        self.verticalLayout.setContentsMargins(0, 0, 0, 0)
+        Form.resize(411, 325)
+        self.verticalLayout_2 = QtWidgets.QVBoxLayout(Form)
+        self.verticalLayout_2.setSizeConstraint(QtWidgets.QLayout.SetFixedSize)
+        self.verticalLayout_2.setObjectName("verticalLayout_2")
+        self.lineEdit = QtWidgets.QLineEdit(Form)
+        self.lineEdit.setText("")
+        self.lineEdit.setObjectName("lineEdit")
+        self.verticalLayout_2.addWidget(self.lineEdit)
+        self.empty_container = QtWidgets.QWidget(Form)
+        self.empty_container.setObjectName("empty_container")
+        self.verticalLayout = QtWidgets.QVBoxLayout(self.empty_container)
         self.verticalLayout.setObjectName("verticalLayout")
-        self.search_bar = QtWidgets.QLineEdit(self.verticalLayoutWidget)
-        self.search_bar.setObjectName("search_bar")
-        self.verticalLayout.addWidget(self.search_bar)
-        self.account_list = QtWidgets.QListView(self.verticalLayoutWidget)
-        self.account_list.setObjectName("account_list")
-        self.verticalLayout.addWidget(self.account_list)
+        self.empty_message = QtWidgets.QLabel(self.empty_container)
+        self.empty_message.setObjectName("empty_message")
+        self.verticalLayout.addWidget(self.empty_message)
+        self.add_accounts_empty = QtWidgets.QPushButton(self.empty_container)
+        self.add_accounts_empty.setObjectName("add_accounts_empty")
+        self.verticalLayout.addWidget(self.add_accounts_empty)
+        self.verticalLayout_2.addWidget(self.empty_container)
+        self.accounts_list = QtWidgets.QListWidget(Form)
+        self.accounts_list.setMaximumSize(QtCore.QSize(16777215, 300))
+        self.accounts_list.setObjectName("accounts_list")
+        self.verticalLayout_2.addWidget(self.accounts_list)
+        self.add_accounts_list = QtWidgets.QPushButton(Form)
+        self.add_accounts_list.setObjectName("add_accounts_list")
+        self.verticalLayout_2.addWidget(self.add_accounts_list)
 
         self.retranslateUi(Form)
         QtCore.QMetaObject.connectSlotsByName(Form)
@@ -34,4 +47,7 @@ class Ui_Form(object):
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
         Form.setWindowTitle(_translate("Form", "Form"))
-        self.search_bar.setText(_translate("Form", "Search accounts...."))
+        self.lineEdit.setPlaceholderText(_translate("Form", "Search"))
+        self.empty_message.setText(_translate("Form", "No Account Found"))
+        self.add_accounts_empty.setText(_translate("Form", "Add Account"))
+        self.add_accounts_list.setText(_translate("Form", "Add Account"))
