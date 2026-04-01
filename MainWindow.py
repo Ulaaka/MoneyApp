@@ -45,7 +45,7 @@ class Account_selection_page(QtWidgets.QDialog):
         self.update_list()
 
     def set_account(self, option):
-        print(option)
+        self.parent().account_name = option
 
     def compute_account_options(self):
         accounts = self.query.return_accounts_given_userID(self.userID)
@@ -109,7 +109,7 @@ class MainWindow(QMainWindow):
         self.controller = controller
         self.key = key
         self.userID = userID
-        self.accountID = None
+        self.account_name = None
 
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
