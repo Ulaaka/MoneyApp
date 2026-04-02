@@ -2,6 +2,7 @@ import pandas as pd
 from PyQt5.QtCore import QAbstractTableModel, Qt
 from PyQt5.QtWidgets import QApplication, QMainWindow, QTableView
 
+# https://www.pythonguis.com/faq/editing-pyqt6-tableview/
 class ListModel(QAbstractTableModel):
     def __init__(self, data):
         super().__init__()

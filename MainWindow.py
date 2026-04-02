@@ -42,14 +42,15 @@ class Account_selection_page(QtWidgets.QDialog):
         self.ui.accounts_list.clear()
         if self.account_options:
             self.ui.accounts_list.addItems(self.account_options)
-            # default account is always the first
-            self.ui.accounts_list.setCurrentRow(0)
             self.ui.accounts_list.currentTextChanged.connect(self.set_account)
+
+            self.ui.accounts_list.setCurrentRow(0)
+            self.set_account(self.account_options[0])
         self.update_list()
 
     def set_account(self, option):
         self.parent().account_name = option
-        print(option)
+        self.parent().update_table()
 
     def compute_account_options(self):
         accounts = self.query.return_accounts_given_userID(self.userID)
@@ -123,6 +124,7 @@ class MainWindow(QMainWindow):
         self.buttons_connected()
 
         self.query = query_processor()
+        self.accounts_selection_show()
         self.update_table()
 
     def update_table(self):
@@ -184,6 +186,8 @@ class MainWindow(QMainWindow):
             global_pos = self.ui.account_button.mapToGlobal(QPoint(0,0))
             self.panel = Account_selection_page(self)
             self.panel.move(global_pos.x(), global_pos.y() +self.ui.account_button.height() + 20)
+            self.panel.finished.connect(lambda: setattr(self, 'status_panel', False))
+
             self.panel.show()
             self.status_panel = True
         else:
