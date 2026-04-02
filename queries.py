@@ -4,7 +4,7 @@ import re
 from nltk.corpus import stopwords
 from geotext import GeoText
 import json
-
+import pandas as pd
 class query_processor:
 
     """
@@ -311,6 +311,16 @@ class query_processor:
         output = self.cursor.fetchone()
         return output[0] if output else None
 
+    # return total transactions made by the account
+    def get_transactions(self, accountID):
+        query = """SELECT * FROM transactions WHERE accountID = %s"""
+        self.cursor.execute(query, (accountID,))
+        output = self.cursor.fetchall()
+        header_columns = [column[0] for column in self.cursor.description]
+        df = pd.DataFrame(output, columns=header_columns)
+        df = df.iloc[:, 3:]
+        return df
+        
     def get_hashed_password(self, username):
         sql = f"SELECT hashed_password FROM users WHERE username = %s"
         self.cursor.execute(sql, (username, ))

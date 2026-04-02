@@ -6,6 +6,7 @@ from financial_app import Ui_MainWindow
 from account_selection_panel import account_selection_form
 from account_add_page import account_add_page_form
 from queries import query_processor
+from Table_View import ListModel
 import pycountry
 
 class Account_selection_page(QtWidgets.QDialog):
@@ -41,11 +42,14 @@ class Account_selection_page(QtWidgets.QDialog):
         self.ui.accounts_list.clear()
         if self.account_options:
             self.ui.accounts_list.addItems(self.account_options)
+            # default account is always the first
+            self.ui.accounts_list.setCurrentRow(0)
             self.ui.accounts_list.currentTextChanged.connect(self.set_account)
         self.update_list()
 
     def set_account(self, option):
         self.parent().account_name = option
+        print(option)
 
     def compute_account_options(self):
         accounts = self.query.return_accounts_given_userID(self.userID)
@@ -63,13 +67,12 @@ class Account_selection_page(QtWidgets.QDialog):
             self.ui.add_accounts_list.setVisible(False)
             self.ui.empty_container.setVisible(True)
         self.adjustSize()
+
     def add_accounts(self):
         currency_list = [f"{currency.alpha_3} - {currency.name} " for currency in pycountry.currencies]
         self.account_add_page = Account_add_page(currency_list, self)
         self.account_add_page.show()
 
-    def remove_accounts(self):
-        pass
 
 class Account_add_page(QtWidgets.QDialog):
     def __init__(self, currencies, parent):
@@ -120,6 +123,19 @@ class MainWindow(QMainWindow):
         self.buttons_connected()
 
         self.query = query_processor()
+        self.update_table()
+
+    def update_table(self):
+        if self.account_name is None:
+            self.ui.tableView.setVisible(False)
+            self.ui.nothing_label.setVisible(True)
+        else:
+            self.ui.tableView.setVisible(True)
+            self.ui.nothing_label.setVisible(False)
+            accountID = self.query.get_accountID(self.account_name, self.userID)
+            transactions = self.query.get_transactions(accountID)
+            self.model = ListModel(transactions)
+            self.ui.tableView.setModel(self.model)
 
     def buttons_connected(self):
         self.ui.home_button_1.clicked.connect(self.home_page_show)

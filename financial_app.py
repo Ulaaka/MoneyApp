@@ -261,9 +261,12 @@ class Ui_MainWindow(object):
         self.home_page.setObjectName("home_page")
         self.verticalLayout_4 = QtWidgets.QVBoxLayout(self.home_page)
         self.verticalLayout_4.setObjectName("verticalLayout_4")
-        self.label_3 = QtWidgets.QLabel(self.home_page)
-        self.label_3.setObjectName("label_3")
-        self.verticalLayout_4.addWidget(self.label_3)
+        self.nothing_label = QtWidgets.QLabel(self.home_page)
+        self.nothing_label.setObjectName("nothing_label")
+        self.verticalLayout_4.addWidget(self.nothing_label)
+        self.tableView = QtWidgets.QTableView(self.home_page)
+        self.tableView.setObjectName("tableView")
+        self.verticalLayout_4.addWidget(self.tableView)
         self.stackedWidget.addWidget(self.home_page)
         self.stats_page = QtWidgets.QWidget()
         self.stats_page.setObjectName("stats_page")
@@ -308,7 +311,7 @@ class Ui_MainWindow(object):
         MainWindow.setCentralWidget(self.centralwidget)
 
         self.retranslateUi(MainWindow)
-        self.stackedWidget.setCurrentIndex(2)
+        self.stackedWidget.setCurrentIndex(0)
         self.home_button_1.toggled['bool'].connect(self.home_button_2.setChecked) # type: ignore
         self.upload_button_1.toggled['bool'].connect(self.upload_button_2.setChecked) # type: ignore
         self.file_button_1.toggled['bool'].connect(self.file_button_2.setChecked) # type: ignore
@@ -344,7 +347,7 @@ class Ui_MainWindow(object):
         self.profile_button_2.setText(_translate("MainWindow", "   Profile"))
         self.settings_button_2.setText(_translate("MainWindow", " Settings"))
         self.exit_button_2.setText(_translate("MainWindow", "Exit"))
-        self.label_3.setText(_translate("MainWindow", "Home Page"))
+        self.nothing_label.setText(_translate("MainWindow", "Nothing to display"))
         self.label_8.setText(_translate("MainWindow", "stats"))
         self.pushButton.setText(_translate("MainWindow", "Upload file"))
         self.label.setText(_translate("MainWindow", "Supports csv and pdf files"))
