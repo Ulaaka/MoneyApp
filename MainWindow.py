@@ -131,10 +131,10 @@ class MainWindow(QMainWindow):
     def update_table(self):
         if self.account_name is None:
             self.panel.show_accounts()
-            if (self.account_name is None):
-                self.set_table(False)
-                self.ui.no_account_label.setText(f"No Account found")
-  
+
+        if (self.account_name is None):
+            self.set_table(False)
+            self.ui.no_account_label.setText(f"No Account found")
 
         accountID = self.query.get_accountID(self.account_name, self.userID)
         transactions = self.query.get_transactions(accountID)
