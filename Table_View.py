@@ -1,11 +1,14 @@
 import pandas as pd
 from PyQt5.QtCore import QAbstractTableModel, Qt
 from PyQt5.QtWidgets import QApplication, QMainWindow, QTableView
+from queries import query_processor
 # https://www.pythonguis.com/faq/editing-pyqt6-tableview/
 class ListModel(QAbstractTableModel):
-    def __init__(self, data):
-        super().__init__()
+    def __init__(self, data, parent):
+        super().__init__(parent)
         self._data = data
+        self.query = query_processor()
+        self.userID = parent.userID
 
     def rowCount(self, index):
         return self._data.shape[0]
@@ -21,8 +24,20 @@ class ListModel(QAbstractTableModel):
 
     def setData(self, index, value, role):
         if role == Qt.ItemDataRole.EditRole:
-            transactionID = self._data.iloc[index.row(), 0]
-            self._data.iloc[index.row(), index.column()] = value
+            column =int(index.column())
+            row = int(index.row())
+            transactionID = int(self._data.iloc[row, 0])
+            self._data.iloc[index.row(), column] = value
+            # change category
+            if column == 6:
+                # applies changes to the closest transactions
+                self.query.change_category(self.userID, value, transactionID)
+                # if does not want to
+                # update_category()
+            if column == 5:
+                if self.query.change_description_and_update(value, transactionID):
+                    self.dataChanged.emit(index, index, [role])
+                    self.parent().update_table()
             return True
         return False
 

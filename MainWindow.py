@@ -46,7 +46,7 @@ class Account_selection_page(QtWidgets.QDialog):
 
     def set_account(self, option):
         self.parent().account_name = option
-        self.parent().update_table()
+        self.parent().show_table()
 
     def update_list(self):
 
@@ -118,9 +118,9 @@ class MainWindow(QMainWindow):
 
         self.query = query_processor()
         self.accounts_selection_show()
-        self.update_table()
+        self.show_table()
 
-    def update_table(self):
+    def show_table(self):
         options = self.query.compute_account_options(self.userID)
         if not options:
             self.set_table(False)
@@ -136,13 +136,18 @@ class MainWindow(QMainWindow):
             self.ui.no_account_label.setText(f"No transaction found for '{self.account_name}'")
         else:
             self.set_table(True)
-            self.model = ListModel(transactions)
+            self.model = ListModel(transactions, self)
             self.ui.tableView.setModel(self.model)
 
             hidden_columns = [0, 1, 2]
             for i in hidden_columns:
                 self.ui.tableView.setColumnHidden(i, True)
 
+    def update_table(self):
+        accountID = self.query.get_accountID(self.account_name, self.userID)
+        transactions = self.query.get_transactions(accountID)
+        self.model = ListModel(transactions, self)
+        self.ui.tableView.setModel(self.model)
 
     def set_table(self, flag):
         if flag:
