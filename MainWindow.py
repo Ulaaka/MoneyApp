@@ -1,7 +1,7 @@
 import sys,  shutil, pycountry
 from decouple import config
 from PyQt5.QtWidgets import QMainWindow, QApplication, QCompleter, QFileDialog
-from PyQt5.QtCore import Qt, QPoint
+from PyQt5.QtCore import Qt, QPoint, pyqtSignal
 from PyQt5 import QtCore, QtWidgets
 from financial_app import Ui_MainWindow
 from account_selection_panel import account_selection_form
@@ -9,8 +9,8 @@ from account_add_page import account_add_page_form
 from queries import query_processor
 from Table_View import ListModel
 from FILE_handling import file_handling
- 
 class Account_selection_page(QtWidgets.QDialog):
+    chose_account = pyqtSignal(str) 
     def __init__(self, parent):
         super().__init__(parent)
 
@@ -20,7 +20,6 @@ class Account_selection_page(QtWidgets.QDialog):
         self.ui = account_selection_form()
         self.ui.setupUi(self)
         self.setWindowFlags(QtCore.Qt.Popup)
-
 
         self.completer = QCompleter(self.ui.accounts_list.model(), self)
         self.completer.setFilterMode(Qt.MatchContains)
@@ -46,10 +45,7 @@ class Account_selection_page(QtWidgets.QDialog):
         self.update_list()
 
     def set_account(self, option):
-        self.parent().account_name = option
-        accountID = self.query.get_accountID(option, self.userID)
-        self.parent().accountID = accountID
-        self.parent().show_table()
+        self.chose_account.emit(option)
 
     def update_list(self):
 
@@ -99,7 +95,6 @@ class Account_add_page(QtWidgets.QDialog):
         accountID = self.query.insert_account(self.userID, account_name, account_type, account_currency)
         self.parent().show_accounts()
         self.close()
-        
 
 class MainWindow(QMainWindow):
     def __init__(self, controller , key, userID):
@@ -116,6 +111,8 @@ class MainWindow(QMainWindow):
 
         self.ui.no_account_label.setObjectName("no_account_label")
         self.status_panel = False
+
+        self.ui.account_name_label.setObjectName('no_account_label')
 
         self.ui.full_menu_widget.hide()
         self.ui.stackedWidget.setCurrentIndex(0)
@@ -149,6 +146,7 @@ class MainWindow(QMainWindow):
                 self.ui.tableView.setColumnHidden(i, True)
 
     def update_table(self):
+        self.set_table(True)
         transactions = self.query.get_transactions(self.accountID)
         self.model = ListModel(transactions, self)
         self.ui.tableView.setModel(self.model)
@@ -160,12 +158,12 @@ class MainWindow(QMainWindow):
             self.ui.home_stacked.setCurrentWidget(self.ui.no_account_page)
 
     def upload_file(self):
- 
         file_paths, _ = QFileDialog.getOpenFileNames(self, 'Open File', "", "CSV Files (*.csv);;PDF Files (*.pdf)")
         if file_paths:
             for file_path in file_paths:
                 # config('FOLDER_PATH')
                 shutil.copy(file_path, "/Users/nyamdorjbat-erdene/Final_year/exp_folder")
+        print(self.accountID)
         files_process = file_handling(self.accountID, self.key)
         # process the files
         files_process.process_files_in_folder()
@@ -173,7 +171,6 @@ class MainWindow(QMainWindow):
 
 
     def buttons_connected(self):
-
         self.ui.home_button_1.clicked.connect(self.home_page_show)
         self.ui.home_button_2.clicked.connect(self.home_page_show)
 
@@ -214,12 +211,18 @@ class MainWindow(QMainWindow):
 
     def settings_page_show(self):
         self.ui.stackedWidget.setCurrentWidget(self.ui.settings_page)
+    
+    def update_parent(self, option):
+        self.account_name = option
+        self.accountID = self.query.get_accountID(option, self.userID)
+        self.ui.account_name_label.setText(option)
+        self.show_table()
 
     def accounts_selection_show(self):
         if not self.status_panel:
-
             # https://forum.qt.io/topic/116360/qwidget-maptoglobal-not-giving-right-result/2
             self.panel = Account_selection_page(self)
+            self.panel.chose_account.connect(self.update_parent)
 
             global_pos = self.ui.account_button.mapToGlobal(QPoint(0,0))
             self.panel.move(global_pos.x(), global_pos.y() +self.ui.account_button.height() + 20)

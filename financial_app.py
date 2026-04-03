@@ -70,6 +70,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout_3.addWidget(self.account_button)
         self.account_name_label = QtWidgets.QLabel(self.widget_2)
         self.account_name_label.setMinimumSize(QtCore.QSize(100, 30))
+        self.account_name_label.setText("")
         self.account_name_label.setAlignment(QtCore.Qt.AlignCenter)
         self.account_name_label.setObjectName("account_name_label")
         self.horizontalLayout_3.addWidget(self.account_name_label)
@@ -362,7 +363,6 @@ class Ui_MainWindow(object):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
         self.lineEdit.setPlaceholderText(_translate("MainWindow", "Search"))
-        self.account_name_label.setText(_translate("MainWindow", "TextLabel"))
         self.exit_button_1.setText(_translate("MainWindow", "Exit"))
         self.pushButton_4.setText(_translate("MainWindow", "   Sidebar"))
         self.home_button_2.setText(_translate("MainWindow", "      Home"))
