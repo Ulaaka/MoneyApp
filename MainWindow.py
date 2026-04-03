@@ -136,7 +136,7 @@ class MainWindow(QMainWindow):
             self.set_table(True)
             self.model = ListModel(transactions)
             self.ui.tableView.setModel(self.model)
-    
+
     def set_table(self, flag):
         self.ui.tableView.setVisible(flag)
         self.ui.no_account_widget.setVisible(not flag)
