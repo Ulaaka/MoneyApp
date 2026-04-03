@@ -130,22 +130,20 @@ class MainWindow(QMainWindow):
     def update_table(self):
         if self.account_name is None:
             self.ui.tableView.setVisible(False)
-            self.ui.nothing_label.setVisible(True)
+            self.ui.no_account_widget.setVisible(True)
+            self.ui.no_account_label.setText("no account Selected")
         else:
-
             accountID = self.query.get_accountID(self.account_name, self.userID)
             transactions = self.query.get_transactions(accountID)
             if transactions.empty:
                 self.ui.tableView.setVisible(False)
-                self.ui.nothing_label.setVisible(True)
-                self.ui.nothing_label.setText("No transactions recorded under this account")
+                self.ui.no_account_widget.setVisible(True)
+                self.ui.no_account_label.setText("No transaction found under the account")
             else:
-                
                 self.ui.tableView.setVisible(True)
-                self.ui.nothing_label.setVisible(False)
+                self.ui.no_account_widget.setVisible(False)
                 self.model = ListModel(transactions)
                 self.ui.tableView.setModel(self.model)
-        self.adjustSize()
     def buttons_connected(self):
         self.ui.home_button_1.clicked.connect(self.home_page_show)
         self.ui.home_button_2.clicked.connect(self.home_page_show)
@@ -200,7 +198,6 @@ class MainWindow(QMainWindow):
         else:
             self.panel.close()
             self.status_panel = False
-    
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
