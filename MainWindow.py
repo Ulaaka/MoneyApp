@@ -10,7 +10,7 @@ from queries import query_processor
 from Table_View import ListModel
 from FILE_handling import file_handling
 class Account_selection_page(QtWidgets.QDialog):
-    chose_account = pyqtSignal(str) 
+    chose_account = pyqtSignal(str, int) 
     def __init__(self, parent):
         super().__init__(parent)
 
@@ -45,7 +45,8 @@ class Account_selection_page(QtWidgets.QDialog):
         self.update_list()
 
     def set_account(self, option):
-        self.chose_account.emit(option)
+        accountID = self.query.get_accountID(option, self.userID)
+        self.chose_account.emit(option, accountID)
 
     def update_list(self):
 
@@ -163,7 +164,6 @@ class MainWindow(QMainWindow):
             for file_path in file_paths:
                 # config('FOLDER_PATH')
                 shutil.copy(file_path, "/Users/nyamdorjbat-erdene/Final_year/exp_folder")
-        print(self.accountID)
         files_process = file_handling(self.accountID, self.key)
         # process the files
         files_process.process_files_in_folder()
@@ -212,9 +212,9 @@ class MainWindow(QMainWindow):
     def settings_page_show(self):
         self.ui.stackedWidget.setCurrentWidget(self.ui.settings_page)
     
-    def update_parent(self, option):
+    def update_parent(self, option, accountID):
         self.account_name = option
-        self.accountID = self.query.get_accountID(option, self.userID)
+        self.accountID = accountID
         self.ui.account_name_label.setText(option)
         self.show_table()
 
