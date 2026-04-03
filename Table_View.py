@@ -1,7 +1,6 @@
 import pandas as pd
 from PyQt5.QtCore import QAbstractTableModel, Qt
 from PyQt5.QtWidgets import QApplication, QMainWindow, QTableView
-
 # https://www.pythonguis.com/faq/editing-pyqt6-tableview/
 class ListModel(QAbstractTableModel):
     def __init__(self, data):
@@ -22,6 +21,7 @@ class ListModel(QAbstractTableModel):
 
     def setData(self, index, value, role):
         if role == Qt.ItemDataRole.EditRole:
+            transactionID = self._data.iloc[index.row(), 0]
             self._data.iloc[index.row(), index.column()] = value
             return True
         return False

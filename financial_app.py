@@ -276,7 +276,7 @@ class Ui_MainWindow(object):
         self.table_page = QtWidgets.QWidget()
         self.table_page.setObjectName("table_page")
         self.tableView = QtWidgets.QTableView(self.table_page)
-        self.tableView.setGeometry(QtCore.QRect(10, 10, 781, 461))
+        self.tableView.setGeometry(QtCore.QRect(10, 0, 791, 461))
         self.tableView.setObjectName("tableView")
         self.home_stacked.addWidget(self.table_page)
         self.verticalLayout_4.addWidget(self.home_stacked)

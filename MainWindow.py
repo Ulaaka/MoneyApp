@@ -37,23 +37,16 @@ class Account_selection_page(QtWidgets.QDialog):
         self.ui.add_accounts_list.clicked.connect(self.add_accounts)
 
     def show_accounts(self):
-        self.account_options = self.compute_account_options()
-
+        self.account_options = self.query.compute_account_options(self.userID)
         self.ui.accounts_list.clear()
         if self.account_options:
             self.ui.accounts_list.addItems(self.account_options)
-            self.ui.accounts_list.setCurrentRow(0)
             self.ui.accounts_list.currentTextChanged.connect(self.set_account)
         self.update_list()
 
     def set_account(self, option):
         self.parent().account_name = option
         self.parent().update_table()
-
-    def compute_account_options(self):
-        accounts = self.query.return_accounts_given_userID(self.userID)
-        options_list = [account[1] for account in accounts] if accounts else []
-        return options_list if options_list else None
 
     def update_list(self):
 
@@ -112,10 +105,10 @@ class MainWindow(QMainWindow):
         self.key = key
         self.userID = userID
         self.account_name = None
-        self.panel = Account_selection_page(self)
 
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
+
         self.ui.no_account_label.setObjectName("no_account_label")
         self.status_panel = False
 
@@ -125,26 +118,31 @@ class MainWindow(QMainWindow):
 
         self.query = query_processor()
         self.accounts_selection_show()
-
         self.update_table()
 
     def update_table(self):
-        if self.account_name is None:
-            self.panel.show_accounts()
-
-        if (self.account_name is None):
+        options = self.query.compute_account_options(self.userID)
+        if not options:
             self.set_table(False)
             self.ui.no_account_label.setText(f"No Account found")
+
+        if self.account_name is None:
+            self.account_name = options[0]
 
         accountID = self.query.get_accountID(self.account_name, self.userID)
         transactions = self.query.get_transactions(accountID)
         if transactions.empty:
             self.set_table(False)
-            self.ui.no_account_label.setText(f"No transactions found under {self.account_name}")
+            self.ui.no_account_label.setText(f"No transaction found for '{self.account_name}'")
         else:
             self.set_table(True)
             self.model = ListModel(transactions)
             self.ui.tableView.setModel(self.model)
+
+            hidden_columns = [0, 1, 2]
+            for i in hidden_columns:
+                self.ui.tableView.setColumnHidden(i, True)
+
 
     def set_table(self, flag):
         if flag:
@@ -196,6 +194,7 @@ class MainWindow(QMainWindow):
         if not self.status_panel:
 
             # https://forum.qt.io/topic/116360/qwidget-maptoglobal-not-giving-right-result/2
+            self.panel = Account_selection_page(self)
 
             global_pos = self.ui.account_button.mapToGlobal(QPoint(0,0))
             self.panel.move(global_pos.x(), global_pos.y() +self.ui.account_button.height() + 20)

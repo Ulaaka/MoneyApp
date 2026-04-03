@@ -155,3 +155,7 @@ QLabel#no_account_label {
     color: black;
     background-color: transparent;
 }
+QTableView#tableView {
+    color: black;
+    background-color: transparent;
+}

@@ -318,7 +318,6 @@ class query_processor:
         output = self.cursor.fetchall()
         header_columns = [column[0] for column in self.cursor.description]
         df = pd.DataFrame(output, columns=header_columns)
-        df = df.iloc[:, 3:]
         return df
         
     def get_hashed_password(self, username):
@@ -529,3 +528,8 @@ class query_processor:
         self.cursor.execute(query, (userID,))
         result = self.cursor.fetchall()
         return result if result else None
+    
+    def compute_account_options(self, userID):
+        accounts = self.return_accounts_given_userID(userID)
+        options_list = [account[1] for account in accounts] if accounts else []
+        return options_list if options_list else None
