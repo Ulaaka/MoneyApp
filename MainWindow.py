@@ -9,6 +9,17 @@ from account_add_page import account_add_page_form
 from queries import query_processor
 from Table_View import ListModel
 from FILE_handling import file_handling
+
+# custom class for capturing print outputs
+class Stream(QtCore.QObject):
+    input_text = QtCore.pyqtSignal(str)
+
+    def write(self, text):
+        self.input_text.emit(text)
+
+    def flush(self):
+        sys.stdout.flush()
+
 class Account_selection_page(QtWidgets.QDialog):
     chose_account = pyqtSignal(str, int) 
     def __init__(self, parent):
@@ -131,6 +142,7 @@ class MainWindow(QMainWindow):
 
         if self.account_name is None:
             self.account_name = options[0]
+            self.accountID = self.query.get_accountID(options[0], self.userID)
 
         accountID = self.query.get_accountID(self.account_name, self.userID)
         transactions = self.query.get_transactions(accountID)
@@ -165,10 +177,17 @@ class MainWindow(QMainWindow):
                 # config('FOLDER_PATH')
                 shutil.copy(file_path, "/Users/nyamdorjbat-erdene/Final_year/exp_folder")
         files_process = file_handling(self.accountID, self.key)
+
+        self.ui.upload_stack.setCurrentWidget(self.ui.page_2)
+        self.print_output = Stream()
+        self.print_output.input_text.connect(self.get_output)
+        sys.stdout = self.print_output
         # process the files
         files_process.process_files_in_folder()
         self.update_table()
 
+    def get_output(self, text):
+        self.ui.live_output.append(text)
 
     def buttons_connected(self):
         self.ui.home_button_1.clicked.connect(self.home_page_show)

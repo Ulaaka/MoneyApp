@@ -1,4 +1,2 @@
-1. Needs to finish the UI, complete the basic working version for the supervisor meeting
-2. Improve the commenting, add inline functions and refactor some codes for better readability
-3. could add a function which returns the previous state
-deadline: a week from now.
+1. needs to finish the upload button
+2. needs to show dataframe, let it be able to lineEdit
