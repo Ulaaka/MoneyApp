@@ -121,10 +121,13 @@ class MainWindow(QMainWindow):
         self.buttons_connected()
         self.set_table(False)
         self.ui.no_account_label.setText("Select Account To View Transactions")
+        print("Select Account To View Transactions")
 
         self.query = query_processor()
         self.accounts_selection_show()
-        self.update_table()
+
+        if (self.account_name is not None):
+            self.update_table()
 
     def update_table(self):
         accountID = self.query.get_accountID(self.account_name, self.userID)
@@ -132,6 +135,7 @@ class MainWindow(QMainWindow):
         if transactions.empty:
             self.set_table(False)
             self.ui.no_account_label.setText("No transaction found under the account")
+            print("No transaction found under the account")
         else:
             self.set_table(True)
             self.model = ListModel(transactions)
@@ -142,6 +146,7 @@ class MainWindow(QMainWindow):
         self.ui.no_account_widget.setVisible(not flag)
 
     def buttons_connected(self):
+
         self.ui.home_button_1.clicked.connect(self.home_page_show)
         self.ui.home_button_2.clicked.connect(self.home_page_show)
 
