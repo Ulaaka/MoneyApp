@@ -42,6 +42,7 @@ class Account_selection_page(QtWidgets.QDialog):
         self.ui.accounts_list.clear()
         if self.account_options:
             self.ui.accounts_list.addItems(self.account_options)
+            self.ui.accounts_list.setCurrentRow(0)
             self.ui.accounts_list.currentTextChanged.connect(self.set_account)
         self.update_list()
 
@@ -111,6 +112,7 @@ class MainWindow(QMainWindow):
         self.key = key
         self.userID = userID
         self.account_name = None
+        self.panel = Account_selection_page(self)
 
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
@@ -124,20 +126,21 @@ class MainWindow(QMainWindow):
         self.query = query_processor()
         self.accounts_selection_show()
 
-        if (self.account_name is not None):
-            self.update_table()
+        self.update_table()
 
     def update_table(self):
         if self.account_name is None:
-            self.set_table(False)
-            self.ui.no_account_label.setText("Select Account To View Transactions")
-            return
+            self.panel.show_accounts()
+            if (self.account_name is None):
+                self.set_table(False)
+                self.ui.no_account_label.setText(f"No Account found")
+  
 
         accountID = self.query.get_accountID(self.account_name, self.userID)
         transactions = self.query.get_transactions(accountID)
         if transactions.empty:
             self.set_table(False)
-            self.ui.no_account_label.setText("No transactions found under this account")
+            self.ui.no_account_label.setText(f"No transactions found under {self.account_name}")
         else:
             self.set_table(True)
             self.model = ListModel(transactions)
@@ -195,7 +198,6 @@ class MainWindow(QMainWindow):
             # https://forum.qt.io/topic/116360/qwidget-maptoglobal-not-giving-right-result/2
 
             global_pos = self.ui.account_button.mapToGlobal(QPoint(0,0))
-            self.panel = Account_selection_page(self)
             self.panel.move(global_pos.x(), global_pos.y() +self.ui.account_button.height() + 20)
             self.panel.finished.connect(lambda: setattr(self, 'status_panel', False))
 
