@@ -18,6 +18,16 @@ class Live_output_window(QtWidgets.QDialog):
         self.ui.setupUi(self)
         self.setObjectName('live_output_window')
         self.ui.textEdit.setObjectName('live_output')
+        self.ui.textEdit.textChanged.connect(self.adjust_text_edit)
+
+    def adjust_text_edit(self):
+        text = self.ui.textEdit.document()
+
+        text_height = int(text.size().height())
+        text_width = int(text.size().width())
+        text.adjustSize()
+        self.ui.textEdit.setFixedHeight(text_height)
+        self.ui.textEdit.setFixedWidth(text_width + 10)
 
 # custom class for capturing print outputs
 class Stream(QtCore.QObject):
@@ -194,6 +204,7 @@ class MainWindow(QMainWindow):
         sys.stdout = self.print_output
         # process the files
         files_process.process_files_in_folder()
+        self.live_output.ui.textEdit.adjustSize()
         self.live_output.adjustSize()
         self.live_output.show()
         self.update_table()

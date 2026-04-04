@@ -10,15 +10,19 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
-
 class live_output_page(object):
     def setupUi(self, Form):
-        Form.setObjectName("File Loading Status Page")
+        Form.setObjectName("Form")
         Form.resize(800, 300)
-        Form.setMinimumSize(QtCore.QSize(800, 300))
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(Form.sizePolicy().hasHeightForWidth())
+        Form.setSizePolicy(sizePolicy)
         self.verticalLayout = QtWidgets.QVBoxLayout(Form)
         self.verticalLayout.setObjectName("verticalLayout")
         self.textEdit = QtWidgets.QTextEdit(Form)
+        self.textEdit.setLineWrapMode(QtWidgets.QTextEdit.NoWrap)
         self.textEdit.setReadOnly(True)
         self.textEdit.setObjectName("textEdit")
         self.verticalLayout.addWidget(self.textEdit)
