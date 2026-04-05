@@ -151,10 +151,7 @@ QLineEdit#digit_box:focus {
     border: 2px solid #6C63FF;
     background: white;
 }
-QLabel#no_account_label {
-    color: black;
-    background-color: transparent;
-}
+
 QTableView#tableView {
     color: black;
     background-color: transparent;
@@ -172,7 +169,7 @@ QPushButton#upload_file_button:hover {
     color: black;
 }
 
-QTextEdit#live_output{
+QTextBrowser#live_output{
     background-color: transparent;
     color: black;
     border-radius: 15px;
@@ -180,4 +177,14 @@ QTextEdit#live_output{
 
 QWidget#live_output_window{
     background-color: #fff
+}
+QLabel#account_name_label{
+    background-color: transparent;
+    color: black;
+    border-radius: 15px;
+}
+QLabel#account_name_label:hover{
+    background-color: rgba(86, 101, 115, 0.1);
+    color: black;
+    border-radius: 15px;
 }

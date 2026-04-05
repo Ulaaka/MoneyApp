@@ -175,7 +175,9 @@ class password_class:
     # Checks the stored hashed password with the user input when checking credentials
     def check_password(self, plain_text_password, hashed_password):
         password_byte = plain_text_password.encode('utf-8')
+
         hashed_password = hashed_password.encode('utf-8')
+
         return bcrypt.checkpw(password_byte, hashed_password)
 
     # Changes the user password in the database (hashed)
@@ -231,8 +233,8 @@ class cryptography:
         fernet = Fernet(key)
         encrypted = fernet.encrypt(data)
 
-        # Unique encrypted file name, combined with the current time
-        new_filename = filename[:-4] + str(datetime.now())
+        timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+        new_filename = filename[:-4] + str(timestamp)
 
         destination = os.path.join(save_folder, new_filename)
         with open(destination, 'wb') as file:
@@ -246,15 +248,14 @@ class cryptography:
 
     # Decrypts the user file given filename or hashed_filename
     def decrypt(self, enc_storage_path, key, accountID, filename=None, hashed_filename=None):
-
         if filename:
             # even if the account name is changed, ID would stay the same
             hashed_name = self.query.get_hashed_name(accountID, filename)
 
         if hashed_filename:
             hashed_name = hashed_filename
-
-        file_path = os.path.join(enc_storage_path, hashed_name)
+        
+        file_path = os.path.join(enc_storage_path,  hashed_name)
 
         with open(file_path, "rb") as file:
             data = file.read()

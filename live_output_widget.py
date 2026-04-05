@@ -10,22 +10,28 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
+
 class live_output_page(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
-        Form.resize(800, 300)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(Form.sizePolicy().hasHeightForWidth())
         Form.setSizePolicy(sizePolicy)
+        Form.setMinimumSize(QtCore.QSize(750, 0))
         self.verticalLayout = QtWidgets.QVBoxLayout(Form)
         self.verticalLayout.setObjectName("verticalLayout")
-        self.textEdit = QtWidgets.QTextEdit(Form)
-        self.textEdit.setLineWrapMode(QtWidgets.QTextEdit.NoWrap)
-        self.textEdit.setReadOnly(True)
-        self.textEdit.setObjectName("textEdit")
-        self.verticalLayout.addWidget(self.textEdit)
+        self.textBrowser = QtWidgets.QTextBrowser(Form)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.textBrowser.sizePolicy().hasHeightForWidth())
+        self.textBrowser.setSizePolicy(sizePolicy)
+        self.textBrowser.setMinimumSize(QtCore.QSize(750, 0))
+        self.textBrowser.setMaximumSize(QtCore.QSize(16777215, 16777215))
+        self.textBrowser.setObjectName("textBrowser")
+        self.verticalLayout.addWidget(self.textBrowser)
 
         self.retranslateUi(Form)
         QtCore.QMetaObject.connectSlotsByName(Form)

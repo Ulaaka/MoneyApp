@@ -1,6 +1,6 @@
-import sys,  shutil, pycountry
+import sys,  shutil, pycountry, os
 from decouple import config
-from PyQt5.QtWidgets import QMainWindow, QApplication, QCompleter, QFileDialog
+from PyQt5.QtWidgets import QMainWindow, QApplication, QCompleter, QFileDialog, QMessageBox
 from PyQt5.QtCore import Qt, QPoint, pyqtSignal
 from PyQt5 import QtCore, QtWidgets
 from financial_app import Ui_MainWindow
@@ -10,24 +10,34 @@ from queries import query_processor
 from Table_View import ListModel
 from FILE_handling import file_handling
 from live_output_widget import live_output_page
+from BASE_Classes import cryptography
 
 class Live_output_window(QtWidgets.QDialog):
     def __init__(self, parent):
         super().__init__(parent)
+        self.key = parent.key
+        self.accountID = parent.accountID
         self.ui = live_output_page()
         self.ui.setupUi(self)
         self.setObjectName('live_output_window')
-        self.ui.textEdit.setObjectName('live_output')
-        self.ui.textEdit.textChanged.connect(self.adjust_text_edit)
+        self.ui.textBrowser.setObjectName('live_output')
+        self.ui.textBrowser.setOpenLinks(False) 
+        self.ui.textBrowser.textChanged.connect(self.adjust_text_edit)
+        self.ui.textBrowser.anchorClicked.connect(self.link_click)
+        self.crypto = cryptography()
 
     def adjust_text_edit(self):
-        text = self.ui.textEdit.document()
-
-        text_height = int(text.size().height())
-        text_width = int(text.size().width())
+        text = self.ui.textBrowser.document()
         text.adjustSize()
-        self.ui.textEdit.setFixedHeight(text_height)
-        self.ui.textEdit.setFixedWidth(text_width + 10)
+        self.ui.textBrowser.setMinimumHeight(int(text.size().height() - 10))
+
+    def link_click(self, event):
+        pressed_file_name = event.toString()
+        sub_save_folder = os.path.join(config('SAVE_FOLDER'),f"account_{self.accountID}")
+        decrypted_text = self.crypto.decrypt(sub_save_folder, self.key, self.accountID,filename=pressed_file_name.split(":")[1])
+        file_handle = file_handling(self.accountID, self.key)
+        temp_name = file_handle.show_decrypted_pdf(decrypted_text)
+        file_handle.open_temp_file(temp_name)
 
 # custom class for capturing print outputs
 class Stream(QtCore.QObject):
@@ -143,9 +153,9 @@ class MainWindow(QMainWindow):
         self.ui.no_account_label.setObjectName("no_account_label")
         self.status_panel = False
 
-        self.ui.account_name_label.setObjectName('no_account_label')
-
         self.ui.tableView.horizontalHeader().setSectionResizeMode(QtWidgets.QHeaderView.Stretch)
+        self.ui.account_name_label.setObjectName("account_name_label")
+        self.ui.account_name_label.mousePressEvent = self.label_click
 
         self.ui.full_menu_widget.hide()
         self.ui.stackedWidget.setCurrentIndex(0)
@@ -155,16 +165,20 @@ class MainWindow(QMainWindow):
         self.accounts_selection_show()
         self.show_table()
 
+    def label_click(self,event):
+        pass
+
     def show_table(self):
         options = self.query.compute_account_options(self.userID)
-        if not options:
+        if options is None:
             self.set_table(False)
             self.ui.no_account_label.setText(f"No Account found")
-
-        if self.account_name is None:
-            self.account_name = options[0]
-            self.accountID = self.query.get_accountID(options[0], self.userID)
-            self.ui.account_name_label.setText(options[0])
+            self.ui.account_name_label.setText("Not selected")
+        else:
+            if self.account_name is None:
+                self.account_name = options[0]
+                self.accountID = self.query.get_accountID(options[0], self.userID)
+                self.ui.account_name_label.setText(options[0])
 
         accountID = self.query.get_accountID(self.account_name, self.userID)
         transactions = self.query.get_transactions(accountID)
@@ -191,14 +205,18 @@ class MainWindow(QMainWindow):
             self.ui.home_stacked.setCurrentWidget(self.ui.table_page)
         else:
             self.ui.home_stacked.setCurrentWidget(self.ui.no_account_page)
-
     def upload_file(self):
+        if (self.accountID):
+            files_process = file_handling(self.accountID, self.key)
+        else:
+            QMessageBox.warning(self, 'Error', 'Please create an account first')
+            return
         file_paths, _ = QFileDialog.getOpenFileNames(self, 'Open File', "", "CSV Files (*.csv);;PDF Files (*.pdf)")
         if file_paths:
             for file_path in file_paths:
                 # config('FOLDER_PATH')
                 shutil.copy(file_path, "/Users/nyamdorjbat-erdene/Final_year/exp_folder")
-        files_process = file_handling(self.accountID, self.key)
+
 
         # self.ui.upload_stack.setCurrentWidget(self.ui.page_2)
         self.print_output = Stream()
@@ -207,16 +225,15 @@ class MainWindow(QMainWindow):
         sys.stdout = self.print_output
         # process the files
         files_process.process_files_in_folder()
-        self.live_output.ui.textEdit.adjustSize()
+        self.live_output.ui.textBrowser.adjustSize()
         self.live_output.adjustSize()
         self.live_output.show()
         self.update_table()
 
     def get_output(self, text):
-        #self.live_output.ui.textEdit.append(text.strip())
         stripped_list = [line for line in text.splitlines() if line.strip() != ""]
         lines = "\n".join(stripped_list)
-        self.live_output.ui.textEdit.append(lines)
+        self.live_output.ui.textBrowser.append(lines)
 
     def buttons_connected(self):
         self.ui.home_button_1.clicked.connect(self.home_page_show)
@@ -242,7 +259,7 @@ class MainWindow(QMainWindow):
         self.ui.upload_file_button.clicked.connect(self.upload_file)
         self.ui.upload_file_button.setObjectName('upload_file_button')
 
-        self.ui.live_output.setObjectName('live_output')
+        # self.ui.live_output.setObjectName('live_output')
 
     def home_page_show(self):
         self.ui.stackedWidget.setCurrentWidget(self.ui.home_page)

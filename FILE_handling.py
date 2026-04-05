@@ -39,6 +39,7 @@ class file_handling():
     def check_file_exists(self, sub_save_folder, file_path, filename):
 
         found = False
+        output = ""
         for encrypted_file in os.listdir(sub_save_folder):
             decrypted = self.crypto.decrypt(sub_save_folder, self.key, self.accountID, hashed_filename=encrypted_file)
             # check the size of the file, avoiding reading the whole files
@@ -51,7 +52,7 @@ class file_handling():
                         existing_name = self.query.get_file_name_from_hashed(self.accountID, encrypted_file)
                         found = True
                         # print(f"The file {filename} already exists as: {existing_name}")
-                        output = f"\tThe file {filename} already exists as {existing_name}"
+                        output = f'\tThe file {filename} already exists as <a href="file:{existing_name}">{existing_name}</a>'
                         break
         return found, output
 
