@@ -25,19 +25,31 @@ class Live_output_window(QtWidgets.QDialog):
         self.ui.textBrowser.textChanged.connect(self.adjust_text_edit)
         self.ui.textBrowser.anchorClicked.connect(self.link_click)
         self.crypto = cryptography()
+        self.file_handle = file_handling(self.accountID, self.key)
 
     def adjust_text_edit(self):
         text = self.ui.textBrowser.document()
         text.adjustSize()
         self.ui.textBrowser.setMinimumHeight(int(text.size().height() - 10))
 
+    # Action when the link in the text is clicked
     def link_click(self, event):
+        flag = False
         pressed_file_name = event.toString()
         sub_save_folder = os.path.join(config('SAVE_FOLDER'),f"account_{self.accountID}")
         decrypted_text = self.crypto.decrypt(sub_save_folder, self.key, self.accountID,filename=pressed_file_name.split(":")[1])
-        file_handle = file_handling(self.accountID, self.key)
-        temp_name = file_handle.show_decrypted_pdf(decrypted_text)
-        file_handle.open_temp_file(temp_name)
+        if (pressed_file_name.split(".")[1] == "pdf"):
+            flag = True
+        temp_name = self.file_handle.show_decrypted_pdf(decrypted_text, pdf_flag=flag)
+        self.file_handle.temp_files.append(temp_name)
+        self.file_handle.open_temp_file(temp_name)
+
+    # when the window close
+    def closeEvent(self, event):
+        for file in self.file_handle.temp_files:
+            self.file_handle.delete_temp_file(file)
+        print("files closed")
+        event.accept()
 
 # custom class for capturing print outputs
 class Stream(QtCore.QObject):
@@ -214,6 +226,7 @@ class MainWindow(QMainWindow):
         else:
             QMessageBox.warning(self, 'Error', 'Please create an account first')
             return
+
         file_paths, _ = QFileDialog.getOpenFileNames(self, 'Open File', "", "CSV Files (*.csv);;PDF Files (*.pdf)")
         if file_paths:
             for file_path in file_paths:

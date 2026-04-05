@@ -223,6 +223,13 @@ class query_processor:
         self.db.commit()
         return categoryID
 
+    def insert_into_files(self, accountID,  filename, new_filename, str_size, file_type):
+        new_query = "INSERT INTO files (accountID, file_name, hashed_name, file_size, file_type) VALUES (%s, %s, %s, %s, %s)"
+        self.cursor.execute(new_query, (accountID,  filename, new_filename, str_size, file_type))
+        file_ID = self.cursor.lastrowid
+        self.db.commit()
+        return file_ID
+
     # New user insertion with check of if the user already exists
     def insert_user(self, username, hashed_password, email):
         userID = self.get_userID(username)

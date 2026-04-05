@@ -224,8 +224,7 @@ class cryptography:
 
     # Encrypts the user file (filename) from folder_path to the save_folder
     # Returns the unique file id
-    def encrypt(self, save_folder, folder_path, filename, key, accountID):
-
+    def encrypt(self, save_folder, folder_path, filename, key, accountID, str_size, file_type):
         file_path = os.path.join(folder_path, filename)
         with open(file_path, 'rb') as file:
             data = file.read()
@@ -240,10 +239,7 @@ class cryptography:
         with open(destination, 'wb') as file:
             file.write(encrypted)
 
-        new_query = "INSERT INTO files (accountID, file_name, hashed_name) VALUES (%s, %s, %s)"
-        self.cursor.execute(new_query, (accountID,  filename, new_filename))
-        file_ID = self.cursor.lastrowid
-        self.db.commit()
+        file_ID = self.query.insert_into_files(accountID,  filename, new_filename, str_size, file_type)
         return file_ID
 
     # Decrypts the user file given filename or hashed_filename
@@ -254,14 +250,12 @@ class cryptography:
 
         if hashed_filename:
             hashed_name = hashed_filename
-        
-        file_path = os.path.join(enc_storage_path,  hashed_name)
 
+        file_path = os.path.join(enc_storage_path,  hashed_name)
         with open(file_path, "rb") as file:
             data = file.read()
 
         fernet = Fernet(key)
-
         decrypted = fernet.decrypt(data)
 
         return decrypted

@@ -765,7 +765,7 @@
              </size>
             </property>
             <property name="currentIndex">
-             <number>2</number>
+             <number>3</number>
             </property>
             <widget class="QWidget" name="home_page">
              <layout class="QVBoxLayout" name="verticalLayout_4">
@@ -881,19 +881,32 @@
              </layout>
             </widget>
             <widget class="QWidget" name="files_page">
-             <widget class="QLabel" name="label_5">
-              <property name="geometry">
-               <rect>
-                <x>340</x>
-                <y>180</y>
-                <width>121</width>
-                <height>41</height>
-               </rect>
-              </property>
-              <property name="text">
-               <string>Files Page</string>
-              </property>
-             </widget>
+             <layout class="QVBoxLayout" name="verticalLayout_7">
+              <item>
+               <widget class="QTreeWidget" name="treeWidget">
+                <column>
+                 <property name="text">
+                  <string>Name</string>
+                 </property>
+                </column>
+                <column>
+                 <property name="text">
+                  <string>Date Added</string>
+                 </property>
+                </column>
+                <column>
+                 <property name="text">
+                  <string>Size</string>
+                 </property>
+                </column>
+                <column>
+                 <property name="text">
+                  <string>Type</string>
+                 </property>
+                </column>
+               </widget>
+              </item>
+             </layout>
             </widget>
             <widget class="QWidget" name="profile_page">
              <widget class="QLabel" name="label_6">

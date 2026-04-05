@@ -19,10 +19,15 @@ class file_handling():
         self.key = key
         self.crypto = cryptography()
         self.query = query_processor()
+        self.temp_files = []
 
     # Returns temporary decrypted text file of the file in a pdf format
-    def show_decrypted_pdf(self, decrypted_text):
-        with tempfile.NamedTemporaryFile(delete=False, suffix=".pdf") as tmp:
+    def show_decrypted_pdf(self, decrypted_text, pdf_flag=None):
+        suffix_str = ".csv"
+        if (pdf_flag):
+            suffix_str = ".pdf"
+
+        with tempfile.NamedTemporaryFile(delete=False, suffix=suffix_str) as tmp:
             tmp.write(decrypted_text)
             tmp.flush()
         return tmp.name
@@ -63,6 +68,9 @@ class file_handling():
         existing_file_output = []
         for filename in dir:
             if (filename.endswith(".csv") or filename.endswith(".pdf")): 
+                file_type = 'PDF Document'
+                if filename.endswith(".csv"):
+                    file_type = 'CSV Document'
 
                 file_path = os.path.join(config('FOLDER_PATH'), filename)
 
@@ -84,7 +92,10 @@ class file_handling():
                             parsing = HSBC_PDF_CONVERSION(file_path)
                     # print("parsed: ", filename)
                     parsed_count+=1
-                    file_ID = self.crypto.encrypt(sub_save_folder, config('FOLDER_PATH'), filename, self.key, self.accountID)
+                    size_file = os.path.getsize(file_path)
+                    str_size = self.convert_file_size(size_file)
+
+                    file_ID = self.crypto.encrypt(sub_save_folder, config('FOLDER_PATH'), filename, self.key, self.accountID, str_size, file_type)
                     ProcessingDF(parsing.df, file_ID, self.accountID)
                 else:
                     existing_file_output.append(result[1])
@@ -107,3 +118,15 @@ class file_handling():
         self.cursor.execute(query, (accountID,))
         result = self.cursor.fetchall()
         return result if result else None
+
+    def convert_file_size(self, size):
+        str_size = ""
+        if (size < 1024):
+            str_size = f"{size}Bytes"
+        elif (size < 1024**2):
+            str_size = f"{size/1024:.1f}KB"
+        elif (size < 1024**3):
+            str_size = f"{size/1024**2:.1f}MB"
+        else:
+            str_size =  f"{size/1024**3:.1f}GB"
+        return str_size
