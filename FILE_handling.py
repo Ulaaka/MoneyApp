@@ -40,6 +40,15 @@ class file_handling():
     def open_temp_file(self, temp_name):
         os.system(f"open {temp_name}")
 
+    def delete_encrypted_file(self, fileID, accountID):
+        hashed_name = self.query.get_hashed_name(accountID, fileID=fileID)
+        sub_save_folder = os.path.join(config('SAVE_FOLDER'),f"account_{accountID}")
+        for encrypted_file in os.listdir(sub_save_folder):
+            if (hashed_name == encrypted_file):
+                file_path = os.path.join(sub_save_folder, encrypted_file)
+                os.remove(file_path)
+                print("file removed from folder")
+
     # Checks if the file with the same content exists by checking the save folder for encrypted files
     def check_file_exists(self, sub_save_folder, file_path, filename):
 

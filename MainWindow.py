@@ -19,8 +19,11 @@ class Disclaimer_window(QDialog):
         super().__init__(parent)
         self.ui = Ui_Disclaimer()
         self.fileID = fileID
+        self.accountID = parent.accountID
+        self.key = parent.key
         self.ui.setupUi(self)
         self.query = query_processor()
+        self.file_handle = file_handling()
         self.signal_connect()
 
     def signal_connect(self):
@@ -33,11 +36,12 @@ class Disclaimer_window(QDialog):
         self.setObjectName("disclaimer_widget")
 
     def proceed_button_clicked(self):
-        if self.query.delete_file(self.fileID):
+        if self.query.delete_file(self.fileID) and self.file_handle.delete_encrypted_file(self.fileID, self.accountID):
             self.close()
 
     def cancel_button_clicked(self):
         self.close()
+
 
 class Live_output_window(QDialog):
     def __init__(self, parent, saved_print):

@@ -247,7 +247,7 @@ class cryptography:
     def decrypt(self, enc_storage_path, key, accountID, filename=None, hashed_filename=None):
         if filename:
             # even if the account name is changed, ID would stay the same
-            hashed_name = self.query.get_hashed_name(accountID, filename)
+            hashed_name = self.query.get_hashed_name(accountID, name_file=filename)
 
         if hashed_filename:
             hashed_name = hashed_filename

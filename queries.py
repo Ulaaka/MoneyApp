@@ -322,8 +322,12 @@ class query_processor:
         return output[0] if output else None
 
     # Returns the hashed name of the encrypted file
-    def get_hashed_name(self, accountID, filename):
-        new_sql = f"SELECT hashed_name FROM files WHERE accountID = '{accountID}' and file_name = '{filename}'"
+    def get_hashed_name(self, accountID, name_file=None, fileID=None):
+        if name_file:
+            new_sql = f"SELECT hashed_name FROM files WHERE accountID = '{accountID}' and file_name = '{name_file}'"
+        if fileID:
+            new_sql = f"SELECT hashed_name FROM files WHERE accountID = '{accountID}' and file_ID = '{fileID}'"
+
         self.cursor.execute(new_sql)
         output = self.cursor.fetchone()
         return output[0] if output else None
