@@ -36,7 +36,7 @@ class Live_output_window(QtWidgets.QDialog):
     def adjust_text_edit(self):
         text = self.ui.textBrowser.document()
         text.adjustSize()
-        self.ui.textBrowser.setMinimumHeight(int(text.size().height() - 10))
+        self.ui.textBrowser.setMinimumHeight(int(text.size().height()))
 
     # Action when the link in the text is clicked
     def link_click(self, event):
