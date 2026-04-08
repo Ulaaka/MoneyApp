@@ -2,17 +2,18 @@ from PyQt5.QtWidgets import QCompleter, QWidget, QMessageBox
 from PyQt5.QtCore import Qt
 from queries import query_processor
 import pandas as pd
+from deletion_disclaimer_window import Deletion_disclaimer_window
 
 class Account_control_page(QWidget):
     def __init__(self, current_account, parent):
         super().__init__(parent)
         self.current_account = current_account
         self.userID = parent.userID
+        self.accountID = parent.accountID
         self._parent = parent
         self.currencies = parent.currency_list
         self.objective = 0
         self.query = query_processor()
-        self.accountID = parent.accountID
         self.account_control_signals_connect()
 
     def account_control_signals_connect(self):
@@ -59,17 +60,8 @@ class Account_control_page(QWidget):
         parent_window.ui.comboBox_2.setEnabled(flag)
 
     def delete_acc(self):
-        parent_window = self._parent
-        parent_window.ui.stackedWidget.setCurrentWidget(parent_window.ui.home_page)
-        options = self.query.compute_account_options(self.userID).remove(self.current_account)
-        if options:
-            accountID = self.query.get_accountID(options[0], self.userID)
-            parent_window.update_account(options[0], accountID)
-        else:
-            parent_window.update_account(None, None)
-
-        self.query.delete_account(self.accountID)
-        parent_window.manage_home_page()
+        disclaimer_window = Deletion_disclaimer_window(self)
+        disclaimer_window.show()
 
     def objective_toggler(self):
         if (self.objective == 1):
