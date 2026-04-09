@@ -40,7 +40,7 @@ class Change_confirmation_page(QDialog):
     def resend_button(self):
         self.ui.confirmation_line.clear()
         self.expire_func()
-        self.timer.stop() 
+        self.timer.stop()
         self.timer_manager.begin_timer()
 
     def submit_code(self):

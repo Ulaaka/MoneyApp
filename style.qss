@@ -229,7 +229,11 @@ QPushButton#upload_file_button:hover {
 QPushButton#change_button,
 QPushButton#username_change_button,
 QPushButton#email_change_button,
-QPushButton#code_submit_button {
+QPushButton#code_submit_button,
+QPushButton#delete_user_button,
+QPushButton#change_password_button,
+QPushButton#privacy_note_button,
+QPushButton#logout_button{
     background-color: #313a46;
     color: white;
     border: 2px solid black;
@@ -306,7 +310,7 @@ QTreeView#accounts_treeView {
 /*  Dialog  */
 
 QWidget#live_output_window,
-QWidget#disclaimer_widget,
+QWidget#Disclaimer,
 QWidget#button_widget_disclaimer,
 QWidget#change_confirmation{
     background-color: #fff;

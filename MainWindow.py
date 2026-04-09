@@ -160,7 +160,7 @@ class MainWindow(QMainWindow):
                 # config('FOLDER_PATH')
                 shutil.copy(file_path, "/Users/nyamdorjbat-erdene/Final_year/exp_folder")
 
-        saved_stdout = sys.stdout 
+        saved_stdout = sys.stdout
         self.print_output = Stream()
         self.live_output = Live_output_window(self, saved_stdout)
         self.print_output.input_text.connect(self.get_output)
