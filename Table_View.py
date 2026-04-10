@@ -31,12 +31,13 @@ class ListModel(QAbstractTableModel):
             if column == 6:
                 # applies changes to the closest transactions
                 self.query.change_category(self.userID, value, transactionID)
+                self.parent().show_table()
                 # if does not want to
                 # update_category()
             if column == 5:
+                # 
                 if self.query.change_description_and_update(value, transactionID):
-                    self.dataChanged.emit(index, index, [role])
-                    self.parent().update_table()
+                    self.parent().show_table()
             return True
         return False
 

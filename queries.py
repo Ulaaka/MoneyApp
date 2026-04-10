@@ -256,6 +256,7 @@ class query_processor:
     # New category insertion/update with check of if the category already exists
     def insert_category(self, userID, category_sentence, category_list, category_name):
         result = self.get_category(userID, category_list)
+        print(f"returned category: {result}")
         if result is not None:
             try:
                 categoryID = result[0]
@@ -266,6 +267,7 @@ class query_processor:
                 """
                 self.cursor.execute(query, (category_name, categoryID))
                 self.db.commit()
+                print("added category")
             except:
                 print(f"could not update the category:{categoryID}")
         else:
@@ -281,33 +283,35 @@ class query_processor:
         self.cursor.execute(sql, (username,))
         self.db.commit()
 
+    def get_category_info(self, userID):
+        sql_categories  = "SELECT categoryID, category_list, category_name FROM categories WHERE userID = %s ORDER BY categoryID"
+        self.cursor.execute(sql_categories, (userID, ))
+        result = self.cursor.fetchall()
+        return result if result else None
+
     # Returns the category based on the tokens of words in the list
     def get_category(self, userID, category_list):
         # https://stackoverflow.com/a/37662298
         # https://dev.mysql.com/doc/refman/8.4/en/json-search-functions.html
 
-        sql_categories  = "SELECT categoryID, category_list, category_name FROM categories WHERE userID = %s ORDER BY categoryID"
-        self.cursor.execute(sql_categories, (userID, ))
-        result = self.cursor.fetchall()
-        if not result:
+        try:
+            result = self.get_category_info(userID)
+            category_dictionary = {tuple(json.loads(category_list)): (categoryID, category_name) for categoryID, category_list, category_name in result}
+
+            priority_list = [(len([item for item in category_list if item in i]), len(i)) for i in category_dictionary]
+            max_category = max(priority_list, key=lambda x: (x[0], -x[1]))
+            if max_category[0] == 0:
+                return None
+
+            position = priority_list.index(max_category)
+            key = list(category_dictionary)[position]
+
+            output = category_dictionary[key]
+
+            return output
+        except:
             return None
-        tuple_to_dictionary = {tuple(json.loads(category_list)): (categoryID, category_name) for categoryID, category_list, category_name in result}
 
-        if not tuple_to_dictionary:
-            return None
-        
-        priority_list = [(len([item for item in category_list if item in i]), len(i)) for i in tuple_to_dictionary]
-
-        if not priority_list:
-            return None
-        max_category = max(priority_list, key=lambda x: (x[0], -x[1]))
-        position = priority_list.index(max_category)
-
-        key = list(tuple_to_dictionary)[position]
-
-        output = tuple_to_dictionary[key]
-
-        return output if output else None
     # Returns userID
     def get_userID(self, username):
         sql = "SELECT userID FROM users WHERE username = %s"
@@ -546,10 +550,14 @@ class query_processor:
     # needs to search for similar description to apply the same category in the database
     # Updates the category of the selected transaction and its close transactions
     def change_category(self, userID, category, transactionID):
+        # update the current transaction
+        # transaction ID must be correct since its working
         self.update_category(category, transactionID)
         description = self.return_description_given_transactionID(transactionID)
-
+        # this certainly work
         close_transaction_ids = self.find_close_transactions(description)
+
+
         categoryID = self.insert_category(userID, description, close_transaction_ids[1], category)
 
         self.update_category(category, close_transaction_ids[0])
@@ -609,6 +617,7 @@ class query_processor:
         return category_name
 
     # use the category name of the removed description of the category
+    # when category is deleted, updates the transactions
     def update_transaction_after_deletion_description(self, accountID, category_name):
         query = """
             SELECT transactionID, description
@@ -618,7 +627,6 @@ class query_processor:
 
         self.cursor.execute(query, (accountID, category_name))
         result = self.cursor.fetchall()
-         #return result if result else None
         if result:
             for (i, j)in result:
                 new_category = self.return_updated_category(j)
@@ -638,7 +646,6 @@ class query_processor:
         new_category = self.return_updated_category(new_description)
         self.update_category(new_category, transactionID)
 
-    # Show list of accounts give user ID
     def return_accounts_given_userID(self, userID):
         query = """
             SELECT accountID, account_name
@@ -649,7 +656,7 @@ class query_processor:
         self.cursor.execute(query, (userID,))
         result = self.cursor.fetchall()
         return result if result else None
-    
+
     def compute_account_options(self, userID):
         accounts = self.return_accounts_given_userID(userID)
         options_list = [account[1] for account in accounts] if accounts else []
