@@ -136,7 +136,8 @@ QLabel#user_accounts_label,
 QLabel#user_accounts_value,
 QLabel#no_file_label,
 QLabel#confirmation_label,
-QLabel#timer_label {
+QLabel#timer_label,
+QLabel#table_edit_label {
     background-color: transparent;
     color: black;
     border-radius: 15px;
@@ -314,4 +315,10 @@ QWidget#Disclaimer,
 QWidget#button_widget_disclaimer,
 QWidget#change_confirmation{
     background-color: #fff;
+}
+
+/* Date Range */
+QDateEdit#table_date_edit{
+    background-color: transparent;
+    color: black;
 }

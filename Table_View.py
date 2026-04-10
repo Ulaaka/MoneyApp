@@ -13,12 +13,17 @@ class ListModel(QAbstractTableModel):
         return self._data.shape[0]
 
     def columnCount(self, parent=None):
-        return self._data.shape[1]
+        # add columns + extra column at the back
+        return self._data.shape[1] + 1
 
     def data(self, index, role=Qt.ItemDataRole.DisplayRole):
         if index.isValid():
             if role == Qt.ItemDataRole.DisplayRole or role == Qt.ItemDataRole.EditRole:
-                value = self._data.iloc[index.row(), index.column()]
+                column =int(index.column())
+                if column < 9:
+                    value = self._data.iloc[index.row(), index.column()]
+                else:
+                    value = ""
                 return str(value)
 
     def setData(self, index, value, role):
@@ -26,7 +31,7 @@ class ListModel(QAbstractTableModel):
             column =int(index.column())
             row = int(index.row())
             transactionID = int(self._data.iloc[row, 0])
-            self._data.iloc[index.row(), column] = value
+            self._data.iloc[index.row(), index.column()] = value
             # change category
             if column == 6:
                 # applies changes to the closest transactions
@@ -46,7 +51,10 @@ class ListModel(QAbstractTableModel):
             orientation == Qt.Orientation.Horizontal
             and role == Qt.ItemDataRole.DisplayRole
         ):
-            return self._data.columns[col]
+            if (col < 9):
+                return self._data.columns[col]
+            else:
+                return ""
 
     def flags(self, index):
         return (

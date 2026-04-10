@@ -419,7 +419,6 @@ class query_processor:
         else:
             print("could not update the user information")
 
-
     # Shows existing files IDs and filename submitted in the account
     def get_files(self, accountID):
         query = """
@@ -472,6 +471,11 @@ class query_processor:
     def delete_account(self, accountID):
         query = "DELETE FROM accounts WHERE accountID = %s"
         self.cursor.execute(query, (accountID, ))
+        self.db.commit()
+    
+    def delete_transaction(self, transactionID):
+        query = "DELETE FROM transactions WHERE transactionID = %s"
+        self.cursor.execute(query, (transactionID, ))
         self.db.commit()
 
     # Returns the list of words from the description of the selected transaction

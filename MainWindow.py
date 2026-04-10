@@ -1,7 +1,7 @@
 import sys,  shutil, pycountry
 from decouple import config
 from PyQt5.QtWidgets import QMainWindow, QApplication, QFileDialog, QMessageBox, QHeaderView, QPushButton, QWidget
-from PyQt5.QtCore import Qt, QPoint
+from PyQt5.QtCore import Qt, QPoint, QModelIndex
 from PyQt5.QtGui import QStandardItemModel, QStandardItem
 
 from financial_app import Ui_MainWindow
@@ -93,7 +93,7 @@ class MainWindow(QMainWindow):
 
              self.ui.treeView.setModel(tree_model)
 
-             for row_index, _ in enumerate(files):
+             for row_index in range(len(files)):
                 item_button = QPushButton("Remove")
                 view_button = QPushButton("View")
                 item_button.setObjectName("item_button")
@@ -125,11 +125,24 @@ class MainWindow(QMainWindow):
         else:
             self.set_table(True)
             self.model = ListModel(transactions, self)
+            self.data = transactions
             self.ui.tableView.setModel(self.model)
 
             hidden_columns = [0, 1, 2]
             for i in hidden_columns:
                 self.ui.tableView.setColumnHidden(i, True)
+
+        for row_index in range(len(transactions)):
+            transaction_id = transactions.iloc[row_index].iloc[0]
+            remove_button = QPushButton("Remove")
+            remove_button.setObjectName("item_button")
+            self.ui.tableView.setIndexWidget(self.model.index(row_index, 9), remove_button)
+            remove_button.clicked.connect(lambda clicked, id=transaction_id, row=row_index: self.handle_remove_button(id))
+
+    def handle_remove_button(self, id):
+        query = query_processor()
+        query.delete_transaction(int(id))
+        self.show_table()
 
     def update_account(self, new_account_name, new_accountID):
         self.account_name = new_account_name
