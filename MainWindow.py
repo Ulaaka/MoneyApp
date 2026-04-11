@@ -1,22 +1,14 @@
-import sys,  shutil, pycountry
-from decouple import config
-from PyQt5.QtWidgets import QMainWindow, QApplication, QFileDialog, QMessageBox, QHeaderView, QPushButton, QWidget
-from PyQt5.QtCore import Qt, QPoint, QDate, QSortFilterProxyModel
-from PyQt5.QtGui import QStandardItemModel, QStandardItem
-from datetime import datetime
+import sys, pycountry
+from PyQt5.QtWidgets import QMainWindow, QApplication, QHeaderView
+from PyQt5.QtCore import QPoint
+
+from queries import query_processor
+from FILE_handling import file_handling
 
 from financial_app import Ui_MainWindow
-from disclaimer_window import Disclaimer_window
-from live_output_window import Live_output_window
-from queries import query_processor
-from Table_View import ListModel
-from FILE_handling import file_handling
-from stream import Stream
 from account_selection_and_add_window import Account_selection_page
 from account_control_page import Account_control_page
 from profile_page import Profile_page
-from system_functions import system_functions
-from thread_worker import Thread_worker
 from upload_Page import Upload_page
 from files_page import Files_page
 from home_page import Home_page
