@@ -1,0 +1,107 @@
+from PyQt5.QtWidgets import QPushButton
+from PyQt5.QtCore import Qt, QDate, QSortFilterProxyModel
+from queries import query_processor
+from Table_View import ListModel
+from system_functions import system_functions
+from thread_worker import Thread_worker
+class Home_page():
+    def __init__(self, parent):
+        self._parent = parent
+
+    def show_table(self):
+            parent_window = self._parent
+            query = query_processor()
+            if not parent_window.accountID:
+                return
+
+            self.transactions = query.get_transactions(parent_window.accountID)
+            if len(self.transactions) == 0:
+                self.set_table(False)
+                parent_window.ui.no_account_label.setText(f"No transaction found for '{parent_window.account_name}'")
+            else:
+                self.set_table(True)
+                self.set_select_dates()
+
+                if (parent_window.start_date < self.min_date and parent_window.end_date > self.max_date):
+                    return
+                else:
+                    self.filter_transaction = self.transactions[self.transactions.iloc[:, 3].dt.date.between(parent_window.start_date, parent_window.end_date)]
+
+
+                # -- TABLE LOADING -- 
+                self.model = ListModel(self.filter_transaction, parent_window)
+                self.data = self.filter_transaction
+
+                # Set the search filter for the table
+                # inspired from:  https://www.youtube.com/watch?v=53bZSTSLUqI
+
+                proxy_model = QSortFilterProxyModel()
+                proxy_model.setSourceModel(self.model)
+                proxy_model.setFilterCaseSensitivity(Qt.CaseInsensitive)
+                proxy_model.setFilterKeyColumn(5)
+                parent_window.ui.lineEdit.textChanged.connect(proxy_model.setFilterRegExp)
+                parent_window.ui.tableView.setModel(proxy_model)
+
+                # Hides the ID columns of dataframe
+                hidden_columns = [0, 1, 2]
+                for i in hidden_columns:
+                    parent_window.ui.tableView.setColumnHidden(i, True)
+
+                # Add the remove buttons in the extra column
+                for row_index in range(len(self.filter_transaction)):
+                    transaction_id = self.filter_transaction.iloc[row_index].iloc[0]
+                    remove_button = QPushButton("Remove")
+                    remove_button.setObjectName("item_button")
+                    index = proxy_model.mapFromSource(self.model.index(row_index, 9))
+                    parent_window.ui.tableView.setIndexWidget(index, remove_button)
+                    remove_button.clicked.connect(lambda clicked, id=transaction_id, row=row_index: self.handle_remove_button(id))
+
+    def set_select_dates(self):
+        parent_window = self._parent
+        self.transactions = self.transactions.sort_values(by=self.transactions.columns[3], ascending=False)
+        date_list = self.transactions.iloc[:, 3].tolist()
+
+        self.min_date = min(date_list).date()
+        self.max_date = max(date_list).date()
+
+        if parent_window.start_date is None and parent_window.end_date is None:
+            parent_window.start_date = self.min_date
+            parent_window.end_date = self.max_date
+
+        parent_window.ui.start_date_edit.setDate(QDate(parent_window.start_date.year, parent_window.start_date.month, parent_window.start_date.day))
+        parent_window.ui.end_date_edit.setDate(QDate(parent_window.end_date.year, parent_window.end_date.month, parent_window.end_date.day))
+
+    def handle_remove_button(self, id):
+        query = query_processor()
+        query.delete_transaction(int(id))
+        self.show_table()
+
+    def download_table(self):
+        parent_window = self._parent
+        download_type = parent_window.ui.comboBox_3.currentText()
+        system = system_functions()
+        if ("CSV" in download_type):
+            self.worker = Thread_worker(lambda: system.create_csv(parent_window.account_name, self.filter_transaction))
+            self.worker.start()
+
+        elif ("PDF" in download_type):
+            self.worker = Thread_worker(lambda: system.create_pdf(parent_window.account_name, self.filter_transaction))
+            self.worker.start()
+
+
+    def get_filter_date(self, start=None):
+        parent_window =self._parent
+        if start is True:
+            value = parent_window.ui.start_date_edit.date()
+            parent_window.start_date  = value.toPyDate()
+        elif start is False:
+            value = parent_window.ui.end_date_edit.date()
+            parent_window.end_date  = value.toPyDate()
+        self.show_table()
+
+    def set_table(self, flag):
+        parent_window = self._parent
+        if flag:
+            parent_window.ui.home_stacked.setCurrentWidget(parent_window.ui.table_page)
+        else:
+            parent_window.ui.home_stacked.setCurrentWidget(parent_window.ui.no_account_page)

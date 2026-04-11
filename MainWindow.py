@@ -17,7 +17,9 @@ from account_control_page import Account_control_page
 from profile_page import Profile_page
 from system_functions import system_functions
 from thread_worker import Thread_worker
-
+from upload_Page import Upload_page
+from files_page import Files_page
+from home_page import Home_page
 class MainWindow(QMainWindow):
     def __init__(self, controller , key, userID):
         super(MainWindow, self).__init__()
@@ -28,31 +30,26 @@ class MainWindow(QMainWindow):
         self.account_name = None
         self.accountID = None
         self.status_panel = False
-        self.currency_list = [f"{currency.alpha_3} - {currency.name} " for currency in pycountry.currencies]
         self.start_date = None
         self.end_date = None
+        self.currency_list = [f"{currency.alpha_3} - {currency.name} " for currency in pycountry.currencies]
 
         self.ui = Ui_MainWindow()
         self.file_handle = file_handling(self.accountID, self.key)
-        self.system = system_functions()
+        self.home_manager = Home_page(self)
+        self.upload_manager = Upload_page(self)
+        self.file_manager = Files_page(self)
+        self.account_manager = Account_selection_page(self)
 
         self.ui.setupUi(self)
         self.MainWindow_signals_connection()
-        self.manage_home_page()
-        self.ui.comboBox_3.activated.connect(self.download_dataframe)
-        self.accounts_selection_show()
+        self.home_page_handler()
 
-    def label_click(self,event):
-        current_account = self.ui.account_name_label.text()
-        if current_account == "Not selected":
-            return
-        Account_control_page(current_account, self)
-
-    def manage_home_page(self):
+    def home_page_handler(self):
         query = query_processor()
         options = query.compute_account_options(self.userID)
         if options is None:
-            self.set_table(False)
+            self.home_manager.set_table(False)
             self.ui.no_account_label.setText(f"No Account found")
             self.ui.account_name_label.setText("Not selected")
         else:
@@ -60,176 +57,10 @@ class MainWindow(QMainWindow):
                 accountID = query.get_accountID(options[0], self.userID)
                 self.update_account(options[0], accountID)
             else:
-                self.show_table()
+                self.home_manager.show_table()
+                self.ui.comboBox_3.activated.connect(self.home_manager.download_table)
 
-    def show_files(self):
-        query = query_processor()
-        if not self.accountID:
-            return
-        files = query.get_files(self.accountID)
-        if files is None:
-            self.set_files(False)
-            self.ui.no_file_label.setText(f"No files found for '{self.account_name}'")
-        else:
-             self.set_files(True)
-             tree_model = QStandardItemModel()
-             tree_model.setHorizontalHeaderLabels(["Name", "Size", "Kind", "Date Added", "", ""])
-
-             for  tuple in files:
-                items = []
-                for col_index, col_val in enumerate(tuple[1:]):
-                    if (col_index == 1):
-                        converted_size_str = self.file_handle.convert_file_size(col_val)
-                        item = QStandardItem(converted_size_str)
-                        item.setData(int(col_val), Qt.UserRole)
-                    elif (col_index == 3):
-                        item = QStandardItem(str(col_val))
-                        item.setData(str(col_val),  Qt.UserRole)
-                    else:
-                        item = QStandardItem(col_val)
-                        if (col_index == 0):
-                             # associated fileID for filename item
-                            item.setData(tuple[0], Qt.UserRole)
-                        else:
-                            item.setData(col_val, Qt.UserRole)
-                    items.append(item)
-                for item in items:
-                    item.setEditable(False)
-                tree_model.appendRow(items)
-                tree_model.setSortRole(Qt.UserRole)
-
-             self.ui.treeView.setModel(tree_model)
-
-             for row_index in range(len(files)):
-                item_button = QPushButton("Remove")
-                view_button = QPushButton("View")
-                item_button.setObjectName("item_button")
-                view_button.setObjectName("view_button")
-                self.ui.treeView.setIndexWidget(tree_model.index(row_index, 4), item_button)
-                self.ui.treeView.setIndexWidget(tree_model.index(row_index, 5), view_button)
-                fileID = tree_model.data(tree_model.index(row_index, 0), Qt.UserRole)
-                item_button.clicked.connect(lambda click, id=fileID: self.delete_fileID(id))
-                view_button.clicked.connect(lambda clicked, id=fileID: self.view_file_with_ID(id))
-
-    def view_file_with_ID(self, id):
-        file_handle = file_handling(self.accountID, self.key)
-        file_handle.view_file(fileID=id)
-
-    def delete_fileID(self, fileID):
-        print(fileID)
-        disclaimer = Disclaimer_window(fileID, self)
-        disclaimer.show()
-
-    def show_table(self):
-        query = query_processor()
-        if not self.accountID:
-            return
-
-        self.transactions = query.get_transactions(self.accountID)
-        if len(self.transactions) == 0:
-            self.set_table(False)
-            self.ui.no_account_label.setText(f"No transaction found for '{self.account_name}'")
-        else:
-            self.set_table(True)
-            self.transactions = self.transactions.sort_values(by=self.transactions.columns[3], ascending=False)
-            date_list = self.transactions.iloc[:, 3].tolist()
-
-            min_date = min(date_list).date()
-            max_date = max(date_list).date()
-
-            if self.start_date is None and self.end_date is None:
-                self.start_date = min_date
-                self.end_date = max_date
-
-            self.ui.start_date_edit.setDate(QDate(self.start_date.year, self.start_date.month, self.start_date.day))
-            self.ui.end_date_edit.setDate(QDate(self.end_date.year, self.end_date.month, self.end_date.day))
-            if (self.start_date < min_date and self.end_date > max_date):
-                return
-            else:
-                self.filter_transaction = self.transactions[self.transactions.iloc[:, 3].dt.date.between(self.start_date, self.end_date)]
-
-            self.model = ListModel(self.filter_transaction, self)
-            self.data = self.filter_transaction
-
-            # https://www.youtube.com/watch?v=53bZSTSLUqI
-            proxy_model = QSortFilterProxyModel()
-            proxy_model.setSourceModel(self.model)
-            proxy_model.setFilterCaseSensitivity(Qt.CaseInsensitive)
-            proxy_model.setFilterKeyColumn(5)
-            self.ui.lineEdit.textChanged.connect(proxy_model.setFilterRegExp)
-
-            self.ui.tableView.setModel(proxy_model)
-
-            hidden_columns = [0, 1, 2]
-            for i in hidden_columns:
-                self.ui.tableView.setColumnHidden(i, True)
-
-            for row_index in range(len(self.filter_transaction)):
-                transaction_id = self.filter_transaction.iloc[row_index].iloc[0]
-                remove_button = QPushButton("Remove")
-                remove_button.setObjectName("item_button")
-                index = proxy_model.mapFromSource(self.model.index(row_index, 9))
-                self.ui.tableView.setIndexWidget(index, remove_button)
-                remove_button.clicked.connect(lambda clicked, id=transaction_id, row=row_index: self.handle_remove_button(id))
-
-
-    def handle_remove_button(self, id):
-        query = query_processor()
-        query.delete_transaction(int(id))
-        self.show_table()
-
-    def update_account(self, new_account_name, new_accountID):
-        self.account_name = new_account_name
-        self.accountID = new_accountID
-        self.ui.account_name_label.setText(new_account_name)
-        self.start_date = None
-        self.end_date = None
-        self.show_table()
-
-    def set_table(self, flag):
-        if flag:
-            self.ui.home_stacked.setCurrentWidget(self.ui.table_page)
-        else:
-            self.ui.home_stacked.setCurrentWidget(self.ui.no_account_page)
-
-    def set_files(self, flag):
-        if flag:
-            self.ui.files_stack.setCurrentWidget(self.ui.files_tree_page)
-        else:
-            self.ui.files_stack.setCurrentWidget(self.ui.no_file_page)
-
-    def upload_file(self):
-        if (not self.accountID):
-            QMessageBox.warning(self, 'Error', 'Please create an account first')
-            return
-
-        file_paths, _ = QFileDialog.getOpenFileNames(self, 'Open File', "", "CSV Files (*.csv);;PDF Files (*.pdf)")
-        if file_paths:
-            for file_path in file_paths:
-                # config('FOLDER_PATH')
-                shutil.copy(file_path, "/Users/nyamdorjbat-erdene/Final_year/exp_folder")
-
-        saved_stdout = sys.stdout
-        self.print_output = Stream()
-        self.live_output = Live_output_window(self, saved_stdout)
-        self.print_output.input_text.connect(self.get_output)
-        sys.stdout = self.print_output
-
-
-        # process the files
-        files_process = file_handling(self.accountID, self.key)
-        self.worker = Thread_worker(files_process.process_files_in_folder)
-        self.worker.done.connect(self.kill_progress)
-        self.worker.start()
-        #files_process.process_files_in_folder()
-        self.live_output.ui.textBrowser.adjustSize()
-        self.live_output.adjustSize()
-        self.live_output.show()
-
-    def kill_progress(self):
-        pass
-
-    def accounts_selection_show(self):
+    def account_page_handler(self):
         if not self.status_panel:
             # https://forum.qt.io/topic/116360/qwidget-maptoglobal-not-giving-right-result/2
             self.panel = Account_selection_page(self)
@@ -245,13 +76,27 @@ class MainWindow(QMainWindow):
             self.panel.close()
             self.status_panel = False
 
-    def get_output(self, text):
-        stripped_list = [line for line in text.splitlines() if line.strip() != ""]
-        lines = "\n".join(stripped_list)
-        self.live_output.ui.textBrowser.append(lines)
+    def update_parent(self, option, accountID):
+        self.account_name = option
+        self.accountID = accountID
+        self.ui.account_name_label.setText(option)
+        self.home_manager.show_table()
+
+
+    def update_account(self, new_account_name, new_accountID):
+        self.account_name = new_account_name
+        self.accountID = new_accountID
+        self.ui.account_name_label.setText(new_account_name)
+        self.start_date = None
+        self.end_date = None
+        self.home_manager.show_table()
 
     def MainWindow_signals_connection(self):
-        # interface connections
+        # Default connections
+        self.ui.stackedWidget.setCurrentWidget(self.ui.home_page)
+        self.ui.full_menu_widget.hide()
+
+        # -- BUTTONS CONNECTIONS -- 
         self.ui.home_button_1.clicked.connect(self.home_page_show)
         self.ui.home_button_2.clicked.connect(self.home_page_show)
 
@@ -270,48 +115,27 @@ class MainWindow(QMainWindow):
         self.ui.settings_button_1.clicked.connect(self.settings_page_show)
         self.ui.settings_button_2.clicked.connect(self.settings_page_show)
 
-        self.ui.account_button.clicked.connect(self.accounts_selection_show)
-        self.ui.upload_file_button.clicked.connect(self.upload_file)
+        self.ui.account_button.clicked.connect(self.account_page_handler)
+        self.ui.upload_file_button.clicked.connect(self.upload_manager.upload_file)
+        self.ui.upload_file_button.clicked.connect(self.home_manager.set_select_dates)
+
+        self.ui.account_name_label.mousePressEvent = self.account_label_clicked
+
         self.ui.tableView.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
-        self.ui.account_name_label.mousePressEvent = self.label_click
-
-        self.ui.full_menu_widget.hide()
-        self.ui.stackedWidget.setCurrentIndex(0)
-
         self.ui.treeView.header().setSectionResizeMode(QHeaderView.Stretch)
 
-        self.ui.start_date_edit.editingFinished.connect(lambda: self.get_filter_date(start=True))
-        self.ui.end_date_edit.editingFinished.connect(lambda: self.get_filter_date(start=False))
-    
-    def download_dataframe(self):
-        download_type = self.ui.comboBox_3.currentText()
-        if ("CSV" in download_type):
-            self.worker = Thread_worker(lambda: self.system.create_csv(self.account_name, self.filter_transaction))
-            self.worker.done.connect(self.kill_progress)
-            self.worker.start()
-            #self.system.create_csv(self.account_name, self.filter_transaction)
-        elif ("PDF" in download_type):
-            self.worker = Thread_worker(lambda: self.system.create_pdf(self.account_name, self.filter_transaction))
-            self.worker.done.connect(self.kill_progress)
-            self.worker.start()
-            #self.system.create_pdf(self.account_name, self.filter_transaction)
+        self.ui.start_date_edit.editingFinished.connect(lambda: self.home_manager.get_filter_date(start=True))
+        self.ui.end_date_edit.editingFinished.connect(lambda: self.home_manager.get_filter_date(start=False))
 
-    def get_filter_date(self, start=None):
-        if start is True:
-            value = self.ui.start_date_edit.date()
-            self.start_date  = value.toPyDate()
-        elif start is False:
-            value = self.ui.end_date_edit.date()
-            self.end_date  = value.toPyDate()
-        self.show_table()
-
-    def effectiveWinId(self):
-        return super().effectiveWinId()
+    def account_label_clicked(self, event):
+        current_account = self.ui.account_name_label.text()
+        if current_account == "Not selected":
+            return
+        Account_control_page(current_account, self)
 
     def home_page_show(self):
         self.ui.stackedWidget.setCurrentWidget(self.ui.home_page)
-        self.show_table()
-
+        self.home_manager.show_table()
 
     def upload_page_show(self):
         self.ui.stackedWidget.setCurrentWidget(self.ui.upload_page)
@@ -319,8 +143,7 @@ class MainWindow(QMainWindow):
 
     def file_page_show(self):
         self.ui.stackedWidget.setCurrentWidget(self.ui.files_page)
-        #self.ui.files_stack.setCurrentWidget(self.ui.files_tree_page)
-        self.show_files()
+        self.file_manager.show_files()
 
     def stats_page_show(self):
         self.ui.stackedWidget.setCurrentWidget(self.ui.stats_page)
@@ -332,12 +155,6 @@ class MainWindow(QMainWindow):
 
     def settings_page_show(self):
         self.ui.stackedWidget.setCurrentWidget(self.ui.settings_page)
-
-    def update_parent(self, option, accountID):
-        self.account_name = option
-        self.accountID = accountID
-        self.ui.account_name_label.setText(option)
-        self.show_table()
 
         # when the file window close
     def closeEvent(self, event):

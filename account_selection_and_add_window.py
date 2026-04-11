@@ -1,5 +1,5 @@
 from PyQt5.QtWidgets import QDialog, QCompleter, QMessageBox
-from PyQt5.QtCore import Qt,pyqtSignal, QSortFilterProxyModel
+from PyQt5.QtCore import Qt,pyqtSignal, QPoint
 from account_selection_panel import account_selection_form
 from account_add_page import account_add_page_form
 from queries import query_processor
@@ -10,6 +10,7 @@ class Account_selection_page(QDialog):
     def __init__(self, parent):
         super().__init__(parent)
 
+        self._parent = parent
         self.userID = parent.userID
         self.currency_list = parent.currency_list
 

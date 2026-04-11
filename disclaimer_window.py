@@ -23,10 +23,10 @@ class Disclaimer_window(QDialog):
 
     def proceed_button_clicked(self):
         hashed_name = self.query.get_hashed_name(self.accountID, fileID=self.fileID)
-
         self.query.delete_file(self.fileID)
         self.file_handle.delete_encrypted_file(self.accountID, hashed_name)
-        self.parent().show_files()
+        self.parent().file_manager.show_files()
+        self.parent().show_table()
         self.close()
 
     def cancel_button_clicked(self):
