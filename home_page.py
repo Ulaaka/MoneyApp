@@ -84,10 +84,8 @@ class Home_page():
     def download_table(self):
         parent_window = self._parent
         download_type = parent_window.ui.comboBox_3.currentText()
-        print(download_type)
         system = system_functions()
         if ("CSV" in download_type):
-            print("started downloading")
             self.worker = Thread_worker(lambda: system.create_csv(parent_window.account_name, self.filter_transaction))
             self.worker.start()
 

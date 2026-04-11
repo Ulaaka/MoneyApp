@@ -51,7 +51,6 @@ class MainWindow(QMainWindow):
                 self.update_account(options[0], accountID)
             else:
                 self.home_manager.show_table()
-                self.ui.comboBox_3.activated.connect(self.home_manager.download_table)
 
     def account_page_handler(self):
         if not self.status_panel:
@@ -119,6 +118,8 @@ class MainWindow(QMainWindow):
 
         self.ui.start_date_edit.editingFinished.connect(lambda: self.home_manager.get_filter_date(start=True))
         self.ui.end_date_edit.editingFinished.connect(lambda: self.home_manager.get_filter_date(start=False))
+
+        self.ui.comboBox_3.activated.connect(self.home_manager.download_table)
 
     def account_label_clicked(self, event):
         current_account = self.ui.account_name_label.text()
