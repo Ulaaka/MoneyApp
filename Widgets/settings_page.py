@@ -49,11 +49,20 @@ class Change_password_page():
                         "- special characters (!$@%)"
                     )
                     return
+
                 hash_password = self.query.get_hashed_password(userID=parent_window.userID)[0]
-                compare = self.password_manager.check_password(current_password, hash_password)
-                if not compare:
+                compare_current = self.password_manager.check_password(current_password, hash_password)
+
+                if not compare_current:
                     QMessageBox.warning(
                         parent_window, 'Error', "Current Password Does Not Match")
+                    return
+
+                compare_new = self.password_manager.check_password(new_password, hash_password)
+
+                if compare_new:
+                    QMessageBox.warning(
+                        parent_window, 'Error', "New password must different from current password")
                     return
 
                 result = self.password_manager.change_password(parent_window.userID, new_password)

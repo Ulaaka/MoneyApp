@@ -482,7 +482,7 @@ class query_processor:
         query = "SELECT account_name FROM accounts WHERE userID = %s"
         self.cursor.execute(query, (userID,))
         result = self.cursor.fetchall()
-        return [account[0] for account in result] if result else None
+        return [account[0] for account in result] if result else []
 
     # Deleted the file, associating transactions
     def delete_file(self, file_ID):

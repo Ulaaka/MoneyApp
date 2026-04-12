@@ -227,10 +227,27 @@ QComboBox#comboBox_3{
     padding: 5px;
 }
 
+QComboBox#comboBox_3 QAbstractItemView {
+    background-color:  #313a46;
+    color: white;
+    border: 2px solid white;
+}
+
+QComboBox#comboBox_3:hover {
+    background-color: rgba(86, 101, 115, 0.1);
+    color:black
+}
+
 QComboBox#comboBox_2 QLineEdit {
     background-color: transparent;
     color: black;
     border: none;
+}
+
+QComboBox#comboBox_2 QAbstractItemView {
+    background-color: transparent;
+    color: black;
+    border: 2px solid black;
 }
 
 /*  Button */
@@ -268,10 +285,15 @@ QPushButton#change_button:hover,
 QPushButton#username_change_button:hover,
 QPushButton#email_change_button:hover,
 QPushButton#code_submit_button:hover,
+QPushButton#delete_user_button:hover,
+QPushButton#change_password_button:hover,
+QPushButton#change_category_button:hover,
+QPushButton#privacy_note_button:hover,
+QPushButton#logout_button:hover,
 QPushButton#change_password_button_settings:hover,
-QPushButton#delete_user_button_2:hover{
+QPushButton#delete_user_button_2:hover {
     background-color: rgba(86, 101, 115, 0.1);
-    color : black;
+    color: black;
 }
 
 

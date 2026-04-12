@@ -15,6 +15,7 @@ class Profile_page(QWidget):
         self.mail_button_state = False
         self.query = query_processor()
         self.profile_signals_connect()
+        self.show_profile_page()
 
     def profile_signals_connect(self):
         parent_window = self._parent
@@ -23,19 +24,17 @@ class Profile_page(QWidget):
         parent_window.ui.username_change_button.clicked.connect(self.change_username)
         parent_window.ui.email_change_button.clicked.connect(self.change_user_mail)
 
-        self.show_profile_page()
-
     def show_profile_page(self):
         tree_model = QStandardItemModel()
         tree_model.setHorizontalHeaderLabels(["Account Name", ""])
         parent_window = self._parent
         result = self.query.get_user_info(self.userID)
+
         result_accounts = self.query.get_number_of_accounts(self.userID)
+
         parent_window.ui.username_change_value.setText(result[0])
         parent_window.ui.email_change_value.setText(result[1])
         parent_window.ui.user_created_value.setText(str(result[2]))
-        if not result_accounts:
-            return
         parent_window.ui.user_accounts_value.setText(str(len(result_accounts)))
         for account in result_accounts:
             item = QStandardItem(account)

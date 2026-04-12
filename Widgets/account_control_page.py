@@ -14,6 +14,7 @@ class Account_control_page(QWidget):
         self.objective = 0
         self.query = query_processor()
         self.account_control_signals_connect()
+        self.show_account_control_page()
 
     def account_control_signals_connect(self):
         parent_window = self._parent
@@ -28,7 +29,6 @@ class Account_control_page(QWidget):
 
         parent_window.ui.change_button.clicked.connect(self.objective_toggler)
         parent_window.ui.delete_account.clicked.connect(self.delete_acc)
-        self.show_account_control_page()
 
     def show_account_control_page(self):
         parent_window = self._parent
@@ -50,13 +50,24 @@ class Account_control_page(QWidget):
 
     def activate(self, flag):
         parent_window = self._parent
-        if flag:
-            parent_window.ui.change_button.setText("Save")
-        else:
-            parent_window.ui.change_button.setText("Edit")
         parent_window.ui.lineEdit_2.setEnabled(flag)
         parent_window.ui.comboBox.setEnabled(flag)
         parent_window.ui.comboBox_2.setEnabled(flag)
+        if flag:
+            parent_window.ui.change_button.setText("Save")
+            self.set_fields_border(activate=True)
+        else:
+            parent_window.ui.change_button.setText("Edit")
+            self.set_fields_border()
+
+    def set_fields_border(self, activate=False):
+        parent_window = self._parent
+        color = "black"
+        if activate:
+            color = "blue"
+        parent_window.ui.lineEdit_2.setStyleSheet(f"border: 2px solid {color};")
+        parent_window.ui.comboBox.setStyleSheet(f"border: 2px solid {color};")
+        parent_window.ui.comboBox_2.setStyleSheet(f"border: 2px solid {color};")
 
     def delete_acc(self):
         disclaimer_window = Deletion_disclaimer_window(self)
@@ -82,8 +93,9 @@ class Account_control_page(QWidget):
         account_currency = parent_window.ui.comboBox_2.currentText()[:3]
 
         if not account_name:
-            QMessageBox.warning(self, 'Error', 'Account Name section cant be empty')
+            QMessageBox.warning(self, 'Error', "Account Name section can't be empty")
             return
+
         # after updating 1st account, needs to catch the changed account
         self.accountID = parent_window.accountID 
         self.query.update_account(self.accountID, account_name, account_type, account_currency)

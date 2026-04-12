@@ -1,6 +1,6 @@
 
 from decouple import config
-import os, tempfile
+import os, tempfile, shutil
 from BASE_Classes import cryptography
 from CSV_Parser import ParsingCSV
 from DF_Processor import ProcessingDF
@@ -132,6 +132,12 @@ class file_handling():
                 print("Incompatible file/s has been submitted")
                 return
         print(f"{parsed_count}/{len(dir)} files loaded successfully")
+
+        # Deletest the file folder/files inside and recreate it
+        file_folder = config("FOLDER_PATH")
+        shutil.rmtree(file_folder)
+        os.mkdir(file_folder)
+
         if (len(existing_file_output) > 0):
             print(f"Skipped duplicates:\n")
             for i in existing_file_output:

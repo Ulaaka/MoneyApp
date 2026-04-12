@@ -109,7 +109,7 @@
             <string/>
            </property>
            <property name="icon">
-            <iconset resource="../Desktop/resource.qrc">
+            <iconset resource="../../Desktop/resource.qrc">
              <normaloff>:/icons/icons_financial_app/search_icon.png</normaloff>
              <normalon>:/icons/icons_financial_app/search_icon.png</normalon>:/icons/icons_financial_app/search_icon.png</iconset>
            </property>
@@ -157,7 +157,7 @@
           <string/>
          </property>
          <property name="icon">
-          <iconset resource="../Desktop/resource.qrc">
+          <iconset resource="../../Desktop/resource.qrc">
            <normaloff>:/icons/icons_financial_app/account_icon.svg</normaloff>
            <normalon>:/icons/icons_financial_app/account_icon.svg</normalon>:/icons/icons_financial_app/account_icon.svg</iconset>
          </property>
@@ -257,7 +257,7 @@
              <string/>
             </property>
             <property name="icon">
-             <iconset resource="../Desktop/resource.qrc">
+             <iconset resource="../../Desktop/resource.qrc">
               <normaloff>:/icons/icons_financial_app/side_bar.png</normaloff>
               <normalon>:/icons/icons_financial_app/side_bar.png</normalon>:/icons/icons_financial_app/side_bar.png</iconset>
             </property>
@@ -293,7 +293,7 @@
              <string/>
             </property>
             <property name="icon">
-             <iconset resource="../Desktop/resource.qrc">
+             <iconset resource="../../Desktop/resource.qrc">
               <normaloff>:/icons/icons_financial_app/home_icon.png</normaloff>
               <normalon>:/icons/icons_financial_app/home_icon.png</normalon>:/icons/icons_financial_app/home_icon.png</iconset>
             </property>
@@ -329,7 +329,7 @@
              <string/>
             </property>
             <property name="icon">
-             <iconset resource="../Desktop/resource.qrc">
+             <iconset resource="../../Desktop/resource.qrc">
               <normaloff>:/icons/icons_financial_app/upload_icon.png</normaloff>
               <normalon>:/icons/icons_financial_app/upload_icon.png</normalon>:/icons/icons_financial_app/upload_icon.png</iconset>
             </property>
@@ -365,7 +365,7 @@
              <string/>
             </property>
             <property name="icon">
-             <iconset resource="../Desktop/resource.qrc">
+             <iconset resource="../../Desktop/resource.qrc">
               <normaloff>:/icons/icons_financial_app/file_icon.png</normaloff>
               <normalon>:/icons/icons_financial_app/file_icon.png</normalon>:/icons/icons_financial_app/file_icon.png</iconset>
             </property>
@@ -401,7 +401,7 @@
              <string/>
             </property>
             <property name="icon">
-             <iconset resource="../Desktop/resource.qrc">
+             <iconset resource="../../Desktop/resource.qrc">
               <normaloff>:/icons/icons_financial_app/chart_icon.png</normaloff>
               <normalon>:/icons/icons_financial_app/chart_icon.png</normalon>:/icons/icons_financial_app/chart_icon.png</iconset>
             </property>
@@ -437,7 +437,7 @@
              <string/>
             </property>
             <property name="icon">
-             <iconset resource="../Desktop/resource.qrc">
+             <iconset resource="../../Desktop/resource.qrc">
               <normaloff>:/icons/icons_financial_app/profile_icon.png</normaloff>
               <normalon>:/icons/icons_financial_app/profile_icon.png</normalon>:/icons/icons_financial_app/profile_icon.png</iconset>
             </property>
@@ -473,7 +473,7 @@
              <string/>
             </property>
             <property name="icon">
-             <iconset resource="../Desktop/resource.qrc">
+             <iconset resource="../../Desktop/resource.qrc">
               <normaloff>:/icons/icons_financial_app/settings_icon.png</normaloff>
               <normalon>:/icons/icons_financial_app/settings_icon.png</normalon>:/icons/icons_financial_app/settings_icon.png</iconset>
             </property>
@@ -571,7 +571,7 @@
              <string>   Sidebar</string>
             </property>
             <property name="icon">
-             <iconset resource="../Desktop/resource.qrc">
+             <iconset resource="../../Desktop/resource.qrc">
               <normaloff>:/icons/icons_financial_app/side_bar.png</normaloff>
               <normalon>:/icons/icons_financial_app/side_bar.png</normalon>:/icons/icons_financial_app/side_bar.png</iconset>
             </property>
@@ -607,7 +607,7 @@
              <string>      Home</string>
             </property>
             <property name="icon">
-             <iconset resource="../Desktop/resource.qrc">
+             <iconset resource="../../Desktop/resource.qrc">
               <normaloff>:/icons/icons_financial_app/home_icon.png</normaloff>
               <normalon>:/icons/icons_financial_app/home_icon.png</normalon>:/icons/icons_financial_app/home_icon.png</iconset>
             </property>
@@ -643,7 +643,7 @@
              <string>    Upload</string>
             </property>
             <property name="icon">
-             <iconset resource="../Desktop/resource.qrc">
+             <iconset resource="../../Desktop/resource.qrc">
               <normaloff>:/icons/icons_financial_app/upload_icon.png</normaloff>
               <normalon>:/icons/icons_financial_app/upload_icon.png</normalon>:/icons/icons_financial_app/upload_icon.png</iconset>
             </property>
@@ -679,7 +679,7 @@
              <string>      Files</string>
             </property>
             <property name="icon">
-             <iconset resource="../Desktop/resource.qrc">
+             <iconset resource="../../Desktop/resource.qrc">
               <normaloff>:/icons/icons_financial_app/file_icon.png</normaloff>
               <normalon>:/icons/icons_financial_app/file_icon.png</normalon>:/icons/icons_financial_app/file_icon.png</iconset>
             </property>
@@ -715,7 +715,7 @@
              <string>     Stats</string>
             </property>
             <property name="icon">
-             <iconset resource="../Desktop/resource.qrc">
+             <iconset resource="../../Desktop/resource.qrc">
               <normaloff>:/icons/icons_financial_app/chart_icon.png</normaloff>
               <normalon>:/icons/icons_financial_app/chart_icon.png</normalon>:/icons/icons_financial_app/chart_icon.png</iconset>
             </property>
@@ -751,7 +751,7 @@
              <string>   Profile</string>
             </property>
             <property name="icon">
-             <iconset resource="../Desktop/resource.qrc">
+             <iconset resource="../../Desktop/resource.qrc">
               <normaloff>:/icons/icons_financial_app/profile_icon.png</normaloff>
               <normalon>:/icons/icons_financial_app/profile_icon.png</normalon>:/icons/icons_financial_app/profile_icon.png</iconset>
             </property>
@@ -787,7 +787,7 @@
              <string> Settings</string>
             </property>
             <property name="icon">
-             <iconset resource="../Desktop/resource.qrc">
+             <iconset resource="../../Desktop/resource.qrc">
               <normaloff>:/icons/icons_financial_app/settings_icon.png</normaloff>
               <normalon>:/icons/icons_financial_app/settings_icon.png</normalon>:/icons/icons_financial_app/settings_icon.png</iconset>
             </property>
@@ -891,7 +891,7 @@
              </size>
             </property>
             <property name="currentIndex">
-             <number>7</number>
+             <number>0</number>
             </property>
             <widget class="QWidget" name="home_page">
              <property name="sizePolicy">
@@ -1151,7 +1151,7 @@
                      <string>Upload file</string>
                     </property>
                     <property name="icon">
-                     <iconset resource="../Desktop/resource.qrc">
+                     <iconset resource="../../Desktop/resource.qrc">
                       <normaloff>:/icons/icons_financial_app/upload_icon.png</normaloff>
                       <normalon>:/icons/icons_financial_app/upload_icon.png</normalon>:/icons/icons_financial_app/upload_icon.png</iconset>
                     </property>
@@ -2429,7 +2429,7 @@
                        </sizepolicy>
                       </property>
                       <property name="currentIndex">
-                       <number>2</number>
+                       <number>4</number>
                       </property>
                       <widget class="QWidget" name="delete_user_account_page">
                        <property name="sizePolicy">
@@ -2695,7 +2695,7 @@
                             <verstretch>0</verstretch>
                            </sizepolicy>
                           </property>
-                          <layout class="QHBoxLayout" name="horizontalLayout_24" stretch="3,2">
+                          <layout class="QHBoxLayout" name="horizontalLayout_24" stretch="1,1">
                            <property name="spacing">
                             <number>0</number>
                            </property>
@@ -2763,13 +2763,22 @@
                               </item>
                               <item>
                                <widget class="QWidget" name="widget_31" native="true">
-                                <property name="maximumSize">
-                                 <size>
-                                  <width>16777215</width>
-                                  <height>40</height>
-                                 </size>
-                                </property>
-                                <layout class="QHBoxLayout" name="horizontalLayout_25" stretch="0,0,0">
+                                <layout class="QHBoxLayout" name="horizontalLayout_25" stretch="1,1,1">
+                                 <property name="spacing">
+                                  <number>-1</number>
+                                 </property>
+                                 <property name="leftMargin">
+                                  <number>0</number>
+                                 </property>
+                                 <property name="topMargin">
+                                  <number>0</number>
+                                 </property>
+                                 <property name="rightMargin">
+                                  <number>0</number>
+                                 </property>
+                                 <property name="bottomMargin">
+                                  <number>0</number>
+                                 </property>
                                  <item>
                                   <spacer name="horizontalSpacer_13">
                                    <property name="orientation">
@@ -2777,8 +2786,8 @@
                                    </property>
                                    <property name="sizeHint" stdset="0">
                                     <size>
-                                     <width>108</width>
-                                     <height>13</height>
+                                     <width>81</width>
+                                     <height>20</height>
                                     </size>
                                    </property>
                                   </spacer>
@@ -2837,6 +2846,19 @@
                                 </property>
                                </widget>
                               </item>
+                              <item>
+                               <spacer name="verticalSpacer_7">
+                                <property name="orientation">
+                                 <enum>Qt::Orientation::Vertical</enum>
+                                </property>
+                                <property name="sizeHint" stdset="0">
+                                 <size>
+                                  <width>20</width>
+                                  <height>40</height>
+                                 </size>
+                                </property>
+                               </spacer>
+                              </item>
                              </layout>
                             </widget>
                            </item>
@@ -2850,7 +2872,7 @@
                              </property>
                              <property name="sizeHint" stdset="0">
                               <size>
-                               <width>253</width>
+                               <width>317</width>
                                <height>20</height>
                               </size>
                              </property>
@@ -2886,7 +2908,7 @@
   </widget>
  </widget>
  <resources>
-  <include location="../Desktop/resource.qrc"/>
+  <include location="../../Desktop/resource.qrc"/>
  </resources>
  <connections>
   <connection>

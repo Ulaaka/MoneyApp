@@ -17,6 +17,7 @@ class Files_page():
         self.files = query.get_files(parent_window.accountID)
         if self.files is None:
             self.set_files(False)
+            parent_window.ui.files_stack.setCurrentWidget(parent_window.ui.no_file_page)
             parent_window.ui.no_file_label.setText(f"No files found for '{parent_window.account_name}'")
         else:
              self.set_files(True)
