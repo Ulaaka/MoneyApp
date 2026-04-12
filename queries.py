@@ -540,15 +540,18 @@ class query_processor:
 
         s_string = ', '.join(s_list)
 
-        query = f"""
-            UPDATE transactions
-            SET category = %s
-            WHERE transactionID IN ({s_string})
-        """
-        parameter += transactionID
+        try:
+            query = f"""
+                UPDATE transactions
+                SET category = %s
+                WHERE transactionID IN ({s_string})
+            """
 
-        self.cursor.execute(query, parameter)
-        self.db.commit()
+            parameter.extend([transactionID])
+            self.cursor.execute(query, parameter)
+            self.db.commit()
+        except:
+            return
 
     # Returns the description of the transaction given the transaction ID
     def return_description_given_transactionID(self, transactionID):
