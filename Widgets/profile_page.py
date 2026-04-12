@@ -36,11 +36,13 @@ class Profile_page(QWidget):
         parent_window.ui.email_change_value.setText(result[1])
         parent_window.ui.user_created_value.setText(str(result[2]))
         parent_window.ui.user_accounts_value.setText(str(len(result_accounts)))
+
         for account in result_accounts:
             item = QStandardItem(account)
             item.setEditable(False)
             tree_model.appendRow(item)
             tree_model.setSortRole(Qt.UserRole)
+
         parent_window.ui.accounts_treeView.setModel(tree_model)
         parent_window.ui.accounts_treeView.setColumnWidth(0, 300)
         parent_window.ui.accounts_treeView.setColumnWidth(1, 80)

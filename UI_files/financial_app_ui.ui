@@ -70,7 +70,7 @@
           <number>0</number>
          </property>
          <item>
-          <widget class="QLineEdit" name="lineEdit">
+          <widget class="QLineEdit" name="search_transaction_line">
            <property name="minimumSize">
             <size>
              <width>400</width>
@@ -240,7 +240,7 @@
            <number>0</number>
           </property>
           <item>
-           <widget class="QPushButton" name="pushButton_3">
+           <widget class="QPushButton" name="side_bar_1">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
               <horstretch>0</horstretch>
@@ -554,7 +554,7 @@
            <number>0</number>
           </property>
           <item>
-           <widget class="QPushButton" name="pushButton_4">
+           <widget class="QPushButton" name="side_bar_2">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
               <horstretch>0</horstretch>
@@ -891,7 +891,7 @@
              </size>
             </property>
             <property name="currentIndex">
-             <number>0</number>
+             <number>2</number>
             </property>
             <widget class="QWidget" name="home_page">
              <property name="sizePolicy">
@@ -1011,7 +1011,7 @@
                        </property>
                        <layout class="QHBoxLayout" name="horizontalLayout_22">
                         <item>
-                         <widget class="QComboBox" name="comboBox_3">
+                         <widget class="QComboBox" name="download_df_combo">
                           <property name="sizePolicy">
                            <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
                             <horstretch>0</horstretch>
@@ -1458,7 +1458,7 @@
                   <widget class="QWidget" name="edit_account_toggles_widget" native="true">
                    <layout class="QVBoxLayout" name="verticalLayout_13">
                     <item>
-                     <widget class="QLineEdit" name="lineEdit_2">
+                     <widget class="QLineEdit" name="account_name_change_line">
                       <property name="minimumSize">
                        <size>
                         <width>300</width>
@@ -1474,7 +1474,7 @@
                      </widget>
                     </item>
                     <item>
-                     <widget class="QComboBox" name="comboBox">
+                     <widget class="QComboBox" name="account_type_combo">
                       <property name="sizePolicy">
                        <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
                         <horstretch>0</horstretch>
@@ -1521,7 +1521,7 @@
                      </widget>
                     </item>
                     <item>
-                     <widget class="QComboBox" name="comboBox_2">
+                     <widget class="QComboBox" name="account_currency_change_combo">
                       <property name="sizePolicy">
                        <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
                         <horstretch>0</horstretch>
@@ -1727,7 +1727,7 @@
                    <number>0</number>
                   </property>
                   <item>
-                   <widget class="QTreeView" name="treeView">
+                   <widget class="QTreeView" name="files_treeView">
                     <property name="sortingEnabled">
                      <bool>true</bool>
                     </property>
@@ -2054,13 +2054,6 @@
                           </size>
                          </property>
                         </spacer>
-                       </item>
-                       <item>
-                        <widget class="QLabel" name="label_16">
-                         <property name="text">
-                          <string/>
-                         </property>
-                        </widget>
                        </item>
                       </layout>
                      </widget>
@@ -2429,7 +2422,7 @@
                        </sizepolicy>
                       </property>
                       <property name="currentIndex">
-                       <number>4</number>
+                       <number>0</number>
                       </property>
                       <widget class="QWidget" name="delete_user_account_page">
                        <property name="sizePolicy">
@@ -2641,7 +2634,7 @@
                             </item>
                            </layout>
                           </widget>
-                          <widget class="QWidget" name="page_4">
+                          <widget class="QWidget" name="no_category_page">
                            <layout class="QVBoxLayout" name="verticalLayout_27">
                             <item>
                              <widget class="QLabel" name="no_categories_label">
@@ -3168,9 +3161,9 @@
    </hints>
   </connection>
   <connection>
-   <sender>pushButton_4</sender>
+   <sender>side_bar_2</sender>
    <signal>toggled(bool)</signal>
-   <receiver>pushButton_3</receiver>
+   <receiver>side_bar_1</receiver>
    <slot>setChecked(bool)</slot>
    <hints>
     <hint type="sourcelabel">
@@ -3184,9 +3177,9 @@
    </hints>
   </connection>
   <connection>
-   <sender>pushButton_3</sender>
+   <sender>side_bar_1</sender>
    <signal>toggled(bool)</signal>
-   <receiver>pushButton_4</receiver>
+   <receiver>side_bar_2</receiver>
    <slot>setChecked(bool)</slot>
    <hints>
     <hint type="sourcelabel">
@@ -3200,7 +3193,7 @@
    </hints>
   </connection>
   <connection>
-   <sender>pushButton_3</sender>
+   <sender>side_bar_1</sender>
    <signal>toggled(bool)</signal>
    <receiver>icon_only_widget</receiver>
    <slot>setHidden(bool)</slot>
@@ -3216,7 +3209,7 @@
    </hints>
   </connection>
   <connection>
-   <sender>pushButton_3</sender>
+   <sender>side_bar_1</sender>
    <signal>toggled(bool)</signal>
    <receiver>full_menu_widget</receiver>
    <slot>setVisible(bool)</slot>

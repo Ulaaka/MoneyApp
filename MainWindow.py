@@ -132,7 +132,7 @@ class MainWindow(QMainWindow):
         self.ui.start_date_edit.editingFinished.connect(lambda: self.home_manager.get_filter_date(start=True))
         self.ui.end_date_edit.editingFinished.connect(lambda: self.home_manager.get_filter_date(start=False))
 
-        self.ui.comboBox_3.activated.connect(self.home_manager.download_table)
+        self.ui.download_df_combo.activated.connect(self.home_manager.download_table)
     
     def change_category_handle(self):
         self.ui.settings_stack.setCurrentWidget(self.ui.category_change_page)

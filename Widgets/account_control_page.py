@@ -32,7 +32,7 @@ class Account_control_page(QWidget):
 
     def show_account_control_page(self):
         parent_window = self._parent
-        parent_window.ui.lineEdit_2.setText(self.current_account)
+        parent_window.ui.account_name_change_line.setText(self.current_account)
 
         result = self.query.get_type_account_currency(self.current_account, self.userID)
         parent_window.ui.comboBox.setEditable(True)
@@ -50,7 +50,7 @@ class Account_control_page(QWidget):
 
     def activate(self, flag):
         parent_window = self._parent
-        parent_window.ui.lineEdit_2.setEnabled(flag)
+        parent_window.ui.account_name_change_line.setEnabled(flag)
         parent_window.ui.comboBox.setEnabled(flag)
         parent_window.ui.comboBox_2.setEnabled(flag)
         if flag:
@@ -65,7 +65,7 @@ class Account_control_page(QWidget):
         color = "black"
         if activate:
             color = "blue"
-        parent_window.ui.lineEdit_2.setStyleSheet(f"border: 2px solid {color};")
+        parent_window.ui.account_name_change_line.setStyleSheet(f"border: 2px solid {color};")
         parent_window.ui.comboBox.setStyleSheet(f"border: 2px solid {color};")
         parent_window.ui.comboBox_2.setStyleSheet(f"border: 2px solid {color};")
 
@@ -88,7 +88,7 @@ class Account_control_page(QWidget):
 
     def get_answer(self):
         parent_window = self._parent
-        account_name = parent_window.ui.lineEdit_2.text()
+        account_name = parent_window.ui.account_name_change_line.text()
         account_type = parent_window.ui.comboBox.currentText()
         account_currency = parent_window.ui.comboBox_2.currentText()[:3]
 
