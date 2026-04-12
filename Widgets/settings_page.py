@@ -156,23 +156,11 @@ class Change_category():
         proxy_model.setSourceModel(self.model)
         proxy_model.setFilterCaseSensitivity(Qt.CaseInsensitive)
         proxy_model.setFilterKeyColumn(2)
-        parent_window.ui.category_line.textChanged.connect(proxy_model.setFilterRegExp)
+        parent_window.ui.category_line.textChanged.connect(lambda text: self.filtered_search(text, proxy_model))
         parent_window.ui.category_table.setModel(proxy_model)
 
-        for row_index in range(len(self.categories)):
-            index_button = proxy_model.index(row_index, self.model.columnCount() - 1)
-            category_id = self.categories.iloc[row_index].iloc[0]
-            if (len(self.categories) == 1 or row_index >= len(self.categories) - 1):
-                add_button = QPushButton("Add")
-                add_button.setObjectName("view_button")
-                parent_window.ui.category_table.setIndexWidget(index_button, add_button)
-                add_button.clicked.connect(lambda : self.hand_add_button())
-            else:
-                remove_button = QPushButton("Remove")
-                remove_button.setObjectName("item_button")
-                parent_window.ui.category_table.setIndexWidget(index_button, remove_button)
-                remove_button.clicked.connect(lambda clicked, id=category_id: self.handle_remove_button(id))
-
+        self.load_buttons(proxy_model)
+        # hide the id, list columns
         hidden_columns = [0, 1]
         for i in hidden_columns:
             parent_window.ui.category_table.setColumnHidden(i, True)
@@ -199,3 +187,23 @@ class Change_category():
         query.update_transaction_after_deletion_description(categoryID)
         self.show_category_table()
         self.home_page.show_table()
+
+    def filtered_search(self, text, proxy):
+        proxy.setFilterRegExp(text)
+        self.load_buttons(proxy)
+
+    def load_buttons(self, proxy):
+        parent_window = self._parent
+        for row_index in range(len(self.categories)):
+            index_button = proxy.index(row_index, proxy.columnCount() - 1)
+            category_id = self.categories.iloc[row_index].iloc[0]
+            if (len(self.categories) == 1 or row_index >= len(self.categories) - 1):
+                add_button = QPushButton("Add")
+                add_button.setObjectName("view_button")
+                parent_window.ui.category_table.setIndexWidget(index_button, add_button)
+                add_button.clicked.connect(lambda : self.hand_add_button())
+            else:
+                remove_button = QPushButton("Remove")
+                remove_button.setObjectName("item_button")
+                parent_window.ui.category_table.setIndexWidget(index_button, remove_button)
+                remove_button.clicked.connect(lambda clicked, id=category_id: self.handle_remove_button(id))

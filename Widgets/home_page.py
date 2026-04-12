@@ -39,23 +39,31 @@ class Home_page():
                 proxy_model.setSourceModel(self.model)
                 proxy_model.setFilterCaseSensitivity(Qt.CaseInsensitive)
                 proxy_model.setFilterKeyColumn(5)
-                parent_window.ui.lineEdit.textChanged.connect(proxy_model.setFilterRegExp)
+                parent_window.ui.lineEdit.textChanged.connect(lambda text: self.filtered_search(text, proxy_model))
                 parent_window.ui.tableView.setModel(proxy_model)
+
+                self.load_buttons(proxy_model)
 
                 # Hides the ID columns of dataframe
                 hidden_columns = [0, 1, 2]
                 for i in hidden_columns:
                     parent_window.ui.tableView.setColumnHidden(i, True)
 
-                for row_index in range(len(self.filter_transaction)):
-                    transaction_id = self.filter_transaction.iloc[row_index].iloc[0]
-                    remove_button = QPushButton("Remove")
-                    remove_button.setObjectName("item_button")
-                    index_button = proxy_model.index(row_index, self.model.columnCount() - 1)
-                    # add remove button
-                    parent_window.ui.tableView.setIndexWidget(index_button, remove_button)
-                    remove_button.clicked.connect(lambda clicked, id=transaction_id: self.handle_remove_button(id))
+    def filtered_search(self, text, proxy):
+        proxy.setFilterRegExp(text)
+        self.load_buttons(proxy)
 
+    def load_buttons(self, proxy):
+        parent_window = self._parent
+
+        for row_index in range(len(self.transactions)):
+            transaction_id = self.filter_transaction.iloc[row_index].iloc[0]
+            remove_button = QPushButton("Remove")
+            remove_button.setObjectName("item_button")
+            index_button = proxy.index(row_index, proxy.columnCount() - 1)
+            # add remove button
+            parent_window.ui.tableView.setIndexWidget(index_button, remove_button)
+            remove_button.clicked.connect(lambda clicked, id=transaction_id: self.handle_remove_button(id))
 
     def set_select_dates(self):
         parent_window = self._parent

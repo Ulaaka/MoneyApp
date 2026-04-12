@@ -249,7 +249,6 @@ class cryptography:
             hashed_name = self.query.get_hashed_name(accountID, name_file=filename)
         elif hashed_filename:
             hashed_name = hashed_filename
-        
         elif fileID:
             hashed_name = self.query.get_hashed_name(accountID, fileID=fileID)
 
