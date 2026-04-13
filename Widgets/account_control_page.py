@@ -20,9 +20,9 @@ class Account_control_page(QWidget):
         parent_window = self._parent
 
         parent_window.ui.stackedWidget.setCurrentWidget(parent_window.ui.account_page)
-        parent_window.ui.comboBox_2.addItems(self.currencies)
-        currency_search = parent_window.ui.comboBox_2.lineEdit()
-        completer = QCompleter(parent_window.ui.comboBox_2.model(), self)
+        parent_window.ui.account_currency_change_combo.addItems(self.currencies)
+        currency_search = parent_window.ui.account_currency_change_combo.lineEdit()
+        completer = QCompleter(parent_window.ui.account_currency_change_combo.model(), self)
         completer.setFilterMode(Qt.MatchContains)
         completer.setCaseSensitivity(Qt.CaseInsensitive)
         currency_search.setCompleter(completer)
@@ -35,9 +35,9 @@ class Account_control_page(QWidget):
         parent_window.ui.account_name_change_line.setText(self.current_account)
 
         result = self.query.get_type_account_currency(self.current_account, self.userID)
-        parent_window.ui.comboBox.setEditable(True)
-        parent_window.ui.comboBox.setCurrentText(result[0])
-        parent_window.ui.comboBox_2.setCurrentText(result[1])
+        parent_window.ui.account_type_combo.setEditable(True)
+        parent_window.ui.account_type_combo.setCurrentText(result[0])
+        parent_window.ui.account_currency_change_combo.setCurrentText(result[1])
 
         result_1 = self.query.get_create_update_account(self.current_account, self.userID)
         if (result_1[1] is None):
@@ -51,8 +51,8 @@ class Account_control_page(QWidget):
     def activate(self, flag):
         parent_window = self._parent
         parent_window.ui.account_name_change_line.setEnabled(flag)
-        parent_window.ui.comboBox.setEnabled(flag)
-        parent_window.ui.comboBox_2.setEnabled(flag)
+        parent_window.ui.account_type_combo.setEnabled(flag)
+        parent_window.ui.account_currency_change_combo.setEnabled(flag)
         if flag:
             parent_window.ui.change_button.setText("Save")
             self.set_fields_border(activate=True)
@@ -66,8 +66,8 @@ class Account_control_page(QWidget):
         if activate:
             color = "blue"
         parent_window.ui.account_name_change_line.setStyleSheet(f"border: 2px solid {color};")
-        parent_window.ui.comboBox.setStyleSheet(f"border: 2px solid {color};")
-        parent_window.ui.comboBox_2.setStyleSheet(f"border: 2px solid {color};")
+        parent_window.ui.account_type_combo.setStyleSheet(f"border: 2px solid {color};")
+        parent_window.ui.account_currency_change_combo.setStyleSheet(f"border: 2px solid {color};")
 
     def delete_acc(self):
         disclaimer_window = Deletion_disclaimer_window(self)
@@ -89,8 +89,8 @@ class Account_control_page(QWidget):
     def get_answer(self):
         parent_window = self._parent
         account_name = parent_window.ui.account_name_change_line.text()
-        account_type = parent_window.ui.comboBox.currentText()
-        account_currency = parent_window.ui.comboBox_2.currentText()[:3]
+        account_type = parent_window.ui.account_type_combo.currentText()
+        account_currency = parent_window.ui.account_currency_change_combo.currentText()[:3]
 
         if not account_name:
             QMessageBox.warning(self, 'Error', "Account Name section can't be empty")

@@ -100,30 +100,6 @@ QPushButton#search_button:hover {
     border-radius: 15px;
 }
 
-QLineEdit#search_transaction_line,
-QLineEdit#current_password_line,
-QLineEdit#new_password_line,
-QLineEdit#delete_user_line,
-QLineEdit#category_line
-{
-    border: 1px solid #e0e0e0;
-    border-radius: 4px;
-    padding: 5px 10px;
-    margin-right: 5px;
-    background-color: #fff;
-    color: #313a46;
-}
-
-QLineEdit#search_transaction_line:focus,
-QLineEdit#current_password_line:focus,
-QLineEdit#new_password_line:focus,
-QLineEdit#delete_user_line:focus,
-QLineEdit#category_line
-{
-    border: 1px solid #70B9FE;
-    background-color: #f0f8ff;
-    color: #313a46;
-}
 
 /*  Label */
 
@@ -149,9 +125,15 @@ QLabel#timer_label,
 QLabel#start_date_label,
 QLabel#end_date_label,
 QLabel#progress_label,
-QLabel#label_6,
-QLabel#label_7,
-QLabel#no_categories_label{
+QLabel#delete_information_label,
+QLabel#privacy_label,
+QLabel#no_categories_label,
+QLabel#add_transaction_label,
+QLabel#date_label_transaction,
+QLabel#type_label_transaction,
+QLabel#description_label_transaction,
+QLabel#amount_label_transaction,
+QLabel#balance_label_transaction{
     background-color: transparent;
     color: black;
     border-radius: 15px;
@@ -163,6 +145,36 @@ QLabel#account_name_label:hover {
 
 /*  Input */
 
+QLineEdit#search_transaction_line,
+QLineEdit#current_password_line,
+QLineEdit#new_password_line,
+QLineEdit#delete_user_line,
+QLineEdit#category_line,
+QTextEdit#description_text,
+QLineEdit#amount_transaction_line,
+QLineEdit#balance_transaction_line{
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    padding: 5px 10px;
+    margin-right: 5px;
+    background-color: #fff;
+    color: #313a46;
+}
+
+QLineEdit#search_transaction_line:focus,
+QLineEdit#current_password_line:focus,
+QLineEdit#new_password_line:focus,
+QLineEdit#delete_user_line:focus,
+QLineEdit#category_line:focus,
+QTextEdit#description_text:focus,
+QLineEdit#amount_transaction_line:focus,
+QLineEdit#balance_transaction_line:focus{
+    border: 1px solid #70B9FE;
+    background-color: #f0f8ff;
+    color: #313a46;
+}
+
+
 QLineEdit#input_field,
 QLineEdit#account_name_type {
     background-color: dark;
@@ -173,7 +185,6 @@ QLineEdit#account_name_type {
     font-size: 14px;
 }
 
-QLineEdit#account_name_change_line,
 QLineEdit#username_change_value,
 QLineEdit#email_change_value,
 QLineEdit#confirmation_line{
@@ -210,13 +221,22 @@ QLineEdit#digit_box:focus {
 
 /*  Combo Box */
 
-QComboBox#account_type_combo,
-QComboBox#account_currency_change_combo{
+QComboBox#transaction_type_combo{
     background-color: transparent;
     color: black;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    padding: 5px;
+}
+
+QLineEdit#account_name_change_line,
+QComboBox#account_type_combo,
+QComboBox#account_currency_change_combo {
+    background-color: #1E1E1E;
+    color: white;
     border: 2px solid black;
     border-radius: 30px;
-    padding: 5px;
+    padding: 5px 10px;
 }
 
 QComboBox#download_df_combo{
@@ -227,27 +247,20 @@ QComboBox#download_df_combo{
     padding: 5px;
 }
 
-QComboBox#download_df_combo QAbstractItemView {
+QComboBox#download_df_combo QAbstractItemView{
     background-color:  #313a46;
     color: white;
     border: 2px solid white;
 }
 
+QComboBox#transaction_type_combo QAbstractItemView{
+    background-color:  white;
+    color: black;
+}
+
 QComboBox#download_df_combo:hover {
     background-color: rgba(86, 101, 115, 0.1);
     color:black
-}
-
-QComboBox#account_currency_change_combo QLineEdit {
-    background-color: transparent;
-    color: black;
-    border: none;
-}
-
-QComboBox#account_currency_change_combo QAbstractItemView {
-    background-color: transparent;
-    color: black;
-    border: 2px solid black;
 }
 
 /*  Button */
@@ -274,7 +287,8 @@ QPushButton#change_category_button,
 QPushButton#privacy_note_button,
 QPushButton#logout_button,
 QPushButton#change_password_button_settings,
-QPushButton#delete_user_button_2{
+QPushButton#delete_user_button_2,
+QPushButton#add_transaction_button{
     background-color: #313a46;
     color: white;
     border: 2px solid black;
@@ -291,7 +305,8 @@ QPushButton#change_category_button:hover,
 QPushButton#privacy_note_button:hover,
 QPushButton#logout_button:hover,
 QPushButton#change_password_button_settings:hover,
-QPushButton#delete_user_button_2:hover {
+QPushButton#delete_user_button_2:hover,
+QPushButton#add_transaction_button:hover{
     background-color: rgba(86, 101, 115, 0.1);
     color: black;
 }
@@ -372,7 +387,16 @@ QWidget#progress_widget{
 
 /* Date Range */
 QDateEdit#start_date_edit,
-QDateEdit#end_date_edit{
+QDateEdit#end_date_edit,
+QDateEdit#transaction_date_edit{
     background-color: transparent;
     color: black;
+}
+
+QDateEdit#start_date_edit:focus,
+QDateEdit#end_date_edit:focus,
+QDateEdit#transaction_date_edit:focus{
+    border: 1px solid #70B9FE;
+    background-color: #f0f8ff;
+    color: #313a46;
 }

@@ -124,7 +124,7 @@ class MainWindow(QMainWindow):
         self.ui.account_name_label.mousePressEvent = self.account_label_clicked
 
         self.ui.tableView.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
-        self.ui.treeView.header().setSectionResizeMode(QHeaderView.Stretch)
+        self.ui.files_treeView.header().setSectionResizeMode(QHeaderView.Stretch)
         self.ui.category_table.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
         self.ui.category_table.verticalHeader().setVisible(False)
         self.ui.stackedWidget_2.setCurrentWidget(self.ui.category_table_page)
@@ -164,7 +164,7 @@ class MainWindow(QMainWindow):
 
     def upload_page_show(self):
         self.ui.stackedWidget.setCurrentWidget(self.ui.upload_page)
-        self.ui.upload_stack.setCurrentWidget(self.ui.page)
+        self.ui.upload_stack.setCurrentWidget(self.ui.upload_page_2)
 
     def file_page_show(self):
         self.ui.stackedWidget.setCurrentWidget(self.ui.files_page)

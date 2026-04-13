@@ -28,8 +28,8 @@ class Files_page():
                 view_button = QPushButton("View")
                 item_button.setObjectName("item_button")
                 view_button.setObjectName("view_button")
-                parent_window.ui.treeView.setIndexWidget(self.tree_model.index(row_index, 4), item_button)
-                parent_window.ui.treeView.setIndexWidget(self.tree_model.index(row_index, 5), view_button)
+                parent_window.ui.files_treeView.setIndexWidget(self.tree_model.index(row_index, 4), item_button)
+                parent_window.ui.files_treeView.setIndexWidget(self.tree_model.index(row_index, 5), view_button)
                 fileID = self.tree_model.data(self.tree_model.index(row_index, 0), Qt.UserRole)
                 item_button.clicked.connect(lambda click, id=fileID: self.delete_file_wht_ID(id))
                 view_button.clicked.connect(lambda clicked, id=fileID: self.view_file_with_ID(id))
@@ -71,7 +71,7 @@ class Files_page():
             self.tree_model.appendRow(items)
             self.tree_model.setSortRole(Qt.UserRole)
 
-            parent_window.ui.treeView.setModel(self.tree_model)
+            parent_window.ui.files_treeView.setModel(self.tree_model)
     def set_files(self, flag):
         parent_window = self._parent
         if flag:

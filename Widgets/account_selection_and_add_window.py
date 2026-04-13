@@ -80,7 +80,6 @@ class Account_add_page(QDialog):
         self.ui.account_currency_combo.addItems(self.currencies)
         self.ui.submit_button.clicked.connect(self.add_account_database)
         currency_search = self.ui.account_currency_combo.lineEdit()
-        currency_search.setObjectName("input_field")
         currency_search.setPlaceholderText("Search currency...")
         completer = QCompleter(self.ui.account_currency_combo.model(), self)
 

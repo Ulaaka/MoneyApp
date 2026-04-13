@@ -172,7 +172,7 @@ class Change_category():
         if flag:
             parent_window.ui.settings_stack.setCurrentWidget(parent_window.ui.category_table_page)
         else:
-            parent_window.ui.settings_stack.setCurrentWidget(parent_window.ui.page_4)
+            parent_window.ui.settings_stack.setCurrentWidget(parent_window.ui.no_category_page)
 
 
     def handle_add_button(self):

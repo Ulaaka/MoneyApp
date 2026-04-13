@@ -40,7 +40,7 @@ class Home_page():
                 proxy_model.setSourceModel(self.model)
                 proxy_model.setFilterCaseSensitivity(Qt.CaseInsensitive)
                 proxy_model.setFilterKeyColumn(5)
-                parent_window.ui.lineEdit.textChanged.connect(lambda text: self.filtered_search(text, proxy_model))
+                parent_window.ui.search_transaction_line.textChanged.connect(lambda text: self.filtered_search(text, proxy_model))
                 parent_window.ui.tableView.setModel(proxy_model)
 
                 self.load_buttons(proxy_model)
@@ -96,7 +96,7 @@ class Home_page():
 
     def download_table(self):
         parent_window = self._parent
-        download_type = parent_window.ui.comboBox_3.currentText()
+        download_type = parent_window.ui.download_df_combo.currentText()
         system = system_functions()
         if ("CSV" in download_type):
             self.worker = Thread_worker(lambda: system.create_csv(parent_window.account_name, self.filter_transaction))
