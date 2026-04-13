@@ -7,9 +7,8 @@ from queries import query_processor
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_pdf import PdfPages
 from matplotlib.image import imread
-from datetime import datetime
 from pathlib import Path
-
+from datetime import datetime
 
 class system_functions:
 

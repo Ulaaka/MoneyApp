@@ -891,7 +891,7 @@
              </size>
             </property>
             <property name="currentIndex">
-             <number>1</number>
+             <number>0</number>
             </property>
             <widget class="QWidget" name="home_page">
              <property name="sizePolicy">
@@ -1013,31 +1013,31 @@
                         <item>
                          <widget class="QComboBox" name="download_df_combo">
                           <property name="sizePolicy">
-                           <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+                           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                             <horstretch>0</horstretch>
                             <verstretch>0</verstretch>
                            </sizepolicy>
                           </property>
                           <property name="minimumSize">
                            <size>
-                            <width>145</width>
+                            <width>150</width>
                             <height>0</height>
                            </size>
                           </property>
-                          <property name="maximumSize">
+                          <property name="sizeIncrement">
                            <size>
-                            <width>145</width>
-                            <height>16777215</height>
+                            <width>150</width>
+                            <height>0</height>
                            </size>
                           </property>
                           <item>
                            <property name="text">
-                            <string>Download (CSV)</string>
+                            <string>Download CSV</string>
                            </property>
                           </item>
                           <item>
                            <property name="text">
-                            <string>Download (PDF)</string>
+                            <string>Download PDF</string>
                            </property>
                           </item>
                          </widget>
@@ -1623,7 +1623,7 @@
                          <height>50</height>
                         </size>
                        </property>
-                       <layout class="QHBoxLayout" name="horizontalLayout_31">
+                       <layout class="QHBoxLayout" name="horizontalLayout_31" stretch="3,1,3">
                         <property name="topMargin">
                          <number>0</number>
                         </property>
@@ -1642,6 +1642,12 @@
                         </item>
                         <item>
                          <widget class="QPushButton" name="add_transaction_button">
+                          <property name="minimumSize">
+                           <size>
+                            <width>0</width>
+                            <height>50</height>
+                           </size>
+                          </property>
                           <property name="maximumSize">
                            <size>
                             <width>150</width>

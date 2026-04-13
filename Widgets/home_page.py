@@ -1,13 +1,20 @@
-from PyQt5.QtWidgets import QPushButton, QHeaderView
+from PyQt5.QtWidgets import QPushButton, QHeaderView, QFileDialog
 from PyQt5.QtCore import Qt, QDate, QSortFilterProxyModel
 from queries import query_processor
 from Widgets.Table_View import ListModel
 from system_functions import system_functions
 from Widgets.thread_worker import Thread_worker
+from pathlib import Path
+from datetime import datetime
+import os
+
 class Home_page():
     def __init__(self, parent):
         self._parent = parent
         self.transactions = None
+        self.filter_transaction = None
+        self.current_time = datetime.now().strftime("%Y-%m-%d")
+        self.download_folder_path = Path.home() / "Downloads"
         self.home_signals_connect()
 
     def home_signals_connect(self):
@@ -86,7 +93,6 @@ class Home_page():
                 lambda checked, id=transaction_id: self.handle_remove_button(id))
 
     def set_select_dates(self):
-        parent_window = self._parent
         if self.transactions is None:
             return
         self.transactions = self.transactions.sort_values(by=self.transactions.columns[3], ascending=False)
@@ -107,6 +113,8 @@ class Home_page():
         self.show_table()
 
     def download_table(self):
+        if self.filter_transaction is None:
+            return
         parent_window = self._parent
         download_type = parent_window.ui.download_df_combo.currentText()
         system = system_functions()
