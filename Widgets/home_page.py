@@ -24,16 +24,15 @@ class Home_page():
 
                 min_date, max_date = self.set_select_dates()
 
-                if parent_window.start_date is None and parent_window.end_date is None:
+                if min_date is not None and max_date is not None:
                     parent_window.start_date = min_date
                     parent_window.end_date = max_date
+
 
                 if (parent_window.start_date < min_date and parent_window.end_date > max_date):
                     return
                 else:
                     self.filter_transaction = self.transactions[self.transactions.iloc[:, 3].dt.date.between(parent_window.start_date, parent_window.end_date)]
-                    parent_window.ui.start_date_edit.setDate(QDate(parent_window.start_date.year, parent_window.start_date.month, parent_window.start_date.day))
-                    parent_window.ui.end_date_edit.setDate(QDate(parent_window.end_date.year, parent_window.end_date.month, parent_window.end_date.day))
 
                 # -- TABLE LOADING -- 
                 self.model = ListModel(self.filter_transaction, parent_window, self)
@@ -83,9 +82,13 @@ class Home_page():
         if len(date_list) == 0:
             min_date = None
             max_date = None
+            return
 
         min_date = min(date_list).date()
         max_date = max(date_list).date()
+
+        parent_window.ui.start_date_edit.setDate(QDate(min_date.year, min_date.month, min_date.day))
+        parent_window.ui.end_date_edit.setDate(QDate(max_date.year, max_date.month, max_date.day))
         return min_date, max_date
 
     def handle_remove_button(self, id):

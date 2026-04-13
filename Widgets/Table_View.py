@@ -8,6 +8,7 @@ class ListModel(QAbstractTableModel):
         self._parent = parent
         self.userID = parent.userID
         self.home_page = home_page
+        self.header_names = ["Transaction ID", "Account ID", "File ID" , "Date", "Type", "Description", "Category", "Amount", "Balance"]
 
     def rowCount(self, index):
         return self._data.shape[0]
@@ -50,7 +51,10 @@ class ListModel(QAbstractTableModel):
             and role == Qt.ItemDataRole.DisplayRole
         ):
             if (col < 9):
-                return self._data.columns[col]
+                return self.header_names[col]
+                
+                #return self._data.columns[col]
+
             else:
                 return ""
 
@@ -71,6 +75,7 @@ class ListModelCategory(QAbstractTableModel):
         self.category_page = category_page
         self.description = None
         self.name = None
+        self.header_names = ["Category ID", "Category List", "Description/Key Words", "Name"]
 
     def rowCount(self, index):
         # for adding new categories
@@ -134,7 +139,8 @@ class ListModelCategory(QAbstractTableModel):
             and role == Qt.ItemDataRole.DisplayRole
         ):
             if col < self._data.shape[1]:
-                return self._data.columns[col]
+                return self.header_names[col]
+                #return self._data.columns[col]
             else:
                 return ""
 

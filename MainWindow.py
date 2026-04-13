@@ -122,13 +122,13 @@ class MainWindow(QMainWindow):
         self.ui.logout_button.clicked.connect(self.logout_handle)
         self.ui.privacy_note_button.clicked.connect(self.privacy_note_handle)
 
-
         self.ui.account_name_label.mousePressEvent = self.account_label_clicked
 
         self.ui.tableView.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
         self.ui.files_treeView.header().setSectionResizeMode(QHeaderView.Stretch)
         self.ui.category_table.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
         self.ui.category_table.verticalHeader().setVisible(False)
+        self.ui.tableView.verticalHeader().setVisible(False)
         self.ui.stackedWidget_2.setCurrentWidget(self.ui.category_table_page)
 
         self.ui.start_date_edit.editingFinished.connect(lambda: self.home_manager.get_filter_date(start=True))
