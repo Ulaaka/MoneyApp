@@ -78,13 +78,13 @@ class Upload_page():
         saved_stdout = sys.stdout
         self.print_output = Stream()
         self.live_output = Live_output_window(parent_window, saved_stdout)
-        self.print_output.input_text.connect(self.get_output)
         sys.stdout = self.print_output
 
         # process the files
         files_process = file_handling(parent_window.userID, parent_window.accountID, parent_window.key)
         self.worker = Thread_worker(files_process.process_files_in_folder)
         self.worker.start()
+        self.print_output.input_text.connect(self.get_output)
         self.live_output.ui.textBrowser.adjustSize()
         self.live_output.adjustSize()
         self.live_output.show()
