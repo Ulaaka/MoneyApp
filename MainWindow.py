@@ -38,13 +38,12 @@ class MainWindow(QMainWindow):
         self.account_manager = Account_selection_page(self)
         self.profile_manager= Profile_page(self.account_name, self)
         self.stats_manager = Stats_page(self)
-
-        self.query = query_processor()
         self.category_change_handle = Change_category(self)
+        self.query = query_processor()
 
+        self.profile_manager.show_profile_page()
         self.MainWindow_signals_connection()
         self.home_page_handler()
-        print(self.ui.scrollAreaWidgetContents.layout())
 
     def home_page_handler(self):
         query = query_processor()
@@ -170,7 +169,6 @@ class MainWindow(QMainWindow):
 
     def profile_page_show(self):
         self.ui.stackedWidget.setCurrentWidget(self.ui.profile_page)
-        self.profile_manager.show_profile_page()
 
     def settings_page_show(self):
         self.ui.stackedWidget.setCurrentWidget(self.ui.settings_page)

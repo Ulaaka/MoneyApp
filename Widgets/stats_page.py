@@ -14,8 +14,6 @@ class Stats_page():
 
         self.active_buttons = []
         self.query = query_processor()
-        self.userID = parent.userID
-        self.accountID = parent.accountID
         self.account_name = parent.account_name
         self.set_graph_view = None
         self.graph_name = "Summary"
@@ -56,12 +54,17 @@ class Stats_page():
         parent_window.ui.dateEdit.dateChanged.connect(self.update_graph)
         parent_window.ui.dateEdit_2.dateChanged.connect(self.update_graph)
         parent_window.ui.download_chart_button.clicked.connect(self.download_graph)
+        parent_window.ui.scrollAreaWidgetContents.setStyleSheet("background-color: #fff;")
 
         for graph in list(self.func_mapping.keys()):
             opt_button = QPushButton(graph)
+            opt_button.setStyleSheet("background-color: #313a46;")
+            opt_button.setObjectName("email_change_button")
+            opt_button.setFixedHeight(30)
             opt_button.clicked.connect(lambda clicked, graph_name=graph: self.show_graph(graph_name))
             parent_window.ui.scrollAreaWidgetContents.layout().addWidget(opt_button)
         parent_window.ui.scrollAreaWidgetContents.layout().addStretch()
+
 
     def show_graph(self, graph):
         parent_window = self._parent
@@ -125,9 +128,8 @@ class Stats_page():
                 in_max_toggle = None
                 out_max_toggle = None
 
-            income = self.query.total_transfer_or_extreme_value(parent_window.userID, accountID=parent_window.accountID, transfer_toggle=True, max_toggle=in_max_toggle, date_lower=result[0], date_upper=result[1])
-            expense = self.query.total_transfer_or_extreme_value( parent_window.userID, accountID=parent_window.accountID, transfer_toggle=False, max_toggle=out_max_toggle, date_lower=result[0], date_upper=result[1])
-
+            income = self.query.total_transfer_or_extreme_value(parent_window.userID, accountID=parent_window.accountID , transfer_toggle=True, max_toggle=in_max_toggle, date_lower=result[0], date_upper=result[1])
+            expense = self.query.total_transfer_or_extreme_value( parent_window.userID, accountID=parent_window.accountID , transfer_toggle=False, max_toggle=out_max_toggle, date_lower=result[0], date_upper=result[1])
             int_bar = QBarSet("Income")
             out_bar = QBarSet("Expense")
             int_bar.append(int(income))

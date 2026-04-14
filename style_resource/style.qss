@@ -398,7 +398,8 @@ QWidget#live_output_window,
 QWidget#Disclaimer,
 QWidget#button_widget_disclaimer,
 QWidget#change_confirmation,
-QWidget#progress_widget{
+QWidget#progress_widget,
+QFrame#frame{
     background-color: #fff;
 }
 

@@ -575,7 +575,6 @@ class query_processor:
             self.cursor.execute(query, tuple(parameter))
 
             output = self.cursor.fetchone()
-
             return output[0] if output[0] is not None else 0
         except:
             print("important arguments (max_toggle or transfer_toggle missing)")
