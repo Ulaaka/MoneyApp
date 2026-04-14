@@ -17,5 +17,14 @@ class Upload_page():
         self.set_filter = None
         self.graphs_buttons = []
 
-        self.dictionary = {
+        self.filters_map = {
+            "transaction_type": { 
+                "Transaction Type", ["All", "Income", "Expense"]
+            },
+            "measure_type": {
+                "Mode", ["Total", "Incoming", "Outgoing"]
+            },
+            "date_type": {
+                "Date Range", ["From", "To"]
+            }
         }
