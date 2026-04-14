@@ -30,6 +30,14 @@ class Stats_page():
         self.show_graph(self.graph_name)
         self.stats_signals_connect()
 
+        self.func_mapping = {
+            "Summary" : self.create_summary_graph,
+            "Weekly Trend" : self.create_weekly_graph,
+            "Monthly Trend" : self.create_monthly_graph,
+            "Yearly Trend" : self.create_yearly_graph,
+            "Distribution" : self.create_distribution_graph
+        }
+
     def stats_signals_connect(self):
         parent_window = self._parent
         parent_window.ui.dateEdit_2.setCalendarPopup(True)
@@ -56,21 +64,13 @@ class Stats_page():
         parent_window = self._parent
         self.delete_prev_graph()
 
-        if self.graph_name == "Summary":
-            chart = self.create_summary_graph()
-        elif self.graph_name == "Weekly Trend":
-            chart = self.create_weekly_graph()
-        elif self.graph_name == "Monthly Trend":
-            chart = self.create_monthly_graph()
-        elif self.graph_name == "Yearly Trend":
-            chart = self.create_yearly_graph()
-        elif self.graph_name == "Distribution":
-            chart = self.create_distribution_graph()
+        if self.graph_name in self.func_mapping:
+            graph_func = self.func_mapping.get(self.graph_name)()
         else:
             return
 
         # create display widget
-        self.set_graph_view = QChartView(chart)
+        self.set_graph_view = QChartView(graph_func)
         self.set_graph_view.setRenderHint(QPainter.Antialiasing)
         self.set_graph_view.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
 
