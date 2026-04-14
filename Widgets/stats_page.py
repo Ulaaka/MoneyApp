@@ -9,29 +9,38 @@ from decouple import config
 from queries import query_processor
 from Widgets.home_page import Home_page
 from datetime import date
+from queries import query_processor
 class Stats_page():
     def __init__(self, parent):
         self._parent = parent
-        self.set_chart_view = None
 
-        self.accountID = parent.accountID
-        # active chart name
-        self.chart_name = None
-        # graph to filters
-        self.active_filters = None
-        # active graph buttons
         self.active_buttons = []
-        # dates
-        self.upper_date = None
-        self.lower_date = None
+        self.query = query_processor()
+        self.userID = parent.userID
+        self.accountID = parent.accountID
+        self.account_name = parent.account_name
+        self.set_chart_view = None
+        self.set_chart = "Summary"
+        self.graph_buttons = []
+
+        self.show_chart(self.set_chart)
         self.stats_signals_connect()
 
     def stats_signals_connect(self):
         parent_window = self._parent
         parent_window.ui.dateEdit_2.setCalendarPopup(True)
         parent_window.ui.dateEdit.setCalendarPopup(True)
-        parent_window.transaction_type_box.currentTextChanged.connect(self.update_chart)
-        parent_window.value_box.currentTextChanged.connect(self.update_chart)
-        parent_window.dateEdit.dateChanged.connect(self.update_chart)
-        parent_window.dateEdit_2.dateChanged.connect(self.update_chart)
-        parent_window.download_chart_button.clicked.connect(self.download_current_chart)
+        parent_window.transaction_type_box.currentTextChanged.connect(self.update_graph)
+        parent_window.value_box.currentTextChanged.connect(self.update_graph)
+        parent_window.dateEdit.dateChanged.connect(self.update_graph)
+        parent_window.dateEdit_2.dateChanged.connect(self.update_graph)
+        parent_window.download_chart_button.clicked.connect(self.download_graph)
+
+    def show_chart(self):
+        pass
+
+    def update_graph(self):
+        pass
+
+    def download_graph(self):
+        pass
