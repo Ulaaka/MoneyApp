@@ -591,6 +591,7 @@ class query_processor:
             return first_date, last_date
 
     # Compares the given data ranges in terms of total transfer or extreme values (min or max)
+    # NEEDS TO BE UPDATED
     def compare_range(self, username, transfer_toggle, account_name,  date_first, date_second, range):
 
         first_dates = self.produce_dates(date_first, range)
@@ -656,23 +657,22 @@ class query_processor:
         return clean_ouput
 
     # Finds subscriptions from the transactions 
-    def find_subscriptions(self, username, account_name=None):
-        head_query = """
-            SELECT T.description, SUM(ABS(T.amount)) as total_sent, COUNT(*) count_transaction
+    def find_subscriptions(self, userID, accountID=None):
+        head_query = f"""
+            SELECT T.description, SUM(ABS(T.amount)) as total_sent , COUNT(*)
             FROM transactions T
             JOIN accounts A ON T.accountID = A.accountID
             JOIN users U ON U.userID = A.userID
+            WHERE U.userID = {userID} and T.amount < 0
         """
 
-        where_query = f" WHERE U.username = '{username}'"
+        where_query = ""
+        if (accountID):
+            where_query+=f" and A.account_name = {accountID}"
 
-        if (account_name):
-            where_query+=f" and A.account_name = '{account_name}'"
-
-        tail_query = " GROUP BY T.description HAVING count_transaction > 3 ORDER BY total_sent DESC"
+        tail_query = " GROUP BY T.description, ABS(T.amount) HAVING COUNT(*) > 3 and COUNT(DISTINCT ABS(T.amount)) = 1 ORDER BY total_sent DESC LIMIT 5"
 
         query = head_query + where_query + tail_query
         self.cursor.execute(query)
         output = self.cursor.fetchall()
-        print(output)
         return output

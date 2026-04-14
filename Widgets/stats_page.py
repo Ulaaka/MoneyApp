@@ -1,7 +1,7 @@
 from PyQt5.QtWidgets import QPushButton, QSizePolicy
-from PyQt5.QtCore import QDate, Qt
+from PyQt5.QtCore import QDate, Qt, QMargins
 from PyQt5.QtGui import QPainter
-from PyQt5.QtChart import QChart, QChartView, QBarSeries, QBarSet, QBarCategoryAxis, QValueAxis
+from PyQt5.QtChart import QChart, QChartView, QBarSeries, QBarSet, QBarCategoryAxis, QValueAxis, QHorizontalBarSeries
 from queries import query_processor
 
 class Stats_page():
@@ -10,7 +10,6 @@ class Stats_page():
 
         self.active_buttons = []
         self.query = query_processor()
-        self.account_name = parent.account_name
         self.set_graph_view = None
         self.graph_name = "Summary"
         self.copy_list = []
@@ -20,7 +19,8 @@ class Stats_page():
             "Weekly Trend" : self.create_weekly_graph,
             "Monthly Trend" : self.create_monthly_graph,
             "Yearly Trend" : self.create_yearly_graph,
-            "Distribution" : self.create_distribution_graph
+            "Distribution" : self.create_distribution_graph,
+            "Possible Subscriptions": self.create_subscription_graph
         }
 
         self.transfer_toggle_dic = {
@@ -71,6 +71,7 @@ class Stats_page():
     def show_graph(self, graph):
         parent_window = self._parent
         self.graph_name = graph
+
         if graph != "Summary":
             parent_window.ui.value_box.setEnabled(False)
             parent_window.ui.value_box.setCurrentIndex(0)
@@ -91,7 +92,7 @@ class Stats_page():
     def update_graph(self):
         parent_window = self._parent
         self.wipe_out_layout(parent_window.ui.charts_widget.layout())
-        self.set_graph_view = None
+        #self.set_graph_view = None
 
         if self.graph_name in self.func_mapping:
             graph_func = self.func_mapping[self.graph_name]()
@@ -115,9 +116,36 @@ class Stats_page():
         mode_text = parent_window.ui.value_box.currentText()
         return transaction_type_text, mode_text
 
-
     def download_graph(self):
         pass
+
+    def create_subscription_graph(self):
+        parent_window = self._parent
+        result = self.query.find_subscriptions(parent_window.userID)
+
+        graph = QChart()
+        graph_series = QHorizontalBarSeries()
+        graph_series.setBarWidth(1)
+        for sub in result:
+            sub_bar = QBarSet(sub[0])
+            sub_bar.append(int(sub[1]))
+            graph_series.append(sub_bar)
+        graph.addSeries(graph_series)
+
+        y_axis = QBarCategoryAxis()
+        y_axis.append([sub[0] for sub in result])
+        graph.addAxis(y_axis, Qt.AlignLeft)
+        graph_series.attachAxis(y_axis)
+
+        x_axis = QValueAxis()
+        x_axis.setRange(0, max([int(sub[1]) for sub in result]))
+        x_axis.setLabelFormat("%f")
+        x_axis.setTickCount(6)
+        graph.addAxis(x_axis, Qt.AlignBottom)
+        graph_series.attachAxis(x_axis)
+        graph.setTitle("Possible subscriptions")
+
+        return graph
 
     def create_summary_graph(self):
         parent_window = self._parent
@@ -173,8 +201,8 @@ class Stats_page():
 
             graph.addSeries(graph_series)
 
-            x_axis = self.add_to_x_axis(name)
-            y_axis = self.add_to_y_axis(going)
+            x_axis = self.add_to_x_axis(name, graph)
+            y_axis = self.add_to_y_axis(going, graph)
 
             graph_series.attachAxis(x_axis)
             graph_series.attachAxis(y_axis)
@@ -182,7 +210,7 @@ class Stats_page():
             graph.setTitle(name)
         return graph
 
-    def add_to_y_axis(self, value, graph, tick=5):
+    def add_to_y_axis(self, value, graph, tick=5, horizontal=None):
         y_axis = QValueAxis() 
         y_axis.setRange(0, value)
         y_axis.setLabelFormat("%d")
