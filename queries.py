@@ -533,7 +533,7 @@ class query_processor:
     # transfer toggle = if true find the total income
     # at least one of the transfer_toggle and max_toggle should be included
     # grouping by the type of transaction is useful too
-    def total_transfer_or_extreme_value(self, userID, transfer_toggle=None, max_toggle=None, accountID=None, date_lower=None, date_upper=None):
+    def total_transfer_or_extreme_value(self, userID, accountID, transfer_toggle=None, max_toggle=None, date_lower=None, date_upper=None):
         try:
             # string to datetime conversion, could get useful
             parameter = [userID]
@@ -575,7 +575,8 @@ class query_processor:
             self.cursor.execute(query, tuple(parameter))
 
             output = self.cursor.fetchone()
-            return output[0]
+
+            return output[0] if output[0] is not None else 0
         except:
             print("important arguments (max_toggle or transfer_toggle missing)")
 
