@@ -133,7 +133,9 @@ QLabel#date_label_transaction,
 QLabel#type_label_transaction,
 QLabel#description_label_transaction,
 QLabel#amount_label_transaction,
-QLabel#balance_label_transaction{
+QLabel#balance_label_transaction,
+QLabel#graphs_label,
+QLabel#charts_label{
     background-color: transparent;
     color: black;
     border-radius: 15px;
@@ -279,14 +281,16 @@ QPushButton#upload_file_button:hover {
 }
 
 QPushButton#username_change_button,
-QPushButton#email_change_button{
+QPushButton#email_change_button,
+QPushButton#download_chart_button{
     background-color: #313a46;
     color: white;
     border: 2px solid black;
     border-radius: 7px;
 }
 QPushButton#username_change_button:hover,
-QPushButton#email_change_button:hover{
+QPushButton#email_change_button:hover,
+QPushButton#download_chart_button:hover{
     background-color: rgba(86, 101, 115, 0.1);
     color: black;
     border-radius: 7px;
