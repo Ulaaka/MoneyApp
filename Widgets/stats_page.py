@@ -30,3 +30,8 @@ class Stats_page():
         parent_window = self._parent
         parent_window.ui.dateEdit_2.setCalendarPopup(True)
         parent_window.ui.dateEdit.setCalendarPopup(True)
+        parent_window.transaction_type_box.currentTextChanged.connect(self.update_chart)
+        parent_window.value_box.currentTextChanged.connect(self.update_chart)
+        parent_window.dateEdit.dateChanged.connect(self.update_chart)
+        parent_window.dateEdit_2.dateChanged.connect(self.update_chart)
+        parent_window.download_chart_button.clicked.connect(self.download_current_chart)
