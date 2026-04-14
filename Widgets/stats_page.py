@@ -79,3 +79,18 @@ class Stats_page():
 
     def download_graph(self):
         pass
+
+    def create_summary_graph(self):
+        pass
+
+    def create_weekly_graph(self):
+        pass
+
+    def create_monthly_graph(self):
+        pass
+
+    def create_yearly_graph(self):
+        pass
+
+    def create_distribution_graph(self):
+        pass
