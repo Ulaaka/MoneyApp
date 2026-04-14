@@ -1168,6 +1168,7 @@
                          <height>432</height>
                         </rect>
                        </property>
+                       <layout class="QVBoxLayout" name="verticalLayout_34"/>
                       </widget>
                      </widget>
                     </item>
@@ -1458,7 +1459,9 @@
                      </widget>
                     </item>
                     <item>
-                     <widget class="QWidget" name="charts_widget" native="true"/>
+                     <widget class="QWidget" name="charts_widget" native="true">
+                      <layout class="QVBoxLayout" name="verticalLayout_35"/>
+                     </widget>
                     </item>
                    </layout>
                   </widget>

@@ -44,6 +44,7 @@ class MainWindow(QMainWindow):
 
         self.MainWindow_signals_connection()
         self.home_page_handler()
+        print(self.ui.scrollAreaWidgetContents.layout())
 
     def home_page_handler(self):
         query = query_processor()

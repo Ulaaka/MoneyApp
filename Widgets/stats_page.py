@@ -3,14 +3,8 @@ from PyQt5.QtWidgets import QFileDialog, QMessageBox, QWidget, QPushButton, QSiz
 from PyQt5.QtCore import QDate, Qt
 from PyQt5.QtGui import QPainter
 from PyQt5.QtChart import QChart, QChartView, QBarSeries, QBarSet, QBarCategoryAxis, QPieSeries, QLineSeries, QValueAxis
-from Widgets.live_output_window import Live_output_window
-from FILE_handling import file_handling
-from Widgets.stream import Stream
-from Widgets.thread_worker import Thread_worker
-from decouple import config
 from queries import query_processor
-from Widgets.home_page import Home_page
-from datetime import date
+
 from queries import query_processor
 
 
@@ -25,7 +19,6 @@ class Stats_page():
         self.account_name = parent.account_name
         self.set_graph_view = None
         self.graph_name = "Summary"
-        self.graph_buttons = []
 
         self.func_mapping = {
             "Summary" : self.create_summary_graph,
@@ -63,9 +56,12 @@ class Stats_page():
         parent_window.ui.dateEdit.dateChanged.connect(self.update_graph)
         parent_window.ui.dateEdit_2.dateChanged.connect(self.update_graph)
         parent_window.ui.download_chart_button.clicked.connect(self.download_graph)
-        if parent_window.ui.charts_widget.layout() is None:
-            layout = QVBoxLayout()
-            parent_window.ui.charts_widget.setLayout(layout)
+
+        for graph in list(self.func_mapping.keys()):
+            opt_button = QPushButton(graph)
+            opt_button.clicked.connect(lambda clicked, graph_name=graph: self.show_graph(graph_name))
+            parent_window.ui.scrollAreaWidgetContents.layout().addWidget(opt_button)
+        parent_window.ui.scrollAreaWidgetContents.layout().addStretch()
 
     def show_graph(self, graph):
         parent_window = self._parent
