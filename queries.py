@@ -517,25 +517,26 @@ class query_processor:
         accounts = self.return_accounts_given_userID(userID)
         options_list = [account[1] for account in accounts] if accounts else []
         return options_list if options_list else None
-    
-    # GRAPH QUERIES
+
+
+    # GRAPH QUERIES 
+
     # Finds min or max value of the given column (Amount, balance, date etc)
-    def find_min_max(self, column, max_toggle=True):
+    def find_min_max(self, accountID, column, max_toggle=True):
         toggle = "MAX" if max_toggle else "MIN"
 
-        query = f"SELECT {toggle}({column})from transactions"
+        query = f"SELECT {toggle}({column})from transactions WHERE accountID = {accountID}"
         self.cursor.execute(query)
         output = self.cursor.fetchone()
-        return output
+        return output[0] if output else None
 
     # transfer toggle = if true find the total income
     # at least one of the transfer_toggle and max_toggle should be included
     # grouping by the type of transaction is useful too
-    def total_transfer_or_extreme_value(self, username, transfer_toggle=None, max_toggle=None, account_name=None, date_lower=None, date_upper=None):
+    def total_transfer_or_extreme_value(self, userID, transfer_toggle=None, max_toggle=None, accountID=None, date_lower=None, date_upper=None):
         try:
             # string to datetime conversion, could get useful
-            #date = datetime.fromisoformat(datetime_input)
-            parameter = [username]
+            parameter = [userID]
 
             toggle = "SUM"
             base_query = f"SELECT {toggle}(T.amount)" 
@@ -544,7 +545,7 @@ class query_processor:
                     FROM users U
                     JOIN accounts A ON A.userID = U.userID
                     JOIN transactions T ON T.accountID = A.accountID
-                    WHERE U.username = %s
+                    WHERE U.userID = %s
             """
 
             if (max_toggle is not None):
@@ -559,9 +560,9 @@ class query_processor:
                 toggle = ">" if transfer_toggle else "<"
                 query+=f" and T.amount {toggle} 0"
 
-            if (account_name is not None):
-                query+= " and A.account_name = %s"
-                parameter.append(account_name)
+            if (accountID is not None):
+                query+= " and A.accountID = %s"
+                parameter.append(accountID)
 
             if (date_lower):
                 query += " and T.transaction_date >= %s"
@@ -574,7 +575,6 @@ class query_processor:
             self.cursor.execute(query, tuple(parameter))
 
             output = self.cursor.fetchone()
-            print(output[0])
             return output[0]
         except:
             print("important arguments (max_toggle or transfer_toggle missing)")

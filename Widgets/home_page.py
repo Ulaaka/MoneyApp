@@ -25,6 +25,8 @@ class Home_page():
         parent_window.ui.upload_file_button.clicked.connect(self.set_select_dates)
         parent_window.ui.tableView.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
         parent_window.ui.tableView.verticalHeader().setVisible(False)
+        parent_window.ui.start_date_edit.setCalendarPopup(True)
+        parent_window.ui.end_date_edit.setCalendarPopup(True)
 
 
     def show_table(self):
