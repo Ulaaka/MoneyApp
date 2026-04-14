@@ -14,6 +14,7 @@ class Stats_page():
         self._parent = parent
         self.set_chart_view = None
 
+        self.accountID = parent.accountID
         # active chart name
         self.chart_name = None
         # graph to filters
@@ -23,28 +24,9 @@ class Stats_page():
         # dates
         self.upper_date = None
         self.lower_date = None
-
-        # filter (labels, names)
-        self.filters_map = {
-            "transaction_type": { 
-                "Transaction Type", ["All", "Income", "Expense"]
-            },
-            "measure_type": {
-                "Mode", ["Total", "Incoming", "Outgoing"]
-            },
-            "date_type": {
-                "Date Range", ["From", "To"]
-            }
-        }
-
-        # graph to filter
-        self.graph_to_filter = {
-            "Summary" : ["transaction_type", "measure_type", "date_type"],
-            "Monthly Trend": ["measure_type", "date_type"],
-            "Weekly Trend": ["measure_type", "date_type"],
-            "Yearly Trend": ["measure_type", "date_type"],
-            "Distribution": ["transaction_type", "date_type"]
-        }
+        self.stats_signals_connect()
 
     def stats_signals_connect(self):
-        pass
+        parent_window = self._parent
+        parent_window.ui.dateEdit_2.setCalendarPopup(True)
+        parent_window.ui.dateEdit.setCalendarPopup(True)

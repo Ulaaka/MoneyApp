@@ -14,7 +14,7 @@ from Widgets.upload_Page import Upload_page
 from Widgets.files_page import Files_page
 from Widgets.home_page import Home_page
 from Widgets.settings_page import Change_password_page, Delete_user_account, Change_category
-
+from Widgets.stats_page import Stats_page
 class MainWindow(QMainWindow):
     def __init__(self, controller , key, userID):
         super(MainWindow, self).__init__()
@@ -37,6 +37,7 @@ class MainWindow(QMainWindow):
         self.file_manager = Files_page(self)
         self.account_manager = Account_selection_page(self)
         self.profile_manager= Profile_page(self.account_name, self)
+        self.stats_manager = Stats_page(self)
 
         self.query = query_processor()
         self.category_change_handle = Change_category(self)
