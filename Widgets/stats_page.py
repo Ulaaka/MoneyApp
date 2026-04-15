@@ -233,8 +233,8 @@ class Stats_page():
         transaction_type_txt = self.active_filters["Transaction Type"].currentText()
         value_txt = self.active_filters["Mode"].currentText()
 
-        date_low_str = self.active_buttons["From"].date().toPyDate().strftime("%Y-%m-%d")
-        date_up_str = self.active_filters["To"].date().toPyDate().strftime("%Y-%m-%d")
+        date_low_str = self.active_filters["From"].date().toString("yyyy-MM-dd")
+        date_up_str = self.active_filters["To"].date().toString("yyyy-MM-dd")
 
         graph = QChart()
         if transaction_type_txt == "All":

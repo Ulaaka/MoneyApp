@@ -1219,20 +1219,7 @@
                        </property>
                        <item>
                         <widget class="QWidget" name="filters_widget" native="true">
-                         <layout class="QVBoxLayout" name="verticalLayout_31">
-                          <property name="spacing">
-                           <number>1</number>
-                          </property>
-                          <property name="leftMargin">
-                           <number>0</number>
-                          </property>
-                          <property name="topMargin">
-                           <number>0</number>
-                          </property>
-                          <property name="bottomMargin">
-                           <number>0</number>
-                          </property>
-                         </layout>
+                         <layout class="QHBoxLayout" name="horizontalLayout_35"/>
                         </widget>
                        </item>
                        <item>
