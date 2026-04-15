@@ -186,13 +186,17 @@ class Stats_page():
 
         if widget_desc["type"] == "comboBox":
             add = QComboBox()
+            # passed the name of combobox with the same style
             add.addItems(widget_desc["value"])
+            add.setObjectName("stats_combo")
             add.currentTextChanged.connect(self.update_graph)
         elif widget_desc["type"] == "dateEdit":
             add = QDateEdit()
             date = widget_desc["value"]
             add.setDate(QDate(date.year, date.month, date.day))
             add.setCalendarPopup(True)
+            add.setObjectName("stats_date")
+
             add.dateChanged.connect(self.update_graph)
         vertical.addWidget(add)
         self.active_filters[widget_desc["name"]] = add
