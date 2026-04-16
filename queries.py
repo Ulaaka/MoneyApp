@@ -111,6 +111,16 @@ class query_processor:
             self.cursor.execute(query, (category_sentence, json.dumps(category_list), category_name, categoryID))
             self.db.commit()
 
+    def change_data_key_salt(self, enc_data_key, salt, userID):
+        query = """
+            UPDATE users
+            SET enc_data_key = %s, salt = %s
+            WHERE userID = %s
+        """
+        self.cursor.execute(query, (enc_data_key, salt, userID))
+        self.db.commit()
+
+
     # Deleted the user, resulting in cascading effect
     def delete_user(self, userID):
         """

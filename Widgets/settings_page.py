@@ -6,7 +6,7 @@ from BASE_Classes import password_class, cryptography
 from Widgets.change_confirmation_window import Change_confirmation_page
 from Widgets.Table_View import ListModelCategory
 from Widgets.home_page import Home_page
-import numpy as np
+from system_functions import system_functions
 class Change_password_page():
     def __init__(self, parent):
         self._parent = parent
@@ -31,6 +31,8 @@ class Change_password_page():
 
     def change_password(self):
         crypto = cryptography()
+        system = system_functions()
+        query = query_processor()
         parent_window = self._parent
         current_password = parent_window.ui.current_password_line.text()
         new_password = parent_window.ui.new_password_line.text()
@@ -66,11 +68,12 @@ class Change_password_page():
                     return
 
                 result = self.password_manager.change_password(parent_window.userID, new_password)
+                # password changed
                 if result:
                     parent_window.ui.current_password_line.clear()
                     parent_window.ui.new_password_line.clear()
-                    key = crypto.generate_key(new_password)
-                    parent_window.key = key
+                    enc_data_key, salt = system.update_data_key(current_password, new_password, self._parent.userID)
+                    query.change_data_key_salt(enc_data_key, salt, self._parent.userID)
                     QMessageBox.information(
                         parent_window, "Confirmation", "Password Changed")
                     return
@@ -79,15 +82,13 @@ class Change_password_page():
                     parent_window, "Error", "Please enter both fields")
                 return
         else:
+            # when forgot password
             result = self.password_manager.change_password(parent_window.userID, new_password)
             if result:
                 parent_window.ui.current_password_line.show()
                 parent_window.ui.current_password_line.clear()
                 parent_window.ui.new_password_line.clear()
                 self.objective = 0
-                key = crypto.generate_key(new_password)
-                parent_window.key = key
-
                 QMessageBox.information(
                     parent_window, "Confirmation", "Password Changed")
                 return

@@ -380,7 +380,6 @@ class validation_page(QWidget):
         self.timer_manager.begin_timer()
 
 class reset_password(QWidget):
-
     def __init__(self, controller, login_page, db, cursor):
         super().__init__()
         self.controller = controller
@@ -454,7 +453,8 @@ class reset_password(QWidget):
         self.setLayout(layout)
 
     def compare_password(self):
-        password_manager = password_manager = password_class()()
+        password_manager  = password_class()
+        query = query_processor()
         safety = password_manager.check_password_safety(self.password_1.text())
         same = self.password_1.text() == self.password_2.text()
         if not safety:
@@ -474,16 +474,11 @@ class reset_password(QWidget):
             return
 
         if safety and same:
-           print("New Password Matches")
-
-           hashed_password = password_manager.hash_password(self.password_1.text())
-           username = self.login_page.username.text()
-
-           query = "UPDATE users SET hashed_password = %s WHERE username = %s"
-           self.cursor.execute(query, (hashed_password, username))
-           self.db.commit()
-
-           self.controller.show_login()
+            print("New Password Matches")
+            username = self.login_page.username.text()
+            userID = query.get_userID(username)
+            password_manager.change_password(userID, self.password_1.text())
+            self.controller.show_login()
 
 class User_authentication(QMainWindow):
     def __init__(self):
