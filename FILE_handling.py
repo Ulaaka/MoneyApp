@@ -9,7 +9,6 @@ from PDF_Parser import ParsingPDF
 from queries import query_processor
 
 class file_handling():
-
     """
     Contains functions for handling files
     """
@@ -51,6 +50,7 @@ class file_handling():
         self.temp_files.append(temp_name)
         self.open_temp_file(temp_name)
 
+
     def delete_encrypted_file(self, accountID, hashed_name):
         sub_save_folder = os.path.join(config('SAVE_FOLDER'),f"account_{accountID}")
         for encrypted_file in os.listdir(sub_save_folder):
@@ -69,8 +69,6 @@ class file_handling():
     # Checks if the file with the same content exists by checking the save folder for encrypted files
     def check_file_exists(self, sub_save_folder, file_path, filename):
         crypto = cryptography()
-
-
         found = False
         output = ""
 
@@ -90,7 +88,6 @@ class file_handling():
     # The functions for handling the parsing of the user input files
     def process_files_in_folder(self):
         crypto = cryptography()
-    
         dir = os.listdir(config('FOLDER_PATH'))
         parsed_count = 0
         existing_file_output = []
@@ -107,8 +104,8 @@ class file_handling():
                 if not os.path.exists(sub_save_folder):
                     os.makedirs(sub_save_folder)
 
-                result = self.check_file_exists(sub_save_folder, file_path, filename)
-                flag = result[0]
+                found, output = self.check_file_exists(sub_save_folder, file_path, filename)
+                flag = found
 
                 if flag is False:
                     if (filename.endswith(".csv")):
@@ -123,7 +120,7 @@ class file_handling():
                     file_ID = crypto.encrypt(sub_save_folder, config('FOLDER_PATH'), filename, self.key, self.accountID, size_file, file_type)
                     ProcessingDF(parsing.df, file_ID, self.userID, self.accountID)
                 else:
-                    existing_file_output.append(result[1])
+                    existing_file_output.append(found)
             else:
                 print("Incompatible file/s has been submitted")
                 return

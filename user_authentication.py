@@ -476,8 +476,19 @@ class reset_password(QWidget):
         if safety and same:
             print("New Password Matches")
             username = self.login_page.username.text()
+            new_password = self.password_1.text()
             userID = query.get_userID(username)
-            password_manager.change_password(userID, self.password_1.text())
+            password_manager.change_password(userID,new_password)
+            # create new key and everything
+
+            # random salt
+            crypto = cryptography()
+
+            new_salt = os.urandom(32)
+            new_wrapping_key = crypto.generate_key(new_password, new_salt)
+            new_data_key = base64.urlsafe_b64encode(secrets.token_bytes(32))
+            new_encrypted_data_key = crypto.encrypt_data_key(new_wrapping_key, new_data_key)
+            query.change_data_key_salt(new_encrypted_data_key, new_salt, userID)
             self.controller.show_login()
 
 class User_authentication(QMainWindow):

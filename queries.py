@@ -130,6 +130,11 @@ class query_processor:
         self.cursor.execute(sql, (userID,))
         self.db.commit()
 
+    def delete_user_files(self, userID):
+        sql = "DELETE FROM files WHERE accountID IN (SELECT accountID FROM accounts WHERE userID = %s)"
+        self.cursor.execute(sql, (userID,))
+        self.db.commit()
+
     def get_category_info(self, userID, accountID, asDF=None):
         # categoryID, category_list, category_name
         sql_categories  = "SELECT categoryID, category_list, category_sentence, category_name FROM categories WHERE userID = %s and accountID = %s ORDER BY categoryID"
