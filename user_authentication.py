@@ -261,17 +261,12 @@ class sign_up_page(QWidget):
 
         # random salt
         crypto = cryptography()
-
         salt = os.urandom(32)
         wrapping_key = crypto.generate_key(password_local, salt)
         data_key = base64.urlsafe_b64encode(secrets.token_bytes(32))
         encrypted_data_key = crypto.encrypt_data_key(wrapping_key, data_key)
         hashed_password = password_manager.hash_password(password_local)
-        print(encrypted_data_key)
-        print(type(encrypted_data_key))
-        print(salt.hex())
-        print(type(salt.hex()))
-        self.query.insert_user(username_local, hashed_password, email_local, encrypted_data_key, salt.hex())
+        self.query.insert_user(username_local, hashed_password, email_local, encrypted_data_key, salt)
         self.controller.show_login()
 
 class validation_page(QWidget):

@@ -247,10 +247,9 @@ class cryptography:
     def encrypt_data_key(self, wrapping_key, data_key):
         fernet = Fernet(wrapping_key)
         encrypted = fernet.encrypt(data_key)
-        return encrypted.decode()
+        return encrypted
     
     def decrypt_data_key(self, wrapping_key, enc_data_key):
-        enc_data_key = enc_data_key.encode()
         fernet = Fernet(wrapping_key)
         decrypted = fernet.decrypt(enc_data_key)
         return decrypted

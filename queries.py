@@ -32,7 +32,7 @@ class query_processor:
     # ACCOUNT QUERIES
     # Creates new user, and inserts information into the database
     def insert_into_users(self, username, hashed_password, email, encrypted_data_key, salt):
-        sql = "INSERT INTO users (username, hashed_password, email_address, encrypted_data_key, salt) VALUES (%s, %s, %s, %s, %s)"
+        sql = "INSERT INTO users (username, hashed_password, email_address, enc_data_key, salt) VALUES (%s, %s, %s, %s, %s)"
         self.cursor.execute(sql, (username, hashed_password, email, encrypted_data_key, salt))
         userID = self.cursor.lastrowid
         self.db.commit()
