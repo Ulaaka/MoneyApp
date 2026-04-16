@@ -12,7 +12,6 @@ class Change_confirmation_page(QDialog):
         self.duration = 90
         self.timer = QTimer(self)
         self.system = system_functions()
-        self.system = system_functions()
         self.code = self.system.send_reset_digits(6, userID=self.userID)
 
         self.ui = Ui_change_confirmation()
@@ -47,7 +46,12 @@ class Change_confirmation_page(QDialog):
     def submit_code(self):
         entered_code =self.ui.confirmation_line.text()
         if entered_code == str(self.code):
-            self.close()
             self.finished.emit()
+            self.timer.stop()
+            self.close()
         else:
             return
+
+    def closeEvent(self, event):
+        self.timer.stop()
+        self.accept()

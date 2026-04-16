@@ -11,8 +11,10 @@ import os
 from database_connection import database
 import base64
 from Crypto.Hash import SHA256
+from hashlib import pbkdf2_hmac
 import re
-
+from cryptography.hazmat.primitives.ciphers.algorithms import AES
+from Crypto.Cipher import ARC4 
 class ParsingBase:
 
     """
@@ -216,9 +218,9 @@ class cryptography:
         self.query = query_processor()
 
     # Produces the key used in encryption and decryption of the user files given  password
-    def generate_key(self, password):
-
-        hashed = SHA256.new(password.encode()).digest()
+    def generate_key(self, password, salt):
+        password = password.encode()
+        hashed = pbkdf2_hmac("sha256", password, salt, 10000, dklen=32)
         return base64.urlsafe_b64encode(hashed)
 
     # Encrypts the user file (filename) from folder_path to the save_folder
@@ -241,6 +243,16 @@ class cryptography:
 
         file_ID = self.query.insert_into_files(accountID,  filename, new_filename, size_file, file_type)
         return file_ID
+    
+    def encrypt_data_key(self, wrapping_key, data_key):
+        fernet = Fernet(wrapping_key)
+        encrypted = fernet.encrypt(data_key)
+        return encrypted
+    
+    def decrypt_data_key(self, wrapping_key, enc_data_key):
+        fernet = Fernet(wrapping_key)
+        decrypted = fernet.decrypt(enc_data_key)
+        return decrypted
 
     # Decrypts the user file given filename or hashed_filename
     def decrypt(self, enc_storage_path, key, accountID, filename=None, hashed_filename=None, fileID=None):

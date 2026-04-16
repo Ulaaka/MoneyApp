@@ -37,7 +37,7 @@ class MainWindow(QMainWindow):
         self.file_manager = Files_page(self)
         self.account_manager = Account_selection_page(self)
         self.profile_manager= Profile_page(self.account_name, self)
-        self.category_change_handle = Change_category(self)
+        self.category_change_manager = Change_category(self)
         self.account_control_manager = Account_control_page(self.account_name, self)
         self.stats_manager = Stats_page(self)
 
@@ -93,7 +93,7 @@ class MainWindow(QMainWindow):
             self.account_control_manager = Account_control_page(self.account_name, self)
             self.account_control_manager.show_account_control_page()
         elif currentWidget == self.ui.settings_page:
-            self.category_change_handle.show_category_table()
+            self.change_category_handle()
         elif currentWidget == self.ui.stats_page:
             self.stats_manager = Stats_page(self)
 
@@ -143,9 +143,10 @@ class MainWindow(QMainWindow):
         self.ui.transaction_date_edit.setDate(QDate(current_date.year, current_date.month, current_date.day))
 
     def change_category_handle(self):
+        self.ui.stackedWidget.setCurrentWidget(self.ui.settings_page)
         self.ui.settings_stack.setCurrentWidget(self.ui.category_change_page)
         self.ui.stackedWidget_2.setCurrentWidget(self.ui.category_table_page)
-        self.category_change_handle.show_category_table()
+        self.category_change_manager.show_category_table()
 
     def change_password_handle(self):
         self.ui.settings_stack.setCurrentWidget(self.ui.change_password_page)

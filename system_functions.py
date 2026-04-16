@@ -1,4 +1,4 @@
-import random
+import random, os
 from django.core.mail import EmailMessage
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
@@ -9,7 +9,7 @@ from matplotlib.backends.backend_pdf import PdfPages
 from matplotlib.image import imread
 from pathlib import Path
 from datetime import datetime
-
+from BASE_Classes import cryptography
 class system_functions:
 
     """
@@ -21,6 +21,7 @@ class system_functions:
         self.db = connection.db
         self.query = query_processor()
         self.cursor = connection.cursor
+        self.crypto = cryptography()
 
     # Generates random digits for user authentication for 2FA
     def generate_random_digits(self, digits_size):
@@ -107,6 +108,16 @@ class system_functions:
         min_date = min(date_list).date()
         max_date = max(date_list).date()
         return min_date, max_date, transactions
+
+    def update_data_key(self, prev_password, next_password, userID):
+        enc_data_key, salt = self.query.get_data_key_salt(userID)
+        wrapping_key = self.crypto.generate_key(prev_password, salt)
+        data_key = self.crypto.decrypt_data_key(wrapping_key, enc_data_key)
+
+        next_salt = os.urandom(32)
+        next_wrapping_key = self.crypto.generate_key(next_password, next_salt)
+        next_enc_data_key = self.crypto.encrypt_data_key(next_wrapping_key, data_key)
+        return next_enc_data_key, next_salt
 
 
 class manage_seconds_qt():

@@ -31,9 +31,9 @@ class query_processor:
 
     # ACCOUNT QUERIES
     # Creates new user, and inserts information into the database
-    def insert_into_users(self, username, hashed_password, email):
-        sql = "INSERT INTO users (username, hashed_password, email_address) VALUES (%s, %s, %s)"
-        self.cursor.execute(sql, (username, hashed_password, email))
+    def insert_into_users(self, username, hashed_password, email, encrypted_data_key, salt):
+        sql = "INSERT INTO users (username, hashed_password, email_address, enc_data_key, salt) VALUES (%s, %s, %s, %s, %s)"
+        self.cursor.execute(sql, (username, hashed_password, email, encrypted_data_key, salt))
         userID = self.cursor.lastrowid
         self.db.commit()
         return userID
@@ -69,13 +69,13 @@ class query_processor:
         return file_ID
 
     # New user insertion with check of if the user already exists
-    def insert_user(self, username, hashed_password, email):
+    def insert_user(self, username, hashed_password, email, encrypted_data_key, salt):
         userID = self.get_userID(username)
         if userID is None:
             try:
-                userID = self.insert_into_users(username, hashed_password, email)
+                userID = self.insert_into_users(username, hashed_password, email, encrypted_data_key, salt)
             except:
-                print("User registration error")
+                print("could not insert the user")
         return userID
 
     # New account insertion with check of if the account already exists
@@ -110,6 +110,16 @@ class query_processor:
             """
             self.cursor.execute(query, (category_sentence, json.dumps(category_list), category_name, categoryID))
             self.db.commit()
+
+    def change_data_key_salt(self, enc_data_key, salt, userID):
+        query = """
+            UPDATE users
+            SET enc_data_key = %s, salt = %s
+            WHERE userID = %s
+        """
+        self.cursor.execute(query, (enc_data_key, salt, userID))
+        self.db.commit()
+
 
     # Deleted the user, resulting in cascading effect
     def delete_user(self, userID):
@@ -426,6 +436,16 @@ class query_processor:
 
         self.cursor.execute(query, (userID, ))
         result = self.cursor.fetchall()
+        return result if result else None
+
+    def get_data_key_salt(self, userID):
+        query = """
+            SELECT enc_data_key, salt
+            FROM users
+            WHERE userID = %s
+        """
+        self.cursor.execute(query, (userID, ))
+        result = self.cursor.fetchone()
         return result if result else None
 
     # Returns the updated category for new transactions
