@@ -1,11 +1,11 @@
 from PyQt5.QtWidgets import  QPushButton, QHeaderView, QMessageBox
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QStandardItemModel, QStandardItem
-from Widgets.disclaimer_window import Disclaimer_window
-from queries import QueryProcessor
+from Widgets.disclaimer_window import DisclaimerWindow
+from db_queries import QueryProcessor
 from file_handle import FileHandling
 
-class Files_page():
+class FilePage():
     def __init__(self, parent):
         self._parent = parent
         self.files_signals_connect()
@@ -44,7 +44,7 @@ class Files_page():
         file_handle.view_file(fileID=id)
 
     def delete_file_wht_ID(self, fileID):
-        disclaimer = Disclaimer_window(fileID, self._parent)
+        disclaimer = DisclaimerWindow(fileID, self._parent)
         disclaimer.show()
 
     def files_exist(self):

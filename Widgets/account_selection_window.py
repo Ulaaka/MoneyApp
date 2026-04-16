@@ -1,9 +1,8 @@
-from PyQt5.QtWidgets import QDialog, QCompleter, QMessageBox
-from PyQt5.QtCore import Qt,pyqtSignal, QPoint
-from Widgets.account_selection_panel import account_selection_form
-from Widgets.account_add_page import account_add_page_form
-from queries import QueryProcessor
-
+from PyQt5.QtWidgets import QDialog, QCompleter
+from PyQt5.QtCore import Qt,pyqtSignal
+from Widgets.account_selection_generated import Ui_AccountSelection
+from Widgets.account_add_window import AccountAddPage
+from db_queries import QueryProcessor
 
 class Account_selection_page(QDialog):
     chose_account = pyqtSignal(str, int) 
@@ -14,7 +13,7 @@ class Account_selection_page(QDialog):
         self.userID = parent.userID
         self.currency_list = parent.currency_list
 
-        self.ui = account_selection_form()
+        self.ui = Ui_AccountSelection()
 
         self.ui.setupUi(self)
         self.setWindowFlags(Qt.Popup)
@@ -62,42 +61,5 @@ class Account_selection_page(QDialog):
         self.adjustSize()
 
     def add_accounts(self):
-        self.account_add_page = Account_add_page(self.currency_list, self)
+        self.account_add_page = AccountAddPage(self.currency_list, self)
         self.account_add_page.show()
-
-class Account_add_page(QDialog):
-    def __init__(self, currencies, parent):
-        super().__init__(parent)
-        self.userID = parent.userID
-        self.currencies = currencies
-
-        self.ui = account_add_page_form()
-
-        self.ui.setupUi(self)
-        self.account_add_signals_connection()
-
-    def account_add_signals_connection(self):
-        self.ui.account_currency_combo.addItems(self.currencies)
-        self.ui.submit_button.clicked.connect(self.add_account_database)
-        currency_search = self.ui.account_currency_combo.lineEdit()
-        currency_search.setPlaceholderText("Search currency...")
-        completer = QCompleter(self.ui.account_currency_combo.model(), self)
-
-        completer.setFilterMode(Qt.MatchContains)
-        completer.setCaseSensitivity(Qt.CaseInsensitive)
-
-    def add_account_database(self):
-        query = QueryProcessor()
-        account_name = self.ui.account_name_type.text()
-        account_type = self.ui.account_type_combo.currentText()
-        account_currency = self.ui.account_currency_combo.currentText()[:3]
-        if account_name and account_type and account_currency:
-            accountID = query.insert_account(self.userID, account_name, account_type, account_currency)
-
-            self.parent().parent().update_account(account_name, accountID)
-            self.parent().parent().update_current_widget()
-            self.close()
-        else:
-            self.close()
-            QMessageBox.warning(self.parent().parent(), 'Error', 'Please enter all information')
-            return

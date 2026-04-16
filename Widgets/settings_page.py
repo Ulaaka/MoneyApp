@@ -3,9 +3,9 @@ from PyQt5.QtCore import QPoint, QSortFilterProxyModel, Qt
 
 from db_queries import QueryProcessor
 from base_classes import password_class, CryptoHelper
-from Widgets.change_confirmation_window import Change_confirmation_page
-from Widgets.Table_View import ListModelCategory
-from Widgets.home_page import Home_page
+from Widgets.change_confirmation_window import ChangeConfirmationPage
+from Widgets.app_table_helper import CategoryTable
+from Widgets.home_page import HomePage
 from system_functions import SystemHelpers
 import os, base64, secrets
 class Change_password_page():
@@ -103,7 +103,7 @@ class Change_password_page():
 
     def forgot_password_handle(self):
         parent_window = self._parent
-        confirmation_window = Change_confirmation_page(parent_window)
+        confirmation_window = ChangeConfirmationPage(parent_window)
         confirmation_window.finished.connect(self.capture_result)
         global_pos = parent_window.ui.forgot_password_button_settings.mapToGlobal(QPoint(0,0))
         confirmation_window.move(global_pos.x(), global_pos.y() + parent_window.ui.forgot_password_button_settings.height())
@@ -142,7 +142,7 @@ class Delete_user_account():
 class Change_category():
     def __init__(self, parent):
         self._parent = parent
-        self.home_page = Home_page(parent)
+        self.home_page = HomePage(parent)
         self.category_signals_connect()
 
     def category_signals_connect(self):
@@ -163,7 +163,7 @@ class Change_category():
         self.set_category_table(True)
 
         # -- TABLE LOADING -- 
-        self.model = ListModelCategory(categories, parent_window, self)
+        self.model = CategoryTable(categories, parent_window, self)
         self.data = categories
 
         # Set the search filter for the table

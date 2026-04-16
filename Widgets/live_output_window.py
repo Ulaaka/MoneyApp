@@ -2,10 +2,10 @@ import sys, os
 from decouple import config
 from PyQt5.QtWidgets import QDialog, QMessageBox
 from file_handle import FileHandling
-from Widgets.live_output_widget import Ui_live_output_window
+from Widgets.live_output_generated import Ui_live_output_window
 from base_classes import CryptoHelper
 from db_queries import QueryProcessor
-class Live_output_window(QDialog):
+class LiveOutputWindow(QDialog):
     def __init__(self, parent, saved_print):
         super().__init__(parent)
         self._parent = parent

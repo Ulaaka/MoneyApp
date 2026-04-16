@@ -4,7 +4,7 @@ import os, tempfile, shutil
 from base_classes import CryptoHelper
 from csv_parser import ParsingCSV
 from df_processor import ProcessingDF
-from HSBC_Pdf_Parser import ParsingPdfHSBC
+from hsbc_pdf_parser import ParsingPdfHSBC
 from pdf_parser import ParsingPDF
 from db_queries import QueryProcessor
 

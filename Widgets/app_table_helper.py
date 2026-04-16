@@ -1,7 +1,7 @@
 from PyQt5.QtCore import QAbstractTableModel, Qt
-from queries import QueryProcessor
+from db_queries import QueryProcessor
 # https://www.pythonguis.com/faq/editing-pyqt6-tableview/
-class ListModel(QAbstractTableModel):
+class TransactionTable(QAbstractTableModel):
     def __init__(self, data, parent, home_page):
         super().__init__(parent)
         self._data = data
@@ -65,8 +65,7 @@ class ListModel(QAbstractTableModel):
             | Qt.ItemFlag.ItemIsEditable
         )
 
-
-class ListModelCategory(QAbstractTableModel):
+class CategoryTable(QAbstractTableModel):
     def __init__(self, data, parent, category_page):
         super().__init__(parent)
         self._data = data

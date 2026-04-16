@@ -2,11 +2,11 @@ from PyQt5.QtWidgets import QPushButton, QSizePolicy, QWidget, QVBoxLayout, QLab
 from PyQt5.QtCore import QDate, Qt, QPointF
 from PyQt5.QtGui import QPainter
 from PyQt5.QtChart import QChart, QChartView, QBarSeries, QBarSet, QBarCategoryAxis, QValueAxis, QHorizontalBarSeries, QPieSeries, QLineSeries, QCategoryAxis
-from queries import QueryProcessor
+from db_queries import QueryProcessor
 from datetime import datetime, timedelta, date
 from pathlib import Path
 import calendar, os
-class Stats_page():
+class GraphPage():
     def __init__(self, parent):
         self._parent = parent
         self.active_buttons = []

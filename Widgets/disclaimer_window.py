@@ -1,10 +1,10 @@
 from PyQt5.QtWidgets import QDialog
 from Widgets.disclaimer_widget import Ui_Disclaimer
-from queries import QueryProcessor
-from file_handle import file_handling
-from Widgets.home_page import Home_page
+from db_queries import QueryProcessor
+from file_handle import FileHandling
+from Widgets.home_page import HomePage
 
-class Disclaimer_window(QDialog):
+class DisclaimerWindow(QDialog):
     def __init__(self, fileID, parent):
         super().__init__(parent)
         self.ui = Ui_Disclaimer()
@@ -13,8 +13,8 @@ class Disclaimer_window(QDialog):
         self.accountID = parent.accountID
         self.key = parent.key
         self.query = QueryProcessor()
-        self.file_handle = file_handling(self.userID, self.accountID,  self.key)
-        self.home_page_handle = Home_page(parent)
+        self.file_handle = FileHandling(self.userID, self.accountID,  self.key)
+        self.home_page_handle = HomePage(parent)
         self.ui.setupUi(self)
         self.signal_connect()
 

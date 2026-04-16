@@ -1,12 +1,12 @@
 from PyQt5.QtWidgets import  QWidget, QPushButton, QMessageBox
 from PyQt5.QtCore import Qt, QPoint
-from queries import QueryProcessor
+from db_queries import QueryProcessor
 from PyQt5.QtGui import QStandardItemModel, QStandardItem
-from Widgets.account_control_page import Account_control_page
-from Widgets.change_confirmation_window import Change_confirmation_page
-from BASE_Classes import password_class
+from Widgets.account_control_page import AccountControlPage
+from Widgets.change_confirmation_window import ChangeConfirmationPage
+from base_classes import password_class
 
-class Profile_page(QWidget):
+class ProfilePage(QWidget):
     def __init__(self, current_account, parent):
         super().__init__(parent)
         self.current_account = current_account
@@ -95,7 +95,7 @@ class Profile_page(QWidget):
         self.mail_button_state = not state
 
         if (self.mail_button_state is True):
-            confirmation_window = Change_confirmation_page(self)
+            confirmation_window = ChangeConfirmationPage(self)
             confirmation_window.finished.connect(self.capture_result)
             global_pos = parent_window.ui.email_change_button.mapToGlobal(QPoint(0,0))
             confirmation_window.move(global_pos.x(), global_pos.y() + parent_window.ui.email_change_button.height())
@@ -116,7 +116,7 @@ class Profile_page(QWidget):
         parent_window = self._parent
         accountID = query.get_accountID(name, self.userID)
         parent_window.update_parent(name, accountID)
-        parent_window.account_control_manager = Account_control_page(name, parent_window)
+        parent_window.account_control_manager = AccountControlPage(name, parent_window)
         parent_window.account_control_manager.show_account_control_page()
 
     def capture_result(self):

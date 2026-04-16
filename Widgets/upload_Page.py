@@ -1,18 +1,21 @@
 import sys, shutil
-from PyQt5.QtWidgets import QFileDialog, QMessageBox
-from PyQt5.QtCore import QDate
-from Widgets.live_output_window import Live_output_window
-from file_handle import file_handling
-from Widgets.stream import Stream
-from Widgets.thread_worker import Thread_worker
-from decouple import config
-from queries import QueryProcessor
-from Widgets.home_page import Home_page
 from datetime import date
-class Upload_page():
+from decouple import config
+
+from PyQt5.QtWidgets import QFileDialog, QMessageBox
+from PyQt5.QtCore import QDate, pyqtSignal, QObject
+
+from Widgets.live_output_window import LiveOutputWindow
+from Widgets.thread_worker import ThreadWorker
+from Widgets.home_page import HomePage
+
+from db_queries import QueryProcessor
+from file_handle import FileHandling
+
+class UploadPage():
     def __init__(self, parent):
         self._parent = parent
-        self.home_page = Home_page(parent)
+        self.home_page = HomePage(parent)
         self.current_date = date.today()
         self.upload_signals_connect()
 
@@ -77,12 +80,12 @@ class Upload_page():
 
         saved_stdout = sys.stdout
         self.print_output = Stream()
-        self.live_output = Live_output_window(parent_window, saved_stdout)
+        self.live_output = LiveOutputWindow(parent_window, saved_stdout)
         sys.stdout = self.print_output
 
         # process the files
-        files_process = file_handling(parent_window.userID, parent_window.accountID, parent_window.key)
-        self.worker = Thread_worker(files_process.process_files_in_folder)
+        files_process = FileHandling(parent_window.userID, parent_window.accountID, parent_window.key)
+        self.worker = ThreadWorker(files_process.process_files_in_folder)
         self.worker.start()
         self.print_output.input_text.connect(self.get_output)
         self.live_output.ui.textBrowser.adjustSize()
@@ -93,3 +96,13 @@ class Upload_page():
         stripped_list = [line for line in text.splitlines() if line.strip() != ""]
         lines = "\n".join(stripped_list)
         self.live_output.ui.textBrowser.append(lines)
+
+# custom class for capturing print outputs
+class Stream(QObject):
+    input_text = pyqtSignal(str)
+
+    def write(self, text):
+        self.input_text.emit(text)
+
+    def flush(self):
+        sys.stdout.flush()

@@ -1,8 +1,8 @@
 from PyQt5.QtWidgets import QDialog
-from Widgets.disclaimer_widget import Ui_Disclaimer
-from queries import QueryProcessor
+from Widgets.disclaimer_generated import Ui_Disclaimer
+from db_queries import QueryProcessor
 
-class Deletion_disclaimer_window(QDialog):
+class DeleteDisclaimerWindow(QDialog):
     def __init__(self, parent):
         super().__init__(parent)
         self.ui = Ui_Disclaimer()

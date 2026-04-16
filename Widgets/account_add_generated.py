@@ -11,7 +11,7 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 
-class account_add_page_form(object):
+class Ui_AccountAdd(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
         Form.resize(389, 305)

@@ -1,14 +1,14 @@
 from PyQt5.QtWidgets import QPushButton, QHeaderView, QFileDialog
 from PyQt5.QtCore import Qt, QDate, QSortFilterProxyModel
-from queries import QueryProcessor
-from Widgets.Table_View import ListModel
+from db_queries import QueryProcessor
+from Widgets.app_table_helper import TransactionTable
 from system_functions import SystemHelpers
-from Widgets.thread_worker import Thread_worker
+from Widgets.thread_worker import ThreadWorker
 from pathlib import Path
 from datetime import datetime
 import os
 
-class Home_page():
+class HomePage():
     def __init__(self, parent):
         self._parent = parent
         self.transactions = None
@@ -59,7 +59,7 @@ class Home_page():
                     self.filter_transaction = self.transactions[self.transactions.iloc[:, 3].dt.date.between(parent_window.start_date, parent_window.end_date)]
 
                 # -- TABLE LOADING -- 
-                self.model = ListModel(self.filter_transaction, parent_window, self)
+                self.model = TransactionTable(self.filter_transaction, parent_window, self)
                 self.data = self.filter_transaction
 
                 # Set the search filter for the table
@@ -107,11 +107,11 @@ class Home_page():
         parent_window = self._parent
         download_type = parent_window.ui.download_df_combo.currentText()
         if ("CSV" in download_type):
-            self.worker = Thread_worker(lambda: self.system.create_csv(parent_window.account_name, self.filter_transaction))
+            self.worker = ThreadWorker(lambda: self.system.create_csv(parent_window.account_name, self.filter_transaction))
             self.worker.start()
 
         elif ("PDF" in download_type):
-            self.worker = Thread_worker(lambda: self.system.create_pdf(parent_window.account_name, self.filter_transaction))
+            self.worker = ThreadWorker(lambda: self.system.create_pdf(parent_window.account_name, self.filter_transaction))
             self.worker.start()
 
     def get_filter_date(self, start=None):

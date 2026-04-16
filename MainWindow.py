@@ -2,19 +2,19 @@ import sys, pycountry
 from PyQt5.QtWidgets import QMainWindow, QApplication
 from PyQt5.QtCore import QPoint, QDate
 
-from queries import QueryProcessor
+from db_queries import QueryProcessor
 from datetime import datetime
-from file_handle import file_handling
+from file_handle import FileHandling
 
-from Widgets.financial_app import Ui_MainWindow
-from Widgets.account_selection_and_add_window import Account_selection_page
-from Widgets.account_control_page import Account_control_page
-from Widgets.profile_page import Profile_page
-from Widgets.upload_Page import Upload_page
-from Widgets.files_page import Files_page
-from Widgets.home_page import Home_page
+from Widgets.main_app_generated import Ui_MainWindow
+from Widgets.account_add_window import Account_selection_page
+from Widgets.account_control_page import AccountControlPage
+from Widgets.profile_page import ProfilePage
+from Widgets.upload_Page import UploadPage
+from Widgets.files_page import FilePage
+from Widgets.home_page import HomePage
 from Widgets.settings_page import Change_password_page, Delete_user_account, Change_category
-from Widgets.stats_page import Stats_page
+from Widgets.graphs_page import GraphPage
 class MainWindow(QMainWindow):
     def __init__(self, controller , key, userID):
         super(MainWindow, self).__init__()
@@ -31,15 +31,15 @@ class MainWindow(QMainWindow):
 
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
-        self.file_handle = file_handling(self.userID, self.accountID, self.key)
-        self.home_manager = Home_page(self)
-        self.upload_manager = Upload_page(self)
-        self.file_manager = Files_page(self)
+        self.file_handle = FileHandling(self.userID, self.accountID, self.key)
+        self.home_manager = HomePage(self)
+        self.upload_manager = UploadPage(self)
+        self.file_manager = FilePage(self)
         self.account_manager = Account_selection_page(self)
-        self.profile_manager= Profile_page(self.account_name, self)
+        self.profile_manager= ProfilePage(self.account_name, self)
         self.category_change_manager = Change_category(self)
-        self.account_control_manager = Account_control_page(self.account_name, self)
-        self.stats_manager = Stats_page(self)
+        self.account_control_manager = AccountControlPage(self.account_name, self)
+        self.stats_manager = GraphPage(self)
 
         self.query = QueryProcessor()
 
@@ -90,12 +90,12 @@ class MainWindow(QMainWindow):
         elif currentWidget == self.ui.files_page:
             self.file_manager.show_files()
         elif currentWidget == self.ui.account_page:
-            self.account_control_manager = Account_control_page(self.account_name, self)
+            self.account_control_manager = AccountControlPage(self.account_name, self)
             self.account_control_manager.show_account_control_page()
         elif currentWidget == self.ui.settings_page:
             self.change_category_handle()
         elif currentWidget == self.ui.stats_page:
-            self.stats_manager = Stats_page(self)
+            self.stats_manager = GraphPage(self)
 
     def update_account(self, new_account_name, new_accountID):
         self.account_name = new_account_name
@@ -166,7 +166,7 @@ class MainWindow(QMainWindow):
         current_account = self.ui.account_name_label.text()
         if current_account == "Not selected":
             return
-        self.account_control_manager = Account_control_page(current_account, self)
+        self.account_control_manager = AccountControlPage(current_account, self)
         self.account_control_manager.show_account_control_page()
 
     def home_page_show(self):
@@ -183,7 +183,7 @@ class MainWindow(QMainWindow):
 
     def stats_page_show(self):
         self.ui.stackedWidget.setCurrentWidget(self.ui.stats_page)
-        self.stats_manager = Stats_page(self)
+        self.stats_manager = GraphPage(self)
 
     def profile_page_show(self):
         self.ui.stackedWidget.setCurrentWidget(self.ui.profile_page)

@@ -11,7 +11,7 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 
-class account_selection_form(object):
+class Ui_AccountSelection(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
         Form.resize(411, 325)

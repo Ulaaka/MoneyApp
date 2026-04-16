@@ -1,9 +1,9 @@
 from PyQt5.QtWidgets import QCompleter, QWidget, QMessageBox
 from PyQt5.QtCore import Qt
-from queries import QueryProcessor
-from Widgets.deletion_disclaimer_window import Deletion_disclaimer_window
+from db_queries import QueryProcessor
+from Widgets.deletion_disclaimer_window import DeleteDisclaimerWindow
 
-class Account_control_page(QWidget):
+class AccountControlPage(QWidget):
     def __init__(self, current_account, parent):
         super().__init__(parent)
         self.current_account = current_account
@@ -69,7 +69,7 @@ class Account_control_page(QWidget):
         parent_window.ui.account_currency_change_combo.setStyleSheet(f"border: 2px solid {color}")
 
     def delete_acc(self):
-        disclaimer_window = Deletion_disclaimer_window(self)
+        disclaimer_window = DeleteDisclaimerWindow(self)
         disclaimer_window.show()
 
     def objective_toggler(self):

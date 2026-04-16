@@ -1,6 +1,6 @@
 from PyQt5.QtCore import QThread, pyqtSignal
 # https://realpython.com/python-pyqt-qthread/
-class Thread_worker(QThread):
+class ThreadWorker(QThread):
     done = pyqtSignal()
 
     def __init__(self, todo):
