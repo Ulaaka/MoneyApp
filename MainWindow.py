@@ -38,9 +38,11 @@ class MainWindow(QMainWindow):
         self.account_manager = Account_selection_page(self)
         self.profile_manager= Profile_page(self.account_name, self)
         self.category_change_handle = Change_category(self)
+        self.account_control_manager = Account_control_page(self.account_name, self)
+        self.stats_manager = Stats_page(self)
+
         self.query = query_processor()
 
-        self.profile_manager.show_profile_page()
         self.MainWindow_signals_connection()
         self.home_page_handler()
 
@@ -68,7 +70,6 @@ class MainWindow(QMainWindow):
             global_pos = self.ui.account_button.mapToGlobal(QPoint(0,0))
             self.panel.move(global_pos.x(), global_pos.y() +self.ui.account_button.height() + 20)
             self.panel.finished.connect(lambda: setattr(self, 'status_panel', False))
-
             self.panel.show()
             self.status_panel = True
         else:
@@ -79,7 +80,22 @@ class MainWindow(QMainWindow):
         self.account_name = option
         self.accountID = accountID
         self.ui.account_name_label.setText(option)
-        self.home_manager.show_table()
+        self.update_current_widget()
+
+    def update_current_widget(self):
+        currentWidget = self.ui.stackedWidget.currentWidget()
+
+        if currentWidget == self.ui.home_page:
+            self.home_manager.show_table()
+        elif currentWidget == self.ui.files_page:
+            self.file_manager.show_files()
+        elif currentWidget == self.ui.account_page:
+            self.account_control_manager = Account_control_page(self.account_name, self)
+            self.account_control_manager.show_account_control_page()
+        elif currentWidget == self.ui.settings_page:
+            self.category_change_handle.show_category_table()
+        elif currentWidget == self.ui.stats_page:
+            self.stats_manager = Stats_page(self)
 
     def update_account(self, new_account_name, new_accountID):
         self.account_name = new_account_name
@@ -149,7 +165,8 @@ class MainWindow(QMainWindow):
         current_account = self.ui.account_name_label.text()
         if current_account == "Not selected":
             return
-        Account_control_page(current_account, self)
+        self.account_control_manager = Account_control_page(current_account, self)
+        self.account_control_manager.show_account_control_page()
 
     def home_page_show(self):
         self.ui.stackedWidget.setCurrentWidget(self.ui.home_page)
@@ -169,11 +186,11 @@ class MainWindow(QMainWindow):
 
     def profile_page_show(self):
         self.ui.stackedWidget.setCurrentWidget(self.ui.profile_page)
+        self.profile_manager.show_profile_page()
 
     def settings_page_show(self):
         self.ui.stackedWidget.setCurrentWidget(self.ui.settings_page)
-        self.ui.stackedWidget_2.setCurrentWidget(self.ui.category_table_page)
-        self.category_change_handle.show_category_table()
+        self.ui.settings_stack.setCurrentWidget(self.ui.category_table_page)
 
         # when the file window close
     def closeEvent(self, event):

@@ -8,7 +8,6 @@ import pandas as pd
 import pymysql
 from datetime import datetime
 
-
 class query_processor:
 
     """
@@ -159,7 +158,6 @@ class query_processor:
         self.cursor.execute(query, (json.dumps(word_list), accountID))
         output = self.cursor.fetchone()
         return output[0] if output else None
-
 
     # Returns userID
     def get_userID(self, username):
@@ -392,7 +390,6 @@ class query_processor:
         self.cursor.execute(query, parameters)
         self.db.commit()
 
-
     # Returns the description of the transaction given the transaction ID
     def return_description_given_transactionID(self, transactionID):
         description_query =  """
@@ -537,6 +534,7 @@ class query_processor:
             # string to datetime conversion, could get useful
         parameter = [userID, accountID]
         toggle = "SUM"
+
         base_query = f"SELECT {toggle}(T.amount)" 
 
         body_query = """
@@ -570,62 +568,19 @@ class query_processor:
         output = self.cursor.fetchone()
         return output[0] if output[0] is not None else 0
 
-
-    # Selects the last day of the given date range (month)
-    def return_last_month(self, datetime_input):
-        last_day_query = f"SELECT LAST_DAY('{datetime_input}')"
-        self.cursor.execute(last_day_query)
-
-        return self.cursor.fetchone()[0]
-
-    # ["year", "year_month", "date"]
-    # Produces the first and last date of the given data range
-    def produce_dates(self, date, range):
-        date = datetime.fromisoformat(date)
-        if (range == "year"):
-            return f"{date.year}-01-01", f"{date.year}-12-31"
-
-        if (range == "year_month"):
-            first_date = f"{date.year}-0{date.month}-01" if (date.month in range(1, 10)) else f"{date.year}-{date.month}-01"
-            last_date = str(self.return_last_month(first_date))
-            return first_date, last_date
-
-    # Compares the given data ranges in terms of total transfer or extreme values (min or max)
-    # NEEDS TO BE UPDATED
-    def compare_range(self, username, transfer_toggle, account_name,  date_first, date_second, range):
-
-        first_dates = self.produce_dates(date_first, range)
-        second_dates = self.produce_dates(date_second, range)
-        return_values = []
-        if (range == "year"):
-
-            return_values.append(self.total_transfer_or_extreme_value(username, transfer_toggle=transfer_toggle, account_name=account_name, date_lower=first_dates[0], date_upper=first_dates[1]))
-            return_values.append(self.total_transfer_or_extreme_value(username, transfer_toggle=transfer_toggle, account_name=account_name, date_lower=second_dates[0], date_upper=second_dates[1]))
-
-        elif (range == "year_month"):
-            return_values.append(self.total_transfer_or_extreme_value(username, transfer_toggle=transfer_toggle, account_name=account_name, date_lower=first_dates[0], date_upper=first_dates[1]))
-            return_values.append(self.total_transfer_or_extreme_value(username, transfer_toggle=transfer_toggle, account_name=account_name, date_lower=second_dates[0], date_upper=second_dates[1]))
-
-        elif (range == "date"):
-
-            return_values.append(self.total_transfer_or_extreme_value(username, transfer_toggle=transfer_toggle, account_name=account_name, date_lower=date_first, date_upper=date_first))
-            return_values.append(self.total_transfer_or_extreme_value(username, transfer_toggle=transfer_toggle, account_name=account_name, date_lower=date_second, date_upper=date_second))
-
-        return return_values
-
     # Finds the total amount of the repeating transactions of data range of the account
-    def common_transactions(self, username, limit, account_name=None, transfer_toggle=None, date_lower=None, date_upper=None, filter_amount=None):
+    def common_transactions(self, userID, limit, accountID=None, transfer_toggle=None, date_lower=None, date_upper=None):
         head_query = """
-            SELECT T.description as statement, SUM(ABS(T.amount)) as total_sent
+            SELECT REPLACE(TRIM(T.description), '[^A-Za-z0-9 ]', '') AS new_desc, SUM(ABS(T.amount)) as sumof
             FROM users U
             JOIN accounts A ON A.userID = U.userID
             JOIN transactions T ON T.accountID = A.accountID
         """
 
-        where_query = f" WHERE U.username = '{username}'"
+        where_query = f" WHERE U.userID = {userID}"
 
-        if (account_name):
-            where_query+=f" and A.account_name = '{account_name}'"
+        if (accountID):
+            where_query+=f" and A.accountID = {accountID}"
 
         if (transfer_toggle is not None):
             toggle = ">" if transfer_toggle else "<"
@@ -637,27 +592,16 @@ class query_processor:
         if (date_upper):
             where_query += f" and T.transaction_date <= '{date_upper}'"
 
-        tail_query = f" GROUP BY statement ORDER BY total_sent DESC LIMIT {limit}"
-
-        if (filter_amount):
-            tail_query = f" GROUP BY statement HAVING total_sent >= {filter_amount} ORDER BY total_sent DESC LIMIT {limit}"
+        tail_query = f" GROUP BY new_desc ORDER BY sumof DESC LIMIT {limit}"
 
         query = head_query + where_query + tail_query
         self.cursor.execute(query)
 
         output = self.cursor.fetchall()
-
-
-        regex = re.compile(r'\b[a-zA-Z]{2,}(?:\.[a-zA-Z]{2,})*\b')
-
-        clean_ouput = []
-        for key, value in output:
-            clean_ouput.append(( ' '.join(regex.findall(key)), value))
-
-        return clean_ouput
+        return output
 
     # Finds subscriptions from the transactions 
-    def find_subscriptions(self, userID, accountID=None):
+    def find_subscriptions(self, userID, account_name=None):
         head_query = f"""
             SELECT T.description, SUM(ABS(T.amount)) as total_sent , COUNT(*)
             FROM transactions T
@@ -667,8 +611,8 @@ class query_processor:
         """
 
         where_query = ""
-        if (accountID):
-            where_query+=f" and A.account_name = {accountID}"
+        if (account_name):
+            where_query+=f" and A.account_name = '{account_name}'"
 
         tail_query = " GROUP BY T.description, ABS(T.amount) HAVING COUNT(*) > 3 and COUNT(DISTINCT ABS(T.amount)) = 1 ORDER BY total_sent DESC LIMIT 5"
 
@@ -676,3 +620,74 @@ class query_processor:
         self.cursor.execute(query)
         output = self.cursor.fetchall()
         return output
+
+    def show_by_category(self, account_name):
+        head_query = f"""
+            SELECT T.category, COUNT(*), SUM(ABS(T.amount))
+            FROM transactions T
+            JOIN accounts A ON T.accountID = A.accountID
+            JOIN users U ON U.userID = A.userID
+        """
+
+        where_query = ""
+        if (account_name):
+            where_query+=f" and A.account_name = '{account_name}'"
+
+        tail_query = " GROUP BY T.category"
+
+        query = head_query + where_query + tail_query
+        self.cursor.execute(query)
+        output = self.cursor.fetchall()
+        return output
+
+    def show_by_type(self, userID, date_lower, date_upper, account_name=None):
+        head_query = f"""
+            SELECT T.transaction_type, COUNT(*), SUM(ABS(T.amount))
+            FROM transactions T
+            JOIN accounts A ON T.accountID = A.accountID
+            JOIN users U ON U.userID = A.userID
+            WHERE U.userID = {userID}
+        """
+        where_query = ""
+        if (account_name):
+            where_query += f" and A.account_name = '{account_name}'"
+
+        if (date_lower):
+            where_query += f" and T.transaction_date >= '{date_lower}'"
+
+        if (date_upper):
+            where_query += f" and T.transaction_date <= '{date_upper}'"
+
+        tail_query = " GROUP BY T.transaction_type"
+
+        query = head_query + where_query + tail_query
+        self.cursor.execute(query)
+        output = self.cursor.fetchall()
+        return output
+
+
+    def show_by_category(self, userID, date_lower, date_upper, account_name=None):
+        head_query = f"""
+            SELECT T.category, COUNT(*), SUM(ABS(T.amount))
+            FROM transactions T
+            JOIN accounts A ON T.accountID = A.accountID
+            JOIN users U ON U.userID = A.userID
+            WHERE U.userID = {userID}
+        """
+        where_query = ""
+        if (account_name):
+            where_query += f" and A.account_name = '{account_name}'"
+
+        if (date_lower):
+            where_query += f" and T.transaction_date >= '{date_lower}'"
+
+        if (date_upper):
+            where_query += f" and T.transaction_date <= '{date_upper}'"
+
+        tail_query = " GROUP BY T.category"
+
+        query = head_query + where_query + tail_query
+        self.cursor.execute(query)
+        output = self.cursor.fetchall()
+        return output
+

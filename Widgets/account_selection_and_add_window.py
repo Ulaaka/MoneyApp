@@ -93,7 +93,9 @@ class Account_add_page(QDialog):
         account_currency = self.ui.account_currency_combo.currentText()[:3]
         if account_name and account_type and account_currency:
             accountID = query.insert_account(self.userID, account_name, account_type, account_currency)
+
             self.parent().parent().update_account(account_name, accountID)
+            self.parent().parent().update_current_widget()
             self.close()
         else:
             self.close()

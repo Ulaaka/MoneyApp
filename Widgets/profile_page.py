@@ -116,8 +116,8 @@ class Profile_page(QWidget):
         parent_window = self._parent
         accountID = query.get_accountID(name, self.userID)
         parent_window.update_parent(name, accountID)
-        account_control = Account_control_page(name, parent_window)
-        account_control.show()
+        parent_window.account_control_manager = Account_control_page(name, parent_window)
+        parent_window.account_control_manager.show_account_control_page()
 
     def capture_result(self):
         self.activate(self.mail_button_state, "mail")

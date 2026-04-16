@@ -23,15 +23,19 @@ class Deletion_disclaimer_window(QDialog):
     def proceed_button_clicked(self):
         main_window = self._parent.parent()
         main_window.ui.stackedWidget.setCurrentWidget(main_window.ui.home_page)
-        options = self.query.compute_account_options(self.userID).remove(self.current_account)
+        options = self.query.compute_account_options(self.userID)
+
+        if options and self.current_account in options:
+            options.remove(self.current_account)
+
         if options:
             accountID = self.query.get_accountID(options[0], self.userID)
             main_window.update_account(options[0], accountID)
         else:
-            main_window.update_account(None, None)
-
+            main_window.update_account("Not selected", None)
+        main_window.home_page_handler()
         self.query.delete_account(self.accountID)
-        main_window.manage_home_page()
+        main_window.home_page_handler()
         self.close()
 
     def cancel_button_clicked(self):

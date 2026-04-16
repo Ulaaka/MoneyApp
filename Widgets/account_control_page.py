@@ -14,7 +14,6 @@ class Account_control_page(QWidget):
         self.objective = 0
         self.query = query_processor()
         self.account_control_signals_connect()
-        self.show_account_control_page()
 
     def account_control_signals_connect(self):
         parent_window = self._parent
@@ -33,13 +32,13 @@ class Account_control_page(QWidget):
     def show_account_control_page(self):
         parent_window = self._parent
         parent_window.ui.account_name_change_line.setText(self.current_account)
-
-        result = self.query.get_type_account_currency(self.current_account, self.userID)
+        query = query_processor()
+        result = query.get_type_account_currency(self.current_account, self.userID)
         parent_window.ui.account_type_combo.setEditable(True)
         parent_window.ui.account_type_combo.setCurrentText(result[0])
         parent_window.ui.account_currency_change_combo.setCurrentText(result[1])
 
-        result_1 = self.query.get_create_update_account(self.current_account, self.userID)
+        result_1 = query.get_create_update_account(self.current_account, self.userID)
         if (result_1[1] is None):
             str_result = "Not Updated"
             parent_window.ui.account_update_value.setText(str_result)

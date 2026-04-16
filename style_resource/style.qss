@@ -233,8 +233,7 @@ QComboBox#transaction_type_combo{
 QLineEdit#account_name_change_line,
 QComboBox#account_type_combo,
 QComboBox#account_currency_change_combo,
-QComboBox#transaction_type_box,
-QComboBox#value_box{
+QComboBox#stats_combo{
     background-color: transparent;
     color: black;
     border: 1px black;
@@ -407,8 +406,7 @@ QFrame#frame{
 QDateEdit#start_date_edit,
 QDateEdit#end_date_edit,
 QDateEdit#transaction_date_edit,
-QDateEdit#dateEdit,
-QDateEdit#dateEdit_2{
+QDateEdit#stats_date{
     background-color: transparent;
     color: black;
     border: 1px solid black;
@@ -417,8 +415,7 @@ QDateEdit#dateEdit_2{
 QDateEdit#start_date_edit:focus,
 QDateEdit#end_date_edit:focus,
 QDateEdit#transaction_date_edit:focus,
-QDateEdit#dateEdit:focus,
-QDateEdit#dateEdit_2:focus{
+QDateEdit#stats_date:focus{
     border: 1px solid #70B9FE;
     background-color: #f0f8ff;
     color: #313a46;

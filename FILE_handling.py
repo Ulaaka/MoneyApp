@@ -90,7 +90,7 @@ class file_handling():
     # The functions for handling the parsing of the user input files
     def process_files_in_folder(self):
         crypto = cryptography()
-
+    
         dir = os.listdir(config('FOLDER_PATH'))
         parsed_count = 0
         existing_file_output = []
