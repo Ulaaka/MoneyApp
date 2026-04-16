@@ -1,7 +1,9 @@
-from Widgets.change_confirmation_generated import Ui_change_confirmation
 from PyQt5.QtWidgets import QDialog
 from PyQt5.QtCore import Qt, QTimer, pyqtSignal
+
+from Widgets.change_confirmation_generated import Ui_change_confirmation
 from system_functions import TimerHelper, SystemHelpers
+
 class ChangeConfirmationPage(QDialog):
     finished = pyqtSignal() 
 

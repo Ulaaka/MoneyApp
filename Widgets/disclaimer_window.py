@@ -1,8 +1,9 @@
 from PyQt5.QtWidgets import QDialog
+
 from Widgets.disclaimer_generated import Ui_Disclaimer
+from Widgets.home_page import HomePage
 from db_queries import QueryProcessor
 from file_handle import FileHandling
-from Widgets.home_page import HomePage
 
 class DisclaimerWindow(QDialog):
     def __init__(self, fileID, parent):

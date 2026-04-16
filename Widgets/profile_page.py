@@ -1,10 +1,12 @@
 from PyQt5.QtWidgets import  QWidget, QPushButton, QMessageBox
 from PyQt5.QtCore import Qt, QPoint
-from db_queries import QueryProcessor
 from PyQt5.QtGui import QStandardItemModel, QStandardItem
+
 from Widgets.account_control_page import AccountControlPage
 from Widgets.change_confirmation_window import ChangeConfirmationPage
 from base_classes import PasswordHelper
+from db_queries import QueryProcessor
+
 
 class ProfilePage(QWidget):
     def __init__(self, current_account, parent):

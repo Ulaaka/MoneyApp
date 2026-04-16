@@ -1,7 +1,8 @@
 from PyQt5.QtWidgets import QCompleter, QWidget, QMessageBox
 from PyQt5.QtCore import Qt
-from db_queries import QueryProcessor
+
 from Widgets.deletion_disclaimer_window import DeleteDisclaimerWindow
+from db_queries import QueryProcessor
 
 class AccountControlPage(QWidget):
     def __init__(self, current_account, parent):

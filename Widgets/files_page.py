@@ -1,6 +1,7 @@
-from PyQt5.QtWidgets import  QPushButton, QHeaderView, QMessageBox
+from PyQt5.QtWidgets import  QPushButton, QHeaderView
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QStandardItemModel, QStandardItem
+
 from Widgets.disclaimer_window import DisclaimerWindow
 from db_queries import QueryProcessor
 from file_handle import FileHandling

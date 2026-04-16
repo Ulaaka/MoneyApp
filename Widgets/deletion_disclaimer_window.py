@@ -1,4 +1,5 @@
 from PyQt5.QtWidgets import QDialog
+
 from Widgets.disclaimer_generated import Ui_Disclaimer
 from db_queries import QueryProcessor
 
