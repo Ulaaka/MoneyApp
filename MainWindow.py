@@ -191,7 +191,6 @@ class MainWindow(QMainWindow):
     def settings_page_show(self):
         self.ui.stackedWidget.setCurrentWidget(self.ui.settings_page)
         self.ui.settings_stack.setCurrentWidget(self.ui.category_table_page)
-        self.category_change_handle.show_category_table()
 
         # when the file window close
     def closeEvent(self, event):
