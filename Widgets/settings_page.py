@@ -77,7 +77,7 @@ class Change_password_page():
                     parent_window.ui.current_password_line.clear()
                     parent_window.ui.new_password_line.clear()
                     enc_data_key, salt = system.update_data_key(current_password, new_password, self._parent.userID)
-                    query.change_data_key_salt(enc_data_key, salt, self._parent.userID)
+                    query.update_key_salt(enc_data_key, salt, self._parent.userID)
                     QMessageBox.information(
                         parent_window, "Confirmation", "Password Changed")
                     return
@@ -98,7 +98,7 @@ class Change_password_page():
                 new_wrapping_key = crypto.generate_key(new_password, new_salt)
                 new_data_key = base64.urlsafe_b64encode(secrets.token_bytes(32))
                 new_encrypted_data_key = crypto.encrypt_data_key(new_wrapping_key, new_data_key)
-                query.change_data_key_salt(new_encrypted_data_key, new_salt, self._parent.userID)
+                query.update_key_salt(new_encrypted_data_key, new_salt, self._parent.userID)
                 query.delete_user_files(self._parent.userID)
                 QMessageBox.information(
                     parent_window, "Confirmation", "Password Changed")

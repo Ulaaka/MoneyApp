@@ -117,7 +117,7 @@ class CategoryTable(QAbstractTableModel):
                     description = value
                     name = self._data.iloc[row, column+1]
                     close_transaction_ids, word_list = query.find_close_transactions(description, main_window.accountID)
-                    query.change_category_description(description, word_list, name, categoryID)
+                    query.update_category_description(description, word_list, name, categoryID)
                     query.update_category(name, close_transaction_ids)
                     self.category_page.show_category_table()
 
@@ -125,7 +125,7 @@ class CategoryTable(QAbstractTableModel):
                     name = value
                     description = self._data.iloc[row, column-1]
                     close_transaction_ids, word_list = query.find_close_transactions(description, main_window.accountID)
-                    query.change_category_name(name, categoryID)
+                    query.update_category_name(name, categoryID)
                     query.update_category(name, close_transaction_ids)
                     self.category_page.show_category_table()
 

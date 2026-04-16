@@ -5,12 +5,15 @@ from base_classes import ParsingHelper
 class ParsingCSV:
 
     """
-    Parses the file with csv format
+    Parses CSV formatted file
     """
 
     def __init__(self, pdf_name):
+        """
+        Constructor for parsing csv
 
-        # https://www.geeksforgeeks.org/python/how-to-do-fuzzy-matching-on-pandas-dataframe-column-using-python/
+        Calls helper functions and saves the resulting dataframe in self.df
+        """
 
         parser = ParsingHelper()
         columns_list = list(pd.read_csv(pdf_name, nrows=0).columns.tolist())

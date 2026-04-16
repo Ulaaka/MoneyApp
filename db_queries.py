@@ -10,6 +10,7 @@ class QueryProcessor:
 
     """
     Contains the functions for querying the database
+
     """
 
     def __init__(self):
@@ -27,7 +28,13 @@ class QueryProcessor:
         # Add the new identified stopwords
         self.stop_words.update(new_stopwords)
 
-    # ACCOUNT QUERIES
+    """
+    QUERIES FOR MANAGING DATABASE
+        INSERT-QUERIES
+        GET-QUERIES
+        UPDATE-QUERIES
+        DELETE-QUERIES
+    """
     # Creates new user, and inserts information into the database
     def insert_into_users(self, username, hashed_password, email, encrypted_data_key, salt):
         sql = "INSERT INTO users (username, hashed_password, email_address, enc_data_key, salt) VALUES (%s, %s, %s, %s, %s)"
@@ -90,48 +97,6 @@ class QueryProcessor:
             exist = False
             categoryID = self.insert_into_categories(userID, accountID, category_sentence, category_list, category_name)
         return categoryID, exist
-
-    def change_category_name(self, category_name, categoryID):
-            query = """
-                UPDATE categories
-                SET category_name = %s
-                WHERE categoryID = %s
-            """
-            self.cursor.execute(query, (category_name, categoryID))
-            self.db.commit()
-
-    def change_category_description(self, category_sentence, category_list, category_name, categoryID):
-            query = """
-                UPDATE categories
-                SET category_sentence = %s, category_list = %s, category_name = %s
-                WHERE categoryID = %s
-            """
-            self.cursor.execute(query, (category_sentence, json.dumps(category_list), category_name, categoryID))
-            self.db.commit()
-
-    def change_data_key_salt(self, enc_data_key, salt, userID):
-        query = """
-            UPDATE users
-            SET enc_data_key = %s, salt = %s
-            WHERE userID = %s
-        """
-        self.cursor.execute(query, (enc_data_key, salt, userID))
-        self.db.commit()
-
-
-    # Deleted the user, resulting in cascading effect
-    def delete_user(self, userID):
-        """
-        All data relating to the user is deleted
-        """
-        sql = "DELETE FROM users WHERE userID = %s"
-        self.cursor.execute(sql, (userID,))
-        self.db.commit()
-
-    def delete_user_files(self, userID):
-        sql = "DELETE FROM files WHERE accountID IN (SELECT accountID FROM accounts WHERE userID = %s)"
-        self.cursor.execute(sql, (userID,))
-        self.db.commit()
 
     def get_category_info(self, userID, accountID, asDF=None):
         # categoryID, category_list, category_name
@@ -240,6 +205,73 @@ class QueryProcessor:
         output = self.cursor.fetchone()
         return output[0] if output else None
     
+    # Shows existing files IDs and filename submitted in the account
+    def get_files(self, accountID):
+        query = """
+        SELECT file_ID, file_name, file_size, file_type, added_at
+        FROM files
+        WHERE accountID = %s
+        ORDER BY added_at DESC
+        """
+        self.cursor = self.connection.cursor
+        self.cursor.execute(query, (accountID,))
+        result = self.cursor.fetchall()
+        return result if result else None
+
+    def get_type_account_currency(self, account_name, userID):
+        query = "SELECT account_type, account_currency FROM accounts WHERE account_name = %s AND userID = %s"
+        self.cursor.execute(query, (account_name, userID))
+        result = self.cursor.fetchone()
+        return result if result else None
+
+    def get_type_with_id(self, id):
+        query = "SELECT account_type FROM accounts WHERE file_ID = %s"
+        self.cursor.execute(query, (id, ))
+        result = self.cursor.fetchone()
+        return result if result else None
+
+    def get_create_update_account(self,  account_name, userID):
+        query = "SELECT created_at, updated_at FROM accounts WHERE account_name = %s AND userID = %s"
+        self.cursor.execute(query, (account_name, userID))
+        result = self.cursor.fetchone()
+        return result if result else None
+
+    def get_user_info(self, userID):
+        query = "SELECT username, email_address, created_at FROM users WHERE userID = %s"
+        self.cursor.execute(query, (userID,))
+        result = self.cursor.fetchone()
+        return result if result else None
+
+    def get_number_of_accounts(self, userID):
+        query = "SELECT account_name FROM accounts WHERE userID = %s"
+        self.cursor.execute(query, (userID,))
+        result = self.cursor.fetchall()
+        return [account[0] for account in result] if result else []
+
+    # Returns the most used category names
+    def get_categories(self, userID):
+        query = """
+            SELECT COUNT(categoryID) AS total_descriptions, category_name
+            FROM categories
+            WHERE userID = %s
+            GROUP BY category_name
+            ORDER BY total_descriptions DESC
+        """
+
+        self.cursor.execute(query, (userID, ))
+        result = self.cursor.fetchall()
+        return result if result else None
+
+    def get_data_key_salt(self, userID):
+        query = """
+            SELECT enc_data_key, salt
+            FROM users
+            WHERE userID = %s
+        """
+        self.cursor.execute(query, (userID, ))
+        result = self.cursor.fetchone()
+        return result if result else None
+
     def update_account(self, accountID, account_name, account_type=None, account_currency=None):
         parameter = [account_name]
         current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -284,48 +316,33 @@ class QueryProcessor:
         else:
             print("could not update the user information")
 
-    # Shows existing files IDs and filename submitted in the account
-    def get_files(self, accountID):
+
+    def update_category_name(self, category_name, categoryID):
+            query = """
+                UPDATE categories
+                SET category_name = %s
+                WHERE categoryID = %s
+            """
+            self.cursor.execute(query, (category_name, categoryID))
+            self.db.commit()
+
+    def update_category_description(self, category_sentence, category_list, category_name, categoryID):
+            query = """
+                UPDATE categories
+                SET category_sentence = %s, category_list = %s, category_name = %s
+                WHERE categoryID = %s
+            """
+            self.cursor.execute(query, (category_sentence, json.dumps(category_list), category_name, categoryID))
+            self.db.commit()
+
+    def update_key_salt(self, enc_data_key, salt, userID):
         query = """
-        SELECT file_ID, file_name, file_size, file_type, added_at
-        FROM files
-        WHERE accountID = %s
-        ORDER BY added_at DESC
+            UPDATE users
+            SET enc_data_key = %s, salt = %s
+            WHERE userID = %s
         """
-        self.cursor = self.connection.cursor
-        self.cursor.execute(query, (accountID,))
-        result = self.cursor.fetchall()
-        return result if result else None
-
-    def get_type_account_currency(self, account_name, userID):
-        query = "SELECT account_type, account_currency FROM accounts WHERE account_name = %s AND userID = %s"
-        self.cursor.execute(query, (account_name, userID))
-        result = self.cursor.fetchone()
-        return result if result else None
-
-    def get_type_with_id(self, id):
-        query = "SELECT account_type FROM accounts WHERE file_ID = %s"
-        self.cursor.execute(query, (id, ))
-        result = self.cursor.fetchone()
-        return result if result else None
-
-    def get_create_update_account(self,  account_name, userID):
-        query = "SELECT created_at, updated_at FROM accounts WHERE account_name = %s AND userID = %s"
-        self.cursor.execute(query, (account_name, userID))
-        result = self.cursor.fetchone()
-        return result if result else None
-
-    def get_user_info(self, userID):
-        query = "SELECT username, email_address, created_at FROM users WHERE userID = %s"
-        self.cursor.execute(query, (userID,))
-        result = self.cursor.fetchone()
-        return result if result else None
-
-    def get_number_of_accounts(self, userID):
-        query = "SELECT account_name FROM accounts WHERE userID = %s"
-        self.cursor.execute(query, (userID,))
-        result = self.cursor.fetchall()
-        return [account[0] for account in result] if result else []
+        self.cursor.execute(query, (enc_data_key, salt, userID))
+        self.db.commit()
 
     # Deleted the file, associating transactions
     def delete_file(self, file_ID):
@@ -342,6 +359,21 @@ class QueryProcessor:
         query = "DELETE FROM transactions WHERE transactionID = %s"
         self.cursor.execute(query, (transactionID, ))
         self.db.commit()
+
+    # Deleted the user, resulting in cascading effect
+    def delete_user(self, userID):
+        """
+        All data relating to the user is deleted
+        """
+        sql = "DELETE FROM users WHERE userID = %s"
+        self.cursor.execute(sql, (userID,))
+        self.db.commit()
+
+    def delete_user_files(self, userID):
+        sql = "DELETE FROM files WHERE accountID IN (SELECT accountID FROM accounts WHERE userID = %s)"
+        self.cursor.execute(sql, (userID,))
+        self.db.commit()
+
 
     # Returns the list of words from the description of the selected transaction
     # plus_list = words to be used to identify close transactions
@@ -380,6 +412,20 @@ class QueryProcessor:
 
         return selective_ids, word_list
 
+    # Returns the description of the transaction given the transaction ID
+    def return_description_given_transactionID(self, transactionID):
+        description_query =  """
+            SELECT description
+            FROM transactions
+            WHERE transactionID = %s
+        """
+        self.cursor.execute(description_query, (transactionID, ))
+
+        # the description of the transaction
+        description = self.cursor.fetchone()[0]
+        return description if description else None
+
+
     def update_category(self, category, transactionID):
         if not isinstance(transactionID, list):
             transactionID = [transactionID]
@@ -403,19 +449,6 @@ class QueryProcessor:
         self.cursor.execute(query, parameters)
         self.db.commit()
 
-    # Returns the description of the transaction given the transaction ID
-    def return_description_given_transactionID(self, transactionID):
-        description_query =  """
-            SELECT description
-            FROM transactions
-            WHERE transactionID = %s
-        """
-        self.cursor.execute(description_query, (transactionID, ))
-
-        # the description of the transaction
-        description = self.cursor.fetchone()[0]
-        return description if description else None
-
     # needs to search for similar description to apply the same category in the database
     # Updates the category of the selected transaction and its close transactions
     def change_category_transaction(self, userID, accountID, category, transactionID):
@@ -424,32 +457,9 @@ class QueryProcessor:
         close_transaction_ids, world_list = self.find_close_transactions(description, accountID)
         categoryID, exist = self.insert_category(userID, accountID, description, world_list, category)
         if exist:
-            self.change_category_name(category, categoryID)
+            self.update_category_name(category, categoryID)
         self.update_category(category, close_transaction_ids)
 
-    # Returns the most used category names
-    def get_categories(self, userID):
-        query = """
-            SELECT COUNT(categoryID) AS total_descriptions, category_name
-            FROM categories
-            WHERE userID = %s
-            GROUP BY category_name
-            ORDER BY total_descriptions DESC
-        """
-
-        self.cursor.execute(query, (userID, ))
-        result = self.cursor.fetchall()
-        return result if result else None
-
-    def get_data_key_salt(self, userID):
-        query = """
-            SELECT enc_data_key, salt
-            FROM users
-            WHERE userID = %s
-        """
-        self.cursor.execute(query, (userID, ))
-        result = self.cursor.fetchone()
-        return result if result else None
 
     # Returns the updated category for new transactions
     # finds the closest matching category
@@ -479,7 +489,7 @@ class QueryProcessor:
         close_transaction_ids, word_list = self.find_close_transactions(description, accountID)
         categoryID, exist = self.insert_category(userID, accountID, description, word_list, category_name)
         if exist:
-            self.change_category_name(category_name, categoryID)
+            self.update_category_name(category_name, categoryID)
 
         self.update_category(category_name, close_transaction_ids)
         return categoryID if categoryID else None
@@ -537,180 +547,3 @@ class QueryProcessor:
         accounts = self.return_accounts_given_userID(userID)
         options_list = [account[1] for account in accounts] if accounts else []
         return options_list if options_list else None
-
-
-    # GRAPH QUERIES 
-
-    # Finds min or max value of the given column (Amount, balance, date etc)
-    def find_min_max(self, accountID, column, max_toggle=True):
-        toggle = "MAX" if max_toggle else "MIN"
-
-        query = f"SELECT {toggle}({column})from transactions WHERE accountID = {accountID}"
-        self.cursor.execute(query)
-        output = self.cursor.fetchone()
-        return output[0] if output else None
-
-    # transfer toggle = if true find the total income
-    # at least one of the transfer_toggle and max_toggle should be included
-    # grouping by the type of transaction is useful too
-    def total_transfer_or_extreme_value(self, userID, accountID, transfer_toggle=None, max_toggle=None, date_lower=None, date_upper=None):
-            # string to datetime conversion, could get useful
-        parameter = [userID, accountID]
-        toggle = "SUM"
-
-        base_query = f"SELECT {toggle}(T.amount)" 
-
-        body_query = """
-                FROM users U
-                JOIN accounts A ON A.userID = U.userID
-                JOIN transactions T ON T.accountID = A.accountID
-                WHERE U.userID = %s and A.accountID = %s
-        """
-
-        if (max_toggle is not None):
-            toggle = "MAX" if max_toggle else "MIN"
-
-        if (max_toggle is not None or transfer_toggle is not None):
-            base_query =  f"SELECT ABS({toggle}(T.amount))" 
-
-        query = base_query + body_query
-
-        if (transfer_toggle is not None):
-            toggle = ">" if transfer_toggle else "<"
-            query+=f" and T.amount {toggle} 0"
-
-        if (date_lower):
-            query += " and T.transaction_date >= %s"
-            parameter.append(date_lower)
-
-        if (date_upper):
-            query += " and T.transaction_date <= %s"
-            parameter.append(date_upper)
-
-        self.cursor.execute(query, tuple(parameter))
-        output = self.cursor.fetchone()
-        return output[0] if output[0] is not None else 0
-
-    # Finds the total amount of the repeating transactions of data range of the account
-    def common_transactions(self, userID, limit, accountID=None, transfer_toggle=None, date_lower=None, date_upper=None):
-        head_query = """
-            SELECT REPLACE(TRIM(T.description), '[^A-Za-z0-9 ]', '') AS new_desc, SUM(ABS(T.amount)) as sumof
-            FROM users U
-            JOIN accounts A ON A.userID = U.userID
-            JOIN transactions T ON T.accountID = A.accountID
-        """
-
-        where_query = f" WHERE U.userID = {userID}"
-
-        if (accountID):
-            where_query+=f" and A.accountID = {accountID}"
-
-        if (transfer_toggle is not None):
-            toggle = ">" if transfer_toggle else "<"
-            where_query+=f" and T.amount {toggle} 0"
-
-        if (date_lower):
-            where_query += f" and T.transaction_date >= '{date_lower}'"
-
-        if (date_upper):
-            where_query += f" and T.transaction_date <= '{date_upper}'"
-
-        tail_query = f" GROUP BY new_desc ORDER BY sumof DESC LIMIT {limit}"
-
-        query = head_query + where_query + tail_query
-        self.cursor.execute(query)
-
-        output = self.cursor.fetchall()
-        return output
-
-    # Finds subscriptions from the transactions 
-    def find_subscriptions(self, userID, account_name=None):
-        head_query = f"""
-            SELECT T.description, SUM(ABS(T.amount)) as total_sent , COUNT(*)
-            FROM transactions T
-            JOIN accounts A ON T.accountID = A.accountID
-            JOIN users U ON U.userID = A.userID
-            WHERE U.userID = {userID} and T.amount < 0
-        """
-
-        where_query = ""
-        if (account_name):
-            where_query+=f" and A.account_name = '{account_name}'"
-
-        tail_query = " GROUP BY T.description, ABS(T.amount) HAVING COUNT(*) > 3 and COUNT(DISTINCT ABS(T.amount)) = 1 ORDER BY total_sent DESC LIMIT 5"
-
-        query = head_query + where_query + tail_query
-        self.cursor.execute(query)
-        output = self.cursor.fetchall()
-        return output
-
-    def show_by_category(self, account_name):
-        head_query = f"""
-            SELECT T.category, COUNT(*), SUM(ABS(T.amount))
-            FROM transactions T
-            JOIN accounts A ON T.accountID = A.accountID
-            JOIN users U ON U.userID = A.userID
-        """
-
-        where_query = ""
-        if (account_name):
-            where_query+=f" and A.account_name = '{account_name}'"
-
-        tail_query = " GROUP BY T.category"
-
-        query = head_query + where_query + tail_query
-        self.cursor.execute(query)
-        output = self.cursor.fetchall()
-        return output
-
-    def show_by_type(self, userID, date_lower, date_upper, account_name=None):
-        head_query = f"""
-            SELECT T.transaction_type, COUNT(*), SUM(ABS(T.amount))
-            FROM transactions T
-            JOIN accounts A ON T.accountID = A.accountID
-            JOIN users U ON U.userID = A.userID
-            WHERE U.userID = {userID}
-        """
-        where_query = ""
-        if (account_name):
-            where_query += f" and A.account_name = '{account_name}'"
-
-        if (date_lower):
-            where_query += f" and T.transaction_date >= '{date_lower}'"
-
-        if (date_upper):
-            where_query += f" and T.transaction_date <= '{date_upper}'"
-
-        tail_query = " GROUP BY T.transaction_type"
-
-        query = head_query + where_query + tail_query
-        self.cursor.execute(query)
-        output = self.cursor.fetchall()
-        return output
-
-
-    def show_by_category(self, userID, date_lower, date_upper, account_name=None):
-        head_query = f"""
-            SELECT T.category, COUNT(*), SUM(ABS(T.amount))
-            FROM transactions T
-            JOIN accounts A ON T.accountID = A.accountID
-            JOIN users U ON U.userID = A.userID
-            WHERE U.userID = {userID}
-        """
-        where_query = ""
-        if (account_name):
-            where_query += f" and A.account_name = '{account_name}'"
-
-        if (date_lower):
-            where_query += f" and T.transaction_date >= '{date_lower}'"
-
-        if (date_upper):
-            where_query += f" and T.transaction_date <= '{date_upper}'"
-
-        tail_query = " GROUP BY T.category"
-
-        query = head_query + where_query + tail_query
-        self.cursor.execute(query)
-        output = self.cursor.fetchall()
-        return output
-

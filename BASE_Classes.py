@@ -129,6 +129,9 @@ class ParsingHelper:
         (the overlapping ratio of the word with the target/its variations)
         Ranks target variations by its score and selects the the columns names with the highest ratio
 
+        Inspired from:
+        https://www.geeksforgeeks.org/python/how-to-do-fuzzy-matching-on-pandas-dataframe-column-using-python/
+
         :returns: ratio_score, target column names of the file
         """
         mat1 = [None]*len(self.expecting)

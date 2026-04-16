@@ -2,11 +2,14 @@ import mysql.connector
 from decouple import config
 
 class Database:
+    """
+    Establishes connection to database
+    """
 
     def __init__(self):
 
         """
-        Connects to the database
+        Constructor for database connection
         """
 
         self.db = mysql.connector.connect(

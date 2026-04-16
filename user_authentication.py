@@ -487,7 +487,7 @@ class PasswordResetWindow(QWidget):
             new_wrapping_key = crypto.generate_key(new_password, new_salt)
             new_data_key = base64.urlsafe_b64encode(secrets.token_bytes(32))
             new_encrypted_data_key = crypto.encrypt_data_key(new_wrapping_key, new_data_key)
-            query.change_data_key_salt(new_encrypted_data_key, new_salt, userID)
+            query.update_key_salt(new_encrypted_data_key, new_salt, userID)
             query.delete_user_files(userID)
             self.controller.show_login()
 
