@@ -15,14 +15,13 @@ from MainWindow import MainWindow
 from ui_support_functions import ui_support_functions
 import secrets,  base64
 from cryptography.fernet import Fernet
-
-
+from cryptography.hazmat.primitives.ciphers.algorithms import AES
 
 class login_page(QWidget):
     def __init__(self, controller, db, cursor):
         super().__init__()
         self.controller = controller
-        self.db = dbsalt = os.urandom(16)
+        self.db = db
         self.cursor = cursor
         self.system = system_functions()
         self.query = query_processor()
@@ -118,9 +117,12 @@ class login_page(QWidget):
         result = query.get_hashed_password(username=username_local)
 
         if result and password_manager.check_password(password_local, result[0]):
-                key = crypto.generate_key(password_local)
                 userID = query.get_userID(username_local)
-                self.controller.show_dashboard(key, userID)
+                enc_data_key, salt = query.get_data_key_salt(userID)
+                original_salt = bytes.fromhex(salt)
+                wrapping_key = crypto.generate_key(password_local, original_salt)
+                data_key = crypto.decrypt_data_key(wrapping_key, enc_data_key)
+                self.controller.show_dashboard(data_key, userID)
         else:
             QMessageBox.warning(self, 'Error', 'Password or Username is wrong')
             return
@@ -257,21 +259,20 @@ class sign_up_page(QWidget):
             QMessageBox.warning(self, 'Invalid', 'Invalid email')
             return
 
-        try:
-            # random salt
-            crypto = cryptography()
-            salt = os.urandom(32)
-            wrapping_key = crypto.generate_key(password_local, salt)
-            data_key = base64.urlsafe_b64encode(secrets.token_bytes(32))
-            fernet = Fernet(wrapping_key)
-            encrypted = fernet.encrypt(data_key)
+        # random salt
+        crypto = cryptography()
 
-            hashed_password = password_manager.hash_password(password_local)
-            self.query.insert_user(username_local, hashed_password, email_local)
-            self.controller.show_login()
-            print("Credentials added successfully")
-        except:
-            print("could not commit")
+        salt = os.urandom(32)
+        wrapping_key = crypto.generate_key(password_local, salt)
+        data_key = base64.urlsafe_b64encode(secrets.token_bytes(32))
+        encrypted_data_key = crypto.encrypt_data_key(wrapping_key, data_key)
+        hashed_password = password_manager.hash_password(password_local)
+        print(encrypted_data_key)
+        print(type(encrypted_data_key))
+        print(salt.hex())
+        print(type(salt.hex()))
+        self.query.insert_user(username_local, hashed_password, email_local, encrypted_data_key, salt.hex())
+        self.controller.show_login()
 
 class validation_page(QWidget):
     def __init__(self, controller, login_page,  db, cursor):
