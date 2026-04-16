@@ -17,7 +17,6 @@ class Stats_page():
         self.active_filters = {}
         self.current_date = datetime.today().date()
         self.download_folder_path = Path.home() / "Downloads"
-
         self.widget_layout = parent.ui.filters_widget.layout()
         self.scroll_layout = parent.ui.scrollAreaWidgetContents.layout()
 
@@ -249,7 +248,7 @@ class Stats_page():
         return widget
 
     def download_graph(self):
-        filename = f"{self.graph_name}_{self.current_date}.png"
+        filename = f"{self._parent.account_name}_{self.graph_name}_{self.current_date}.png"
 
         self.set_graph_view.repaint()
         QApplication.processEvents() 
