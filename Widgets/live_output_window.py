@@ -1,7 +1,7 @@
 import sys
 from PyQt5.QtWidgets import QDialog
 
-from Widgets.live_output_generated import Ui_live_output_window
+from generated_files.live_output_generated import Ui_live_output_window
 from file_handle import FileHandling
 from base_classes import CryptoHelper
 from db_queries import QueryProcessor

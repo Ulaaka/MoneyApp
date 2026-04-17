@@ -1,7 +1,7 @@
 from PyQt5.QtWidgets import QDialog, QCompleter
 from PyQt5.QtCore import Qt,pyqtSignal
 
-from Widgets.account_selection_generated import Ui_AccountSelection
+from generated_files.account_selection_generated import Ui_AccountSelection
 from Widgets.account_add_window import AccountAddPage
 from db_queries import QueryProcessor
 

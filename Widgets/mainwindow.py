@@ -6,7 +6,7 @@ from db_queries import QueryProcessor
 from datetime import datetime
 from file_handle import FileHandling
 
-from Widgets.main_app_generated import Ui_MainWindow
+from generated_files.main_app_generated import Ui_MainWindow
 from Widgets.account_control_page import AccountControlPage
 from Widgets.account_selection_window import AccountSelectionPage
 from Widgets.profile_page import ProfilePage
