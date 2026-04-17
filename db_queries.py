@@ -71,6 +71,7 @@ class QueryProcessor:
         :param transaction_list: list of transactions to be inserted
         """
 
+        "print"
         sql = """INSERT IGNORE INTO transactions (accountID, file_ID, transaction_date, transaction_type, description, category, amount, balance) VALUES (%s,%s,%s,%s,%s,%s,%s,%s)"""
         self.cursor.executemany(sql, transaction_list)
         self.db.commit()

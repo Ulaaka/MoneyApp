@@ -39,7 +39,6 @@ class HomePage():
                 return
 
             self.transactions = query.get_transactions(parent_window.accountID)
-            print(self.transactions)
             if len(self.transactions) == 0:
                 self.set_table(False)
                 parent_window.ui.no_account_label.setText(f"No transaction found for '{parent_window.account_name}'")

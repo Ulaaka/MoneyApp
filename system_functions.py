@@ -88,14 +88,14 @@ class SystemHelpers:
         with PdfPages(file_path) as pdf:
             for mark in range(0, len(df), rows_count):
                 section = df.iloc[mark:mark + rows_count]
-                _, ax = plt.subplots(figsize=(8, 6))
+                fig, ax = plt.subplots(figsize=(8, 6))
 
                 info = ax.table(cellText= section.values, colLabels=section.columns, loc='center')
                 ax.axis('off')
-                info.set_fontsize(30)
+                info.set_fontsize(20)
                 info.scale(1.2,2.5)
-                pdf.savefig()
-                plt.close()
+                pdf.savefig(fig)
+                plt.close(fig) 
 
     def create_csv(self, account_name, df):
         """

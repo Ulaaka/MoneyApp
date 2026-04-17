@@ -15,7 +15,6 @@ from file_handle import FileHandling
 class UploadPage():
     def __init__(self, parent):
         self._parent = parent
-        self.home_page = HomePage(parent)
         self.current_date = date.today()
         self.upload_signals_connect()
 
@@ -54,10 +53,10 @@ class UploadPage():
                 return
 
             category = query.return_updated_category(parent_window.userID, parent_window.accountID, description)
-            transaction_list = [(parent_window.accountID, 1, date_input, type, description, category, amount, balance)]
+            transaction_list = [(parent_window.accountID, None, date_input, type, description, category, amount, balance)]
             query.insert_into_transactions(transaction_list)
             self.clear_fields()
-            self.home_page.show_table()
+            self._parent.home_manager.show_table()
 
     def clear_fields(self):
         parent_window = self._parent
@@ -90,6 +89,7 @@ class UploadPage():
         self.live_output.ui.textBrowser.adjustSize()
         self.live_output.adjustSize()
         self.live_output.show()
+        self._parent.home_manager.show_table()
 
     def get_output(self, text):
         stripped_list = [line for line in text.splitlines() if line.strip() != ""]
