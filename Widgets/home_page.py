@@ -60,10 +60,6 @@ class HomePage():
         parent_window = self._parent
         if self.transactions is None:
             return
-        if start_date < parent_window.start_date:
-            return
-        if end_date > parent_window.end_date:
-            return
         self.filter_transaction = self.transactions[self.transactions.iloc[:, 3].dt.date.between(start_date, end_date)]
 
         # -- TABLE LOADING -- 
