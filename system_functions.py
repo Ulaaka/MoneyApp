@@ -70,7 +70,6 @@ class SystemHelpers:
             )
             email.content_subtype = 'html'
             email.send()
-            print(number)
             return number
         except:
             return None
@@ -95,7 +94,8 @@ class SystemHelpers:
                 info.set_fontsize(25)
                 info.scale(1.2,2.5)
                 pdf.savefig(fig)
-    
+                plt.close(fig)
+
     def create_csv(self, account_name, df):
         """
         Downloads csv file to the user's download folder

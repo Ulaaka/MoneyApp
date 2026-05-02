@@ -891,7 +891,7 @@
              </size>
             </property>
             <property name="currentIndex">
-             <number>4</number>
+             <number>6</number>
             </property>
             <widget class="QWidget" name="home_page">
              <property name="sizePolicy">
@@ -1164,8 +1164,8 @@
                         <rect>
                          <x>0</x>
                          <y>0</y>
-                         <width>98</width>
-                         <height>28</height>
+                         <width>199</width>
+                         <height>432</height>
                         </rect>
                        </property>
                        <layout class="QVBoxLayout" name="verticalLayout_34"/>
@@ -3010,7 +3010,7 @@
                        </sizepolicy>
                       </property>
                       <property name="currentIndex">
-                       <number>0</number>
+                       <number>2</number>
                       </property>
                       <widget class="QWidget" name="delete_user_account_page">
                        <property name="sizePolicy">
