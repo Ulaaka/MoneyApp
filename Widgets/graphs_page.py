@@ -265,8 +265,8 @@ class GraphPage():
 
         vertical.addWidget(add)
         self.active_filters[widget_desc["name"]] = add
-        #filter_layout = self._parent.ui.filters_widget.layout()
-        #filter_layout.setAlignment(add, Qt.AlignVCenter)
+        filter_layout = self._parent.ui.filters_widget.layout()
+        filter_layout.setAlignment(add, Qt.AlignTop)
         return widget
 
     def download_graph(self):

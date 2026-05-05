@@ -454,8 +454,6 @@ class CryptoHelper:
             data = file.read()
 
         fernet = Fernet(key)
-        print(data)
-        print("key", key)
         decrypted = fernet.decrypt(data)
 
         return decrypted

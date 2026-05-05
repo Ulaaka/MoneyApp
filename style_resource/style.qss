@@ -313,7 +313,8 @@ QPushButton#privacy_note_button,
 QPushButton#logout_button,
 QPushButton#change_password_button_settings,
 QPushButton#delete_user_button_2,
-QPushButton#add_transaction_button{
+QPushButton#add_transaction_button,
+QPushButton#delete_account{
     background-color: #12355B;
     color: white;
     border: 2px solid black;
@@ -329,7 +330,8 @@ QPushButton#privacy_note_button:hover,
 QPushButton#logout_button:hover,
 QPushButton#change_password_button_settings:hover,
 QPushButton#delete_user_button_2:hover,
-QPushButton#add_transaction_button:hover{
+QPushButton#add_transaction_button:hover,
+QPushButton#delete_account:hover{
     background-color: rgba(86, 101, 115, 0.1);
     color: black;
     border-radius: 15px;
@@ -350,19 +352,12 @@ QPushButton#see_account{
     border-radius: 30px;
 }
 
-QPushButton#delete_account{
-    background-color: #12355B;
-    color: white;
-    border: 2px solid black;
-    border-radius: 15px;
-}
 
 QPushButton#item_button:hover,
 QPushButton#view_button:hover,
 QPushButton#see_account:hover,
 QPushButton#proceed_button:hover,
-QPushButton#cancel_button:hover,
-QPushButton#delete_account:hover {
+QPushButton#cancel_button:hover {
     background-color: rgba(86, 101, 115, 0.1);
 }
 
@@ -410,6 +405,7 @@ QWidget#scrollAreaWidgetContents,
 QFrame#frame{
     background-color: #fff;
 }
+
 
 /* Date Range */
 QDateEdit#start_date_edit,

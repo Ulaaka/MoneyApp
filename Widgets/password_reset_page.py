@@ -106,7 +106,6 @@ class PasswordResetWindow(QWidget):
             return
 
         if safety and same:
-            print("New Password Matches")
             username = self.login_page.username.text()
             new_password = self.password_1.text()
             userID = query.get_userID(username)

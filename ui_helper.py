@@ -16,6 +16,7 @@ class UserInterfaceHelper:
                 "focus":"#18d5f2"
             }
         },
+
         "sign_up_page":{
             "title_color":"#1877F2",
             "background_color":"#12355B",

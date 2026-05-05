@@ -19,7 +19,7 @@ class Ui_AccountSelection(object):
         self.verticalLayout_2.setSizeConstraint(QtWidgets.QLayout.SetFixedSize)
         self.verticalLayout_2.setObjectName("verticalLayout_2")
         self.lineEdit = QtWidgets.QLineEdit(Form)
-        self.lineEdit.setText("")
+        self.lineEdit.setPlaceholderText("Search Account")
         self.lineEdit.setObjectName("lineEdit")
         self.verticalLayout_2.addWidget(self.lineEdit)
         self.empty_container = QtWidgets.QWidget(Form)
