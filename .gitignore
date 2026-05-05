@@ -1,7 +1,9 @@
 .venv/
 __pycache__/
-*.pyc.DS_Store
+*.pyc
+.DS_Store
 
 Pub_Priv_keys/
 *.pem
 
+.env
