@@ -1,14 +1,14 @@
 <RCC>
   <qresource prefix="icons">
-    <file>icons_financial_app/file_icon.png</file>
-    <file>icons_financial_app/account_icon.svg</file>
-    <file>icons_financial_app/chart_icon.png</file>
-    <file>icons_financial_app/home_icon.png</file>
-    <file>icons_financial_app/menu_icon.png</file>
-    <file>icons_financial_app/profile_icon.png</file>
-    <file>icons_financial_app/search_icon.png</file>
-    <file>icons_financial_app/settings_icon.png</file>
-    <file>icons_financial_app/side_bar.png</file>
-    <file>icons_financial_app/upload_icon.png</file>
+    <file>icons_financial_app/home.png</file>
+    <file>icons_financial_app/upload.svg</file>
+    <file>icons_financial_app/files.png</file>
+    <file>icons_financial_app/stats.png</file>
+    <file>icons_financial_app/profile.png</file>
+    <file>icons_financial_app/settings.png</file>
+    <file>icons_financial_app/exit.png</file>
+    <file>icons_financial_app/account_icon.png</file>
+    <file>icons_financial_app/search.png</file>
+    <file>icons_financial_app/sidebar.png</file>
   </qresource>
 </RCC>

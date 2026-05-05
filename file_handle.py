@@ -10,6 +10,7 @@ from pdf_parser import ParsingPDF
 from db_queries import QueryProcessor
 
 class FileHandling():
+
     """
     Contains functions for managing files
     """

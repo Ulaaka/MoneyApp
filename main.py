@@ -1,7 +1,6 @@
 import os, sys
 from PyQt5.QtWidgets import  QApplication
 from Widgets.user_authentication_page import UserAuthentication
-
 if __name__ == "__main__":
     app = QApplication(sys.argv)
 

@@ -20,7 +20,6 @@ QWidget#icon_only_widget {
     background-color: #313a46;
     border-radius: 15px;
 }
-
 QWidget#icon_only_widget QPushButton {
     height: 50px;
     border: none;
@@ -47,6 +46,8 @@ QWidget#full_menu_widget QPushButton {
 QWidget#full_menu_widget QPushButton:hover {
     background-color: rgba(86, 101, 115, 0.5);
 }
+
+/*  When checked */
 
 QWidget#full_menu_widget QPushButton:checked {
     color: #fff;

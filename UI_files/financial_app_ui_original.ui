@@ -109,9 +109,9 @@
             <string/>
            </property>
            <property name="icon">
-            <iconset resource="../../Desktop/resource.qrc">
-             <normaloff>:/icons/icons_financial_app/search_icon.png</normaloff>
-             <normalon>:/icons/icons_financial_app/search_icon.png</normalon>:/icons/icons_financial_app/search_icon.png</iconset>
+            <iconset resource="../style_resource/resource.qrc">
+             <normaloff>:/icons/icons_financial_app/search.png</normaloff>
+             <normalon>:/icons/icons_financial_app/search.png</normalon>:/icons/icons_financial_app/search.png</iconset>
            </property>
            <property name="iconSize">
             <size>
@@ -157,9 +157,9 @@
           <string/>
          </property>
          <property name="icon">
-          <iconset resource="../../Desktop/resource.qrc">
-           <normaloff>:/icons/icons_financial_app/account_icon.svg</normaloff>
-           <normalon>:/icons/icons_financial_app/account_icon.svg</normalon>:/icons/icons_financial_app/account_icon.svg</iconset>
+          <iconset resource="../style_resource/resource.qrc">
+           <normaloff>:/icons/icons_financial_app/account_icon.png</normaloff>
+           <normalon>:/icons/icons_financial_app/account_icon.png</normalon>:/icons/icons_financial_app/account_icon.png</iconset>
          </property>
          <property name="iconSize">
           <size>
@@ -257,9 +257,9 @@
              <string/>
             </property>
             <property name="icon">
-             <iconset resource="../../Desktop/resource.qrc">
-              <normaloff>:/icons/icons_financial_app/side_bar.png</normaloff>
-              <normalon>:/icons/icons_financial_app/side_bar.png</normalon>:/icons/icons_financial_app/side_bar.png</iconset>
+             <iconset resource="../style_resource/resource.qrc">
+              <normaloff>:/icons/icons_financial_app/sidebar.png</normaloff>
+              <normalon>:/icons/icons_financial_app/sidebar.png</normalon>:/icons/icons_financial_app/sidebar.png</iconset>
             </property>
             <property name="iconSize">
              <size>
@@ -293,9 +293,9 @@
              <string/>
             </property>
             <property name="icon">
-             <iconset resource="../../Desktop/resource.qrc">
-              <normaloff>:/icons/icons_financial_app/home_icon.png</normaloff>
-              <normalon>:/icons/icons_financial_app/home_icon.png</normalon>:/icons/icons_financial_app/home_icon.png</iconset>
+             <iconset resource="../style_resource/resource.qrc">
+              <normaloff>:/icons/icons_financial_app/home.png</normaloff>
+              <normalon>:/icons/icons_financial_app/home.png</normalon>:/icons/icons_financial_app/home.png</iconset>
             </property>
             <property name="iconSize">
              <size>
@@ -329,9 +329,9 @@
              <string/>
             </property>
             <property name="icon">
-             <iconset resource="../../Desktop/resource.qrc">
-              <normaloff>:/icons/icons_financial_app/upload_icon.png</normaloff>
-              <normalon>:/icons/icons_financial_app/upload_icon.png</normalon>:/icons/icons_financial_app/upload_icon.png</iconset>
+             <iconset resource="../style_resource/resource.qrc">
+              <normaloff>:/icons/icons_financial_app/upload.svg</normaloff>
+              <normalon>:/icons/icons_financial_app/upload.svg</normalon>:/icons/icons_financial_app/upload.svg</iconset>
             </property>
             <property name="iconSize">
              <size>
@@ -365,9 +365,9 @@
              <string/>
             </property>
             <property name="icon">
-             <iconset resource="../../Desktop/resource.qrc">
-              <normaloff>:/icons/icons_financial_app/file_icon.png</normaloff>
-              <normalon>:/icons/icons_financial_app/file_icon.png</normalon>:/icons/icons_financial_app/file_icon.png</iconset>
+             <iconset resource="../style_resource/resource.qrc">
+              <normaloff>:/icons/icons_financial_app/files.png</normaloff>
+              <normalon>:/icons/icons_financial_app/files.png</normalon>:/icons/icons_financial_app/files.png</iconset>
             </property>
             <property name="iconSize">
              <size>
@@ -401,9 +401,9 @@
              <string/>
             </property>
             <property name="icon">
-             <iconset resource="../../Desktop/resource.qrc">
-              <normaloff>:/icons/icons_financial_app/chart_icon.png</normaloff>
-              <normalon>:/icons/icons_financial_app/chart_icon.png</normalon>:/icons/icons_financial_app/chart_icon.png</iconset>
+             <iconset resource="../style_resource/resource.qrc">
+              <normaloff>:/icons/icons_financial_app/stats.png</normaloff>
+              <normalon>:/icons/icons_financial_app/stats.png</normalon>:/icons/icons_financial_app/stats.png</iconset>
             </property>
             <property name="iconSize">
              <size>
@@ -437,9 +437,9 @@
              <string/>
             </property>
             <property name="icon">
-             <iconset resource="../../Desktop/resource.qrc">
-              <normaloff>:/icons/icons_financial_app/profile_icon.png</normaloff>
-              <normalon>:/icons/icons_financial_app/profile_icon.png</normalon>:/icons/icons_financial_app/profile_icon.png</iconset>
+             <iconset resource="../style_resource/resource.qrc">
+              <normaloff>:/icons/icons_financial_app/profile.png</normaloff>
+              <normalon>:/icons/icons_financial_app/profile.png</normalon>:/icons/icons_financial_app/profile.png</iconset>
             </property>
             <property name="iconSize">
              <size>
@@ -473,9 +473,9 @@
              <string/>
             </property>
             <property name="icon">
-             <iconset resource="../../Desktop/resource.qrc">
-              <normaloff>:/icons/icons_financial_app/settings_icon.png</normaloff>
-              <normalon>:/icons/icons_financial_app/settings_icon.png</normalon>:/icons/icons_financial_app/settings_icon.png</iconset>
+             <iconset resource="../style_resource/resource.qrc">
+              <normaloff>:/icons/icons_financial_app/settings.png</normaloff>
+              <normalon>:/icons/icons_financial_app/settings.png</normalon>:/icons/icons_financial_app/settings.png</iconset>
             </property>
             <property name="iconSize">
              <size>
@@ -519,7 +519,18 @@
              </size>
             </property>
             <property name="text">
-             <string>Exit</string>
+             <string/>
+            </property>
+            <property name="icon">
+             <iconset resource="../style_resource/resource.qrc">
+              <normaloff>:/icons/icons_financial_app/exit.png</normaloff>
+              <normalon>:/icons/icons_financial_app/exit.png</normalon>:/icons/icons_financial_app/exit.png</iconset>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>27</width>
+              <height>30</height>
+             </size>
             </property>
             <property name="checkable">
              <bool>true</bool>
@@ -571,9 +582,9 @@
              <string>   Sidebar</string>
             </property>
             <property name="icon">
-             <iconset resource="../../Desktop/resource.qrc">
-              <normaloff>:/icons/icons_financial_app/side_bar.png</normaloff>
-              <normalon>:/icons/icons_financial_app/side_bar.png</normalon>:/icons/icons_financial_app/side_bar.png</iconset>
+             <iconset resource="../style_resource/resource.qrc">
+              <normaloff>:/icons/icons_financial_app/sidebar.png</normaloff>
+              <normalon>:/icons/icons_financial_app/sidebar.png</normalon>:/icons/icons_financial_app/sidebar.png</iconset>
             </property>
             <property name="iconSize">
              <size>
@@ -607,9 +618,9 @@
              <string>      Home</string>
             </property>
             <property name="icon">
-             <iconset resource="../../Desktop/resource.qrc">
-              <normaloff>:/icons/icons_financial_app/home_icon.png</normaloff>
-              <normalon>:/icons/icons_financial_app/home_icon.png</normalon>:/icons/icons_financial_app/home_icon.png</iconset>
+             <iconset resource="../style_resource/resource.qrc">
+              <normaloff>:/icons/icons_financial_app/home.png</normaloff>
+              <normalon>:/icons/icons_financial_app/home.png</normalon>:/icons/icons_financial_app/home.png</iconset>
             </property>
             <property name="iconSize">
              <size>
@@ -643,9 +654,9 @@
              <string>    Upload</string>
             </property>
             <property name="icon">
-             <iconset resource="../../Desktop/resource.qrc">
-              <normaloff>:/icons/icons_financial_app/upload_icon.png</normaloff>
-              <normalon>:/icons/icons_financial_app/upload_icon.png</normalon>:/icons/icons_financial_app/upload_icon.png</iconset>
+             <iconset resource="../style_resource/resource.qrc">
+              <normaloff>:/icons/icons_financial_app/upload.svg</normaloff>
+              <normalon>:/icons/icons_financial_app/upload.svg</normalon>:/icons/icons_financial_app/upload.svg</iconset>
             </property>
             <property name="iconSize">
              <size>
@@ -679,9 +690,9 @@
              <string>      Files</string>
             </property>
             <property name="icon">
-             <iconset resource="../../Desktop/resource.qrc">
-              <normaloff>:/icons/icons_financial_app/file_icon.png</normaloff>
-              <normalon>:/icons/icons_financial_app/file_icon.png</normalon>:/icons/icons_financial_app/file_icon.png</iconset>
+             <iconset resource="../style_resource/resource.qrc">
+              <normaloff>:/icons/icons_financial_app/files.png</normaloff>
+              <normalon>:/icons/icons_financial_app/files.png</normalon>:/icons/icons_financial_app/files.png</iconset>
             </property>
             <property name="iconSize">
              <size>
@@ -715,9 +726,9 @@
              <string>     Stats</string>
             </property>
             <property name="icon">
-             <iconset resource="../../Desktop/resource.qrc">
-              <normaloff>:/icons/icons_financial_app/chart_icon.png</normaloff>
-              <normalon>:/icons/icons_financial_app/chart_icon.png</normalon>:/icons/icons_financial_app/chart_icon.png</iconset>
+             <iconset resource="../style_resource/resource.qrc">
+              <normaloff>:/icons/icons_financial_app/stats.png</normaloff>
+              <normalon>:/icons/icons_financial_app/stats.png</normalon>:/icons/icons_financial_app/stats.png</iconset>
             </property>
             <property name="iconSize">
              <size>
@@ -751,9 +762,9 @@
              <string>   Profile</string>
             </property>
             <property name="icon">
-             <iconset resource="../../Desktop/resource.qrc">
-              <normaloff>:/icons/icons_financial_app/profile_icon.png</normaloff>
-              <normalon>:/icons/icons_financial_app/profile_icon.png</normalon>:/icons/icons_financial_app/profile_icon.png</iconset>
+             <iconset resource="../style_resource/resource.qrc">
+              <normaloff>:/icons/icons_financial_app/profile.png</normaloff>
+              <normalon>:/icons/icons_financial_app/profile.png</normalon>:/icons/icons_financial_app/profile.png</iconset>
             </property>
             <property name="iconSize">
              <size>
@@ -787,9 +798,9 @@
              <string> Settings</string>
             </property>
             <property name="icon">
-             <iconset resource="../../Desktop/resource.qrc">
-              <normaloff>:/icons/icons_financial_app/settings_icon.png</normaloff>
-              <normalon>:/icons/icons_financial_app/settings_icon.png</normalon>:/icons/icons_financial_app/settings_icon.png</iconset>
+             <iconset resource="../style_resource/resource.qrc">
+              <normaloff>:/icons/icons_financial_app/settings.png</normaloff>
+              <normalon>:/icons/icons_financial_app/settings.png</normalon>:/icons/icons_financial_app/settings.png</iconset>
             </property>
             <property name="iconSize">
              <size>
@@ -834,6 +845,11 @@
             </property>
             <property name="text">
              <string>Exit</string>
+            </property>
+            <property name="icon">
+             <iconset resource="../style_resource/resource.qrc">
+              <normaloff>:/icons/icons_financial_app/exit.png</normaloff>
+              <normalon>:/icons/icons_financial_app/exit.png</normalon>:/icons/icons_financial_app/exit.png</iconset>
             </property>
             <property name="checkable">
              <bool>true</bool>
@@ -891,7 +907,7 @@
              </size>
             </property>
             <property name="currentIndex">
-             <number>7</number>
+             <number>2</number>
             </property>
             <widget class="QWidget" name="home_page">
              <property name="sizePolicy">
@@ -931,7 +947,7 @@
                  </size>
                 </property>
                 <property name="currentIndex">
-                 <number>0</number>
+                 <number>1</number>
                 </property>
                 <widget class="QWidget" name="no_account_page">
                  <layout class="QVBoxLayout" name="verticalLayout_6">
@@ -1314,9 +1330,9 @@
                         <string>Upload file</string>
                        </property>
                        <property name="icon">
-                        <iconset resource="../../Desktop/resource.qrc">
-                         <normaloff>:/icons/icons_financial_app/upload_icon.png</normaloff>
-                         <normalon>:/icons/icons_financial_app/upload_icon.png</normalon>:/icons/icons_financial_app/upload_icon.png</iconset>
+                        <iconset resource="../style_resource/resource.qrc">
+                         <normaloff>:/icons/icons_financial_app/upload.svg</normaloff>
+                         <normalon>:/icons/icons_financial_app/upload.svg</normalon>:/icons/icons_financial_app/upload.svg</iconset>
                        </property>
                        <property name="iconSize">
                         <size>
@@ -3492,7 +3508,7 @@
   </widget>
  </widget>
  <resources>
-  <include location="../../Desktop/resource.qrc"/>
+  <include location="../style_resource/resource.qrc"/>
  </resources>
  <connections>
   <connection>
