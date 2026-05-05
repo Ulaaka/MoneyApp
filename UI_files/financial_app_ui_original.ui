@@ -907,7 +907,7 @@
              </size>
             </property>
             <property name="currentIndex">
-             <number>0</number>
+             <number>1</number>
             </property>
             <widget class="QWidget" name="home_page">
              <property name="sizePolicy">
@@ -947,7 +947,7 @@
                  </size>
                 </property>
                 <property name="currentIndex">
-                 <number>1</number>
+                 <number>0</number>
                 </property>
                 <widget class="QWidget" name="no_account_page">
                  <layout class="QVBoxLayout" name="verticalLayout_6">
@@ -1123,10 +1123,46 @@
                <verstretch>0</verstretch>
               </sizepolicy>
              </property>
-             <layout class="QHBoxLayout" name="horizontalLayout_32" stretch="6">
+             <layout class="QHBoxLayout" name="horizontalLayout_32" stretch="0,6">
+              <item>
+               <widget class="QPushButton" name="expand_button">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Fixed" vsizetype="Expanding">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>20</width>
+                  <height>16777215</height>
+                 </size>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+                <property name="icon">
+                 <iconset resource="../style_resource/resource.qrc">
+                  <normaloff>:/icons/icons_financial_app/expand.svg</normaloff>
+                  <normalon>:/icons/icons_financial_app/expand.svg</normalon>:/icons/icons_financial_app/expand.svg</iconset>
+                </property>
+                <property name="iconSize">
+                 <size>
+                  <width>20</width>
+                  <height>20</height>
+                 </size>
+                </property>
+                <property name="checkable">
+                 <bool>true</bool>
+                </property>
+                <property name="autoExclusive">
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
               <item>
                <widget class="QWidget" name="widget_40" native="true">
-                <layout class="QHBoxLayout" name="horizontalLayout_33" stretch="2,6">
+                <layout class="QHBoxLayout" name="horizontalLayout_33" stretch="2,7">
                  <property name="leftMargin">
                   <number>0</number>
                  </property>
@@ -1162,8 +1198,14 @@
                     </property>
                     <item>
                      <widget class="QLabel" name="graphs_label">
+                      <property name="minimumSize">
+                       <size>
+                        <width>0</width>
+                        <height>30</height>
+                       </size>
+                      </property>
                       <property name="text">
-                       <string>Options</string>
+                       <string>Graphs</string>
                       </property>
                       <property name="alignment">
                        <set>Qt::AlignmentFlag::AlignCenter</set>
@@ -1180,8 +1222,8 @@
                         <rect>
                          <x>0</x>
                          <y>0</y>
-                         <width>98</width>
-                         <height>28</height>
+                         <width>170</width>
+                         <height>418</height>
                         </rect>
                        </property>
                        <layout class="QVBoxLayout" name="verticalLayout_34"/>
@@ -1327,7 +1369,7 @@
                         </size>
                        </property>
                        <property name="text">
-                        <string>Upload file</string>
+                        <string>Upload </string>
                        </property>
                        <property name="icon">
                         <iconset resource="../style_resource/resource.qrc">
@@ -2048,7 +2090,7 @@
                        </font>
                       </property>
                       <property name="text">
-                       <string>Account Currency:</string>
+                       <string>Account Currency: </string>
                       </property>
                       <property name="alignment">
                        <set>Qt::AlignmentFlag::AlignCenter</set>
@@ -3026,7 +3068,7 @@
                        </sizepolicy>
                       </property>
                       <property name="currentIndex">
-                       <number>4</number>
+                       <number>2</number>
                       </property>
                       <widget class="QWidget" name="delete_user_account_page">
                        <property name="sizePolicy">

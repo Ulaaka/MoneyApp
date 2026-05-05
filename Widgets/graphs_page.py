@@ -170,7 +170,7 @@ class GraphPage():
 
     def stats_signals_connect(self):
         parent_window = self._parent
-        parent_window.ui.scrollAreaWidgetContents.setStyleSheet("background-color: #fff;")
+        parent_window.ui.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
         parent_window.ui.download_chart_button.clicked.connect(self.download_graph)
         if parent_window.accountID:
             self.account_currency = self.query.get_type_account_currency(parent_window.account_name, parent_window.userID)[1].upper()
@@ -180,12 +180,23 @@ class GraphPage():
         # populate buttons 
         for graph in list(self.func_mapping.keys()):
             opt_button = QPushButton(graph)
-            opt_button.setStyleSheet("background-color: #12355B;")
+            #opt_button.setStyleSheet("background-color: #12355B;")
             opt_button.setObjectName("graphButton")
             opt_button.setFixedHeight(50)
             opt_button.clicked.connect(lambda clicked, graph_name=graph: self.show_graph(graph_name))
             self.scroll_layout.addWidget(opt_button)
         self.scroll_layout.addStretch()
+
+        parent_window.ui.expand_button.setVisible(False)
+        parent_window.ui.graphs_label.mousePressEvent = self.graph_label_clicked
+
+    def graph_label_clicked(self, event):
+        self._parent.ui.frame.setVisible(not self._parent.ui.frame.isVisible())
+        self._parent.ui.expand_button.setVisible(True)
+
+    def expand_button_clicked(self):
+        self._parent.ui.frame.setVisible(not self._parent.ui.frame.isVisible())
+        self._parent.ui.expand_button.setVisible(False)
 
     def show_graph(self, graph):
         self.graph_name = graph
@@ -225,6 +236,7 @@ class GraphPage():
         self.set_graph_view.setRenderHint(QPainter.Antialiasing)
         self.set_graph_view.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         chart_layout.addWidget(self.set_graph_view)
+
 
     def create_filter(self, widget_desc):
         widget = QWidget()

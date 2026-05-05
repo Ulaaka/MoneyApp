@@ -1,5 +1,6 @@
 <RCC>
   <qresource prefix="icons">
+    <file>icons_financial_app/expand.svg</file>
     <file>icons_financial_app/home.png</file>
     <file>icons_financial_app/upload.svg</file>
     <file>icons_financial_app/files.png</file>
