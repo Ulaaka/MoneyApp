@@ -7,8 +7,7 @@ Setting up:
 - Install the dependencies:
 pip install -r requirements.txt
 
-- Set up the environment variables:
-- Open .env and fill in the values:
+- Set up the environment variables and fill the values in your env:
 cp .env.example .env
 
 - Set up the database:
