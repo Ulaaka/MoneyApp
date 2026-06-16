@@ -3,6 +3,7 @@
 ### Overview
 
 A personal finance app that reads bank statements and turns them into clear, interactive charts and reports, helping you better understand your financial patterns.
+The project was developed as a part of university assignment.
 
 ### Setup
 
