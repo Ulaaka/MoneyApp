@@ -17,11 +17,15 @@ cp .env.example .env
 ```
 Fill in the required values in your `.env` file.
 
-You will need to create gmail app password (EMAIL_HOST_PASSWORD in env) from this link:  https://myaccount.google.com/apppasswords?pli=1&rapt=AEjHL4NrXmNPNO-Si6UDjeAeXrtarYomuS5lAU3cMsmRQyALsybGA_p19Cd-CBH8stb00nM2JUfiT-aRkQJN832iUUkehVodm_I9-K9_X71QeDlehQkSPH0
+You will need to create a gmail app password (EMAIL_HOST_PASSWORD in env) from this link:  
+
+https://myaccount.google.com/apppasswords?pli=1&rapt=AEjHL4NrXmNPNO-Si6UDjeAeXrtarYomuS5lAU3cMsmRQyALsybGA_p19Cd-CBH8stb00nM2JUfiT-aRkQJN832iUUkehVodm_I9-K9_X71QeDlehQkSPH0
 
 **Set up the database:**
 
-You will need to download a MySQL server from this link: https://www.oracle.com/mysql/technologies/mysql-enterprise-edition-downloads.html.
+You will need to download a MySQL server from this link: 
+
+https://www.oracle.com/mysql/technologies/mysql-enterprise-edition-downloads.html.
 
 After installation, run the following command to set up the database.
 ```bash
