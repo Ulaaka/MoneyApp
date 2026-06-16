@@ -107,12 +107,17 @@ You can manage accounts by clicking the button with wallet icon, which allows yo
   <img width="1071" height="628" alt="Screenshot 2026-06-16 at 14 29 33" src="https://github.com/user-attachments/assets/94407c4c-fe84-4df5-bd0b-7ce80d65052f" />
   - If the files with the same content aleady exists:
   <img width="1071" height="630" alt="Screenshot 2026-06-16 at 14 34 50" src="https://github.com/user-attachments/assets/08f1703c-8241-4d4f-9f5e-2197768929b4" />
-  - You can preview the duplicate files by cliking on the link in the progress window
-
+  - You can preview the duplicate files by cliking on the link in the progress window.
+  - Duplicate transactions (which may appear across different files) are automatically ignored, keeping the data in a consistent state.
 
 - Transaction can also be uploaded manually by entering all the required information in the form and clicking "Add Transaction" button, if not, corresponding warning message will be shown.
 
 <img width="1068" height="628" alt="Screenshot 2026-06-16 at 14 26 15" src="https://github.com/user-attachments/assets/7c8d83f3-00d9-47ca-9b0e-7ac87a66ec50" />
+
+**Transaction Management**
+
+You can remove the transaction by either deleting the assocoated file ( which will delete all the related transactions) or individually delete then from tranasction table in the home page.
+
 
 
 
