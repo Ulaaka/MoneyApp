@@ -52,7 +52,7 @@ python src/main.py
 - User verification via email
 - User information validity check (email validity, password requirement, username uniqueness)
 
-### Some explanation of the development:
+### Some explanations of the development:
 
 **Cryptography techniques**
 
