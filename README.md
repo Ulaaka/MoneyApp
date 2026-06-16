@@ -3,7 +3,6 @@
 ### Overview
 
 A personal finance app that reads bank statements and turns them into clear, interactive charts and reports, helping you better understand your financial patterns.
-The project was developed as a part of university assignment.
 
 ### Setup
 
@@ -43,6 +42,12 @@ python src/main.py
 - Instant transaction stamtements processing
 - Files are encrypted on disk and passwords are hashed
 - Password can be updated (via Password-based key hierarchy with key wrapping)
+  
+  - Password-based key hierarchy (key wrapping)
+    - Password + salt → derives Key Encryption Key (KEK)
+    - KEK → encrypts (wraps) Data Encryption Key (DEK)
+    - DEK → encrypts files (data)
+      
 - Account recovery, including access to previously uploaded files (via RSA cryptography)
 - User verification via email
 - User information validity check (email validity, password requirement, username uniqueness)
